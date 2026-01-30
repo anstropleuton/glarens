@@ -9,3 +9,5 @@
 #pragma once
 
 #include "glarens/node.hpp" // IWYU pragma: keep
+#include "glarens/property.hpp" // IWYU pragma: keep
+#include "glarens/math.hpp" // IWYU pragma: keep
