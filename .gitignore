@@ -1,2 +1,8 @@
 # Build files
 build
+
+# clangd files
+.cache
+
+# VS Code files
+.vscode

@@ -6,9 +6,10 @@
     - [x] Dummy files
     - [x] Property system (yoinked from my other project)
     - [x] Math framework (also yoinked from my other project)
-    - [ ] SDL window setup
-    - [ ] Render lines
-    - [ ] Get input
+    - [x] SDL window setup
+    - [x] Debugging SDL setup
+    - [x] Render lines
+    - [x] Get input
     - [ ] Compile shaders
     - [ ] Render shaders
 - [ ] Get node graph working
