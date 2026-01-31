@@ -6,12 +6,33 @@
     - [x] Dummy files
     - [x] Property system (yoinked from my other project)
     - [x] Math framework (also yoinked from my other project)
+        - [x] Vector classes
+        - [x] Basic vector operators
+        - [x] Element-wise vector functions
+        - [x] Advanced vector functions
+        - [x] Matrix classes
+        - [x] Basic matrix operators
+        - [x] Element-wise matrix functions
+        - [x] Advanced matrix functions
+        - [x] Rectangle class
+        - [-] Rectangle operators (if any)
+        - [-] Advanced rectangle manipulation functions (if any)
+        - [x] Color class
+        - [x] Basic color operators
+        - [x] Color space conversion
+        - [x] Element-wise color functions
+        - [ ] Advanced color operations
     - [x] SDL window setup
     - [x] Debugging SDL setup
     - [x] Render lines
     - [x] Get input
     - [ ] Compile shaders
+        - [ ] Precompile shaders using SDL_shadercross CLI
+        - [ ] Livecompile shaders using SDL_shadercross API
     - [ ] Render shaders
+        - [ ] Load SPIRV, MSL or DXIL depending on backend
+        - [ ] Set shader uniforms
+        - [ ] Display shader
 - [ ] Get node graph working
     - [ ] Indirection-based unidimensional array of nodes (no actual tree datastructure)
     - [ ] Layout system

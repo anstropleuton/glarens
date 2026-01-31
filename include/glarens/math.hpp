@@ -10,6 +10,7 @@
 
 #include "SDL3/SDL_rect.h"
 #include "glarens/property.hpp"
+#include <array>
 #include <cmath>
 #include <cstdint>
 #include <cstdlib>
@@ -32,21 +33,18 @@ struct Vec2 {
 
     operator SDL_FPoint() const { return {x, y}; }
 
-    Vec2 &operator+=(Vec2 b);
-    Vec2 &operator-=(Vec2 b);
-    Vec2 &operator*=(Vec2 b);
-    Vec2 &operator/=(Vec2 b);
-    Vec2 &operator+=(SDL_FPoint b);
-    Vec2 &operator-=(SDL_FPoint b);
-    Vec2 &operator*=(SDL_FPoint b);
-    Vec2 &operator/=(SDL_FPoint b);
-    Vec2 &operator+=(float b);
-    Vec2 &operator-=(float b);
-    Vec2 &operator*=(float b);
-    Vec2 &operator/=(float b);
-
-    inline explicit operator Vec3() const;
-    inline explicit operator Vec4() const;
+    inline Vec2 &operator+=(Vec2 b);
+    inline Vec2 &operator-=(Vec2 b);
+    inline Vec2 &operator*=(Vec2 b);
+    inline Vec2 &operator/=(Vec2 b);
+    inline Vec2 &operator+=(SDL_FPoint b);
+    inline Vec2 &operator-=(SDL_FPoint b);
+    inline Vec2 &operator*=(SDL_FPoint b);
+    inline Vec2 &operator/=(SDL_FPoint b);
+    inline Vec2 &operator+=(float b);
+    inline Vec2 &operator-=(float b);
+    inline Vec2 &operator*=(float b);
+    inline Vec2 &operator/=(float b);
 };
 
 inline Vec2 operator+(Vec2 a) { return Vec2(+a.x, +a.y); }
@@ -100,17 +98,14 @@ struct Vec3 {
     inline explicit Vec3(Vec2 v);
     inline explicit Vec3(Vec4 v);
 
-    Vec3 &operator+=(Vec3 b);
-    Vec3 &operator-=(Vec3 b);
-    Vec3 &operator*=(Vec3 b);
-    Vec3 &operator/=(Vec3 b);
-    Vec3 &operator+=(float b);
-    Vec3 &operator-=(float b);
-    Vec3 &operator*=(float b);
-    Vec3 &operator/=(float b);
-
-    inline explicit operator Vec2() const;
-    inline explicit operator Vec4() const;
+    inline Vec3 &operator+=(Vec3 b);
+    inline Vec3 &operator-=(Vec3 b);
+    inline Vec3 &operator*=(Vec3 b);
+    inline Vec3 &operator/=(Vec3 b);
+    inline Vec3 &operator+=(float b);
+    inline Vec3 &operator-=(float b);
+    inline Vec3 &operator*=(float b);
+    inline Vec3 &operator/=(float b);
 };
 
 inline Vec3 operator+(Vec3 a) { return Vec3(+a.x, +a.y, +a.z); }
@@ -150,9 +145,9 @@ struct Vec4 {
     Vec4(SDL_FRect v) : x(v.x), y(v.y), z(v.w), w(v.h) {}
 
     Vec4(Vec2 v, float z, float w) : x(v.x), y(v.y), z(z), w(w) {}
-    Vec4(Vec2 v, Vec2 u) : x(v.x), y(v.y), z(u.x), w(u.y) {}
     Vec4(float x, Vec2 v, float w) : x(x), y(v.x), z(v.y), w(w) {}
     Vec4(float x, float y, Vec2 v) : x(x), y(y), z(v.x), w(v.y) {}
+    Vec4(Vec2 v, Vec2 u) : x(v.x), y(v.y), z(u.x), w(u.y) {}
     Vec4(Vec3 v, float w) : x(v.x), y(v.y), z(v.z), w(w) {}
     Vec4(float x, Vec3 v) : x(x), y(v.x), z(v.y), w(v.z) {}
 
@@ -161,21 +156,18 @@ struct Vec4 {
 
     operator SDL_FRect() const { return {x, y, z, w}; }
 
-    Vec4 &operator+=(Vec4 b);
-    Vec4 &operator-=(Vec4 b);
-    Vec4 &operator*=(Vec4 b);
-    Vec4 &operator/=(Vec4 b);
-    Vec4 &operator+=(SDL_FRect b);
-    Vec4 &operator-=(SDL_FRect b);
-    Vec4 &operator*=(SDL_FRect b);
-    Vec4 &operator/=(SDL_FRect b);
-    Vec4 &operator+=(float b);
-    Vec4 &operator-=(float b);
-    Vec4 &operator*=(float b);
-    Vec4 &operator/=(float b);
-
-    inline explicit operator Vec2() const;
-    inline explicit operator Vec3() const;
+    inline Vec4 &operator+=(Vec4 b);
+    inline Vec4 &operator-=(Vec4 b);
+    inline Vec4 &operator*=(Vec4 b);
+    inline Vec4 &operator/=(Vec4 b);
+    inline Vec4 &operator+=(SDL_FRect b);
+    inline Vec4 &operator-=(SDL_FRect b);
+    inline Vec4 &operator*=(SDL_FRect b);
+    inline Vec4 &operator/=(SDL_FRect b);
+    inline Vec4 &operator+=(float b);
+    inline Vec4 &operator-=(float b);
+    inline Vec4 &operator*=(float b);
+    inline Vec4 &operator/=(float b);
 };
 
 inline Vec4 operator+(Vec4 a) { return Vec4(+a.x, +a.y, +a.z, +a.w); }
@@ -222,24 +214,9 @@ inline Vec3::Vec3(Vec4 v) : x(v.x), y(v.y), z(v.z) {}
 inline Vec4::Vec4(Vec2 v) : x(v.x), y(v.y), z(0.0f), w(0.0f) {}
 inline Vec4::Vec4(Vec3 v) : x(v.x), y(v.y), z(v.z), w(0.0f) {}
 
-inline Vec2::operator Vec3() const { return Vec3(x, y, 0.0f); }
-inline Vec2::operator Vec4() const { return Vec4(x, y, 0.0f, 0.0f); }
-inline Vec3::operator Vec2() const { return Vec2(x, y); }
-inline Vec3::operator Vec4() const { return Vec4(x, y, z, 0.0f); }
-inline Vec4::operator Vec2() const { return Vec2(x, y); }
-inline Vec4::operator Vec3() const { return Vec3(x, y, z); }
-
 inline Vec2 abs(Vec2 v) { return Vec2(fabs(v.x), fabs(v.y)); }
 inline Vec3 abs(Vec3 v) { return Vec3(fabs(v.x), fabs(v.y), fabs(v.z)); }
 inline Vec4 abs(Vec4 v) { return Vec4(fabs(v.x), fabs(v.y), fabs(v.z), fabs(v.w)); }
-
-inline Vec2 neg(Vec2 v) { return Vec2(-v.x, -v.y); }
-inline Vec3 neg(Vec3 v) { return Vec3(-v.x, -v.y, -v.z); }
-inline Vec4 neg(Vec4 v) { return Vec4(-v.x, -v.y, -v.z, -v.w); }
-
-inline Vec2 inv(Vec2 v) { return Vec2(1.0f / v.x, 1.0f / v.y); }
-inline Vec3 inv(Vec3 v) { return Vec3(1.0f / v.x, 1.0f / v.y, 1.0f / v.z); }
-inline Vec4 inv(Vec4 v) { return Vec4(1.0f / v.x, 1.0f / v.y, 1.0f / v.z, 1.0f / v.w); }
 
 inline Vec2 pow(Vec2 a, Vec2 b) { return Vec2(pow(a.x, b.x), pow(a.y, b.y)); }
 inline Vec3 pow(Vec3 a, Vec3 b) { return Vec3(pow(a.x, b.x), pow(a.y, b.y), pow(a.z, b.z)); }
@@ -256,6 +233,38 @@ inline Vec4 log(Vec4 v, float b) { return Vec4(log(v.x) / log(b), log(v.y) / log
 inline Vec2 sqrt(Vec2 v) { return Vec2(sqrt(v.x), sqrt(v.y)); }
 inline Vec3 sqrt(Vec3 v) { return Vec3(sqrt(v.x), sqrt(v.y), sqrt(v.z)); }
 inline Vec4 sqrt(Vec4 v) { return Vec4(sqrt(v.x), sqrt(v.y), sqrt(v.z), sqrt(v.w)); }
+
+template <typename Fn> Vec2 fore(Vec2 v, Fn fn) { return Vec2(fn(v.x), fn(v.y)); }
+template <typename Fn> Vec3 fore(Vec3 v, Fn fn) { return Vec3(fn(v.x), fn(v.y), fn(v.z)); }
+template <typename Fn> Vec4 fore(Vec4 v, Fn fn) { return Vec4(fn(v.x), fn(v.y), fn(v.z), fn(v.w)); }
+
+template <typename Fn> Vec2 fore(Vec2 a, Vec2 b, Fn fn) { return Vec2(fn(a.x, b.x), fn(a.y, b.y)); }
+template <typename Fn> Vec3 fore(Vec3 a, Vec3 b, Fn fn) { return Vec3(fn(a.x, b.x), fn(a.y, b.y), fn(a.z, b.z)); }
+template <typename Fn> Vec4 fore(Vec4 a, Vec4 b, Fn fn) { return Vec4(fn(a.x, b.x), fn(a.y, b.y), fn(a.z, b.z), fn(a.w, b.w)); }
+
+template <typename Fn> Vec2 fore(Vec2 a, float b, Fn fn) { return Vec2(fn(a.x, b), fn(a.y, b)); }
+template <typename Fn> Vec3 fore(Vec3 a, float b, Fn fn) { return Vec3(fn(a.x, b), fn(a.y, b), fn(a.z, b)); }
+template <typename Fn> Vec4 fore(Vec4 a, float b, Fn fn) { return Vec4(fn(a.x, b), fn(a.y, b), fn(a.z, b), fn(a.w, b)); }
+
+template <typename Fn> Vec2 fore(float a, Vec2 b, Fn fn) { return Vec2(fn(a, b.x), fn(a, b.y)); }
+template <typename Fn> Vec3 fore(float a, Vec3 b, Fn fn) { return Vec3(fn(a, b.x), fn(a, b.y), fn(a, b.z)); }
+template <typename Fn> Vec4 fore(float a, Vec4 b, Fn fn) { return Vec4(fn(a, b.x), fn(a, b.y), fn(a, b.z), fn(a, b.w)); }
+
+inline float add_v(Vec2 v) { return v.x + v.y; }
+inline float add_v(Vec3 v) { return v.x + v.y + v.z; }
+inline float add_v(Vec4 v) { return v.x + v.y + v.z + v.w; }
+
+inline float sub_v(Vec2 v) { return 0.0f - v.x - v.y; }
+inline float sub_v(Vec3 v) { return 0.0f - v.x - v.y - v.z; }
+inline float sub_v(Vec4 v) { return 0.0f - v.x - v.y - v.z - v.w; }
+
+inline float mul_v(Vec2 v) { return v.x * v.y; }
+inline float mul_v(Vec3 v) { return v.x * v.y * v.z; }
+inline float mul_v(Vec4 v) { return v.x * v.y * v.z * v.w; }
+
+inline float div_v(Vec2 v) { return 1.0f / v.x / v.y; }
+inline float div_v(Vec3 v) { return 1.0f / v.x / v.y / v.z; }
+inline float div_v(Vec4 v) { return 1.0f / v.x / v.y / v.z / v.w; }
 
 inline float dot(Vec2 a, Vec2 b) { return a.x * b.x + a.y * b.y; }
 inline float dot(Vec3 a, Vec3 b) { return a.x * b.x + a.y * b.y + a.z * b.z; }
@@ -382,13 +391,562 @@ inline Vec3 sub_wv(Vec4 v) { return Vec3(v.w - v.x, v.w - v.y, v.w - v.z); }
 inline Vec3 mul_wv(Vec4 v) { return Vec3(v.w * v.x, v.w * v.y, v.w * v.z); }
 inline Vec3 div_wv(Vec4 v) { return Vec3(v.w / v.x, v.w / v.y, v.w / v.z); }
 
-template <typename Fn> Vec2 fore(Vec2 v, Fn fn) { return Vec2(fn(v.x), fn(v.y)); }
-template <typename Fn> Vec3 fore(Vec3 v, Fn fn) { return Vec3(fn(v.x), fn(v.y), fn(v.z)); }
-template <typename Fn> Vec4 fore(Vec4 v, Fn fn) { return Vec4(fn(v.x), fn(v.y), fn(v.z), fn(v.w)); }
+// Note: matrix multiplication is mm(m1, m2), not m1 * m2
+// The latter is element-wise multiplication
 
-template <typename Fn> Vec2 fore(Vec2 a, Vec2 b, Fn fn) { return Vec2(fn(a.x, b.x), fn(a.y, b.y)); }
-template <typename Fn> Vec3 fore(Vec3 a, Vec3 b, Fn fn) { return Vec3(fn(a.x, b.x), fn(a.y, b.y), fn(a.z, b.z)); }
-template <typename Fn> Vec4 fore(Vec4 a, Vec4 b, Fn fn) { return Vec4(fn(a.x, b.x), fn(a.y, b.y), fn(a.z, b.z), fn(a.w, b.w)); }
+struct Mat2;
+struct Mat3;
+struct Mat4;
+
+struct Mat2 {
+    using M = std::array<float, 4>;
+    using V = std::array<Vec2, 2>;
+
+    // Row-major
+    // [0, 1
+    //  2, 3]
+    M m;
+
+    MemPropExp(Mat2, rows, V, V({Vec2(self.m[0], self.m[1]), Vec2(self.m[2], self.m[3])}), (self.m = M{value[0].x, value[0].y, value[1].x, value[1].y}));
+
+    MemPropExp(Mat2, cols, V, V({Vec2(self.m[0], self.m[2]), Vec2(self.m[1], self.m[3])}), (self.m = M{value[0].x, value[1].x, value[0].y, value[1].y}));
+
+    MemPropExp(Mat2, diag, Vec2, Vec2(self.m[0], self.m[3]), (self.m = {value.x, self.m[1], self.m[2], value.y}));
+
+    Mat2() = default;
+    Mat2(M m) : m({m[0], m[1], m[2], m[3]}) {}
+    Mat2(float m0, float m1, float m2, float m3) : m({m0, m1, m2, m3}) {}
+    Mat2(Vec2 v1, Vec2 v2) : m({v1.x, v1.y, v2.x, v2.y}) {}
+
+    inline explicit Mat2(Mat3 m);
+    inline explicit Mat2(Mat4 m);
+
+    static Mat2 from_rows(Vec4 m) { return Mat2(m.x, m.y, m.z, m.w); }
+
+    static Mat2 from_cols(Vec4 m) { return Mat2(m.x, m.z, m.y, m.w); }
+
+    Vec4 to_rows() const { return Vec4(m[0], m[1], m[2], m[3]); }
+
+    Vec4 to_cols() const { return Vec4(m[0], m[2], m[1], m[3]); }
+
+    inline Mat2 &operator+=(Mat2 b);
+    inline Mat2 &operator-=(Mat2 b);
+    inline Mat2 &operator*=(Mat2 b);
+    inline Mat2 &operator/=(Mat2 b);
+    inline Mat2 &operator+=(float b);
+    inline Mat2 &operator-=(float b);
+    inline Mat2 &operator*=(float b);
+    inline Mat2 &operator/=(float b);
+};
+
+inline Mat2 operator+(Mat2 a) { return Mat2(+a.m[0], +a.m[1], +a.m[2], +a.m[3]); }
+inline Mat2 operator-(Mat2 a) { return Mat2(-a.m[0], -a.m[1], -a.m[2], -a.m[3]); }
+
+inline Mat2 operator+(Mat2 a, Mat2 b) { return Mat2(a.m[0] + b.m[0], a.m[1] + b.m[1], a.m[2] + b.m[2], a.m[3] + b.m[3]); }
+inline Mat2 operator-(Mat2 a, Mat2 b) { return Mat2(a.m[0] - b.m[0], a.m[1] - b.m[1], a.m[2] - b.m[2], a.m[3] - b.m[3]); }
+inline Mat2 operator*(Mat2 a, Mat2 b) { return Mat2(a.m[0] * b.m[0], a.m[1] * b.m[1], a.m[2] * b.m[2], a.m[3] * b.m[3]); }
+inline Mat2 operator/(Mat2 a, Mat2 b) { return Mat2(a.m[0] / b.m[0], a.m[1] / b.m[1], a.m[2] / b.m[2], a.m[3] / b.m[3]); }
+inline Mat2 operator+(Mat2 a, float b) { return Mat2(a.m[0] + b, a.m[1] + b, a.m[2] + b, a.m[3] + b); }
+inline Mat2 operator-(Mat2 a, float b) { return Mat2(a.m[0] - b, a.m[1] - b, a.m[2] - b, a.m[3] - b); }
+inline Mat2 operator*(Mat2 a, float b) { return Mat2(a.m[0] * b, a.m[1] * b, a.m[2] * b, a.m[3] * b); }
+inline Mat2 operator/(Mat2 a, float b) { return Mat2(a.m[0] / b, a.m[1] / b, a.m[2] / b, a.m[3] / b); }
+inline Mat2 operator+(float a, Mat2 b) { return Mat2(a + b.m[0], a + b.m[1], a + b.m[2], a + b.m[3]); }
+inline Mat2 operator-(float a, Mat2 b) { return Mat2(a - b.m[0], a - b.m[1], a - b.m[2], a - b.m[3]); }
+inline Mat2 operator*(float a, Mat2 b) { return Mat2(a * b.m[0], a * b.m[1], a * b.m[2], a * b.m[3]); }
+inline Mat2 operator/(float a, Mat2 b) { return Mat2(a / b.m[0], a / b.m[1], a / b.m[2], a / b.m[3]); }
+
+inline Mat2 &Mat2::operator+=(Mat2 b) { return *this = *this + b; }
+inline Mat2 &Mat2::operator-=(Mat2 b) { return *this = *this - b; }
+inline Mat2 &Mat2::operator*=(Mat2 b) { return *this = *this * b; }
+inline Mat2 &Mat2::operator/=(Mat2 b) { return *this = *this / b; }
+inline Mat2 &Mat2::operator+=(float b) { return *this = *this + b; }
+inline Mat2 &Mat2::operator-=(float b) { return *this = *this - b; }
+inline Mat2 &Mat2::operator*=(float b) { return *this = *this * b; }
+inline Mat2 &Mat2::operator/=(float b) { return *this = *this / b; }
+
+struct Mat3 {
+    using M = std::array<float, 9>;
+    using V = std::array<Vec3, 3>;
+
+    // Row-major
+    // [0, 1, 2
+    //  3, 4, 5
+    //  6, 7, 8]
+    M m;
+
+    MemPropExp(Mat3, rows, V, V({Vec3(self.m[0], self.m[1], self.m[2]), Vec3(self.m[3], self.m[4], self.m[5]), Vec3(self.m[6], self.m[7], self.m[8])}), (self.m = M{value[0].x, value[0].y, value[0].z, value[1].x, value[1].y, value[1].z, value[2].x, value[2].y, value[2].z}));
+
+    MemPropExp(Mat3, cols, V, V({Vec3(self.m[0], self.m[3], self.m[6]), Vec3(self.m[1], self.m[4], self.m[7]), Vec3(self.m[2], self.m[5], self.m[8])}), (self.m = M{value[0].x, value[1].x, value[2].x, value[0].y, value[1].y, value[2].y, value[0].z, value[1].z, value[2].z}));
+
+    MemPropExp(Mat3, diag, Vec3, Vec3(self.m[0], self.m[3], self.m[6]), (self.m = {value.x, self.m[1], self.m[2], self.m[3], value.y, self.m[5], self.m[6], self.m[7], value.z}));
+
+    Mat3() = default;
+    Mat3(M m) : m({m[0], m[1], m[2], m[3], m[4], m[5], m[6], m[7], m[8]}) {}
+    Mat3(float m0, float m1, float m2, float m3, float m4, float m5, float m6, float m7, float m8) : m({m0, m1, m2, m3, m4, m5, m6, m7, m8}) {}
+    Mat3(Vec3 v1, Vec3 v2, Vec3 v3) : m({v1.x, v1.y, v1.z, v2.x, v2.y, v2.z, v3.x, v3.y, v3.z}) {}
+
+    inline explicit Mat3(Mat2 m);
+    inline explicit Mat3(Mat4 m);
+
+    inline Mat3 &operator+=(Mat3 b);
+    inline Mat3 &operator-=(Mat3 b);
+    inline Mat3 &operator*=(Mat3 b);
+    inline Mat3 &operator/=(Mat3 b);
+    inline Mat3 &operator+=(float b);
+    inline Mat3 &operator-=(float b);
+    inline Mat3 &operator*=(float b);
+    inline Mat3 &operator/=(float b);
+};
+
+inline Mat3 operator+(Mat3 a) { return Mat3(+a.m[0], +a.m[1], +a.m[2], +a.m[3], +a.m[4], +a.m[5], +a.m[6], +a.m[7], +a.m[8]); }
+inline Mat3 operator-(Mat3 a) { return Mat3(-a.m[0], -a.m[1], -a.m[2], -a.m[3], -a.m[4], -a.m[5], -a.m[6], -a.m[7], -a.m[8]); }
+
+inline Mat3 operator+(Mat3 a, Mat3 b) { return Mat3(a.m[0] + b.m[0], a.m[1] + b.m[1], a.m[2] + b.m[2], a.m[3] + b.m[3], a.m[4] + b.m[4], a.m[5] + b.m[5], a.m[6] + b.m[6], a.m[7] + b.m[7], a.m[8] + b.m[8]); }
+inline Mat3 operator-(Mat3 a, Mat3 b) { return Mat3(a.m[0] - b.m[0], a.m[1] - b.m[1], a.m[2] - b.m[2], a.m[3] - b.m[3], a.m[4] - b.m[4], a.m[5] - b.m[5], a.m[6] - b.m[6], a.m[7] - b.m[7], a.m[8] - b.m[8]); }
+inline Mat3 operator*(Mat3 a, Mat3 b) { return Mat3(a.m[0] * b.m[0], a.m[1] * b.m[1], a.m[2] * b.m[2], a.m[3] * b.m[3], a.m[4] * b.m[4], a.m[5] * b.m[5], a.m[6] * b.m[6], a.m[7] * b.m[7], a.m[8] * b.m[8]); }
+inline Mat3 operator/(Mat3 a, Mat3 b) { return Mat3(a.m[0] / b.m[0], a.m[1] / b.m[1], a.m[2] / b.m[2], a.m[3] / b.m[3], a.m[4] / b.m[4], a.m[5] / b.m[5], a.m[6] / b.m[6], a.m[7] / b.m[7], a.m[8] / b.m[8]); }
+inline Mat3 operator+(Mat3 a, float b) { return Mat3(a.m[0] + b, a.m[1] + b, a.m[2] + b, a.m[3] + b, a.m[4] + b, a.m[5] + b, a.m[6] + b, a.m[7] + b, a.m[8] + b); }
+inline Mat3 operator-(Mat3 a, float b) { return Mat3(a.m[0] - b, a.m[1] - b, a.m[2] - b, a.m[3] - b, a.m[4] - b, a.m[5] - b, a.m[6] - b, a.m[7] - b, a.m[8] - b); }
+inline Mat3 operator*(Mat3 a, float b) { return Mat3(a.m[0] * b, a.m[1] * b, a.m[2] * b, a.m[3] * b, a.m[4] * b, a.m[5] * b, a.m[6] * b, a.m[7] * b, a.m[8] * b); }
+inline Mat3 operator/(Mat3 a, float b) { return Mat3(a.m[0] / b, a.m[1] / b, a.m[2] / b, a.m[3] / b, a.m[4] / b, a.m[5] / b, a.m[6] / b, a.m[7] / b, a.m[8] / b); }
+inline Mat3 operator+(float a, Mat3 b) { return Mat3(a + b.m[0], a + b.m[1], a + b.m[2], a + b.m[3], a + b.m[4], a + b.m[5], a + b.m[6], a + b.m[7], a + b.m[8]); }
+inline Mat3 operator-(float a, Mat3 b) { return Mat3(a - b.m[0], a - b.m[1], a - b.m[2], a - b.m[3], a - b.m[4], a - b.m[5], a - b.m[6], a - b.m[7], a - b.m[8]); }
+inline Mat3 operator*(float a, Mat3 b) { return Mat3(a * b.m[0], a * b.m[1], a * b.m[2], a * b.m[3], a * b.m[4], a * b.m[5], a * b.m[6], a * b.m[7], a * b.m[8]); }
+inline Mat3 operator/(float a, Mat3 b) { return Mat3(a / b.m[0], a / b.m[1], a / b.m[2], a / b.m[3], a / b.m[4], a / b.m[5], a / b.m[6], a / b.m[7], a / b.m[8]); }
+
+inline Mat3 &Mat3::operator+=(Mat3 b) { return *this = *this + b; }
+inline Mat3 &Mat3::operator-=(Mat3 b) { return *this = *this - b; }
+inline Mat3 &Mat3::operator*=(Mat3 b) { return *this = *this * b; }
+inline Mat3 &Mat3::operator/=(Mat3 b) { return *this = *this / b; }
+inline Mat3 &Mat3::operator+=(float b) { return *this = *this + b; }
+inline Mat3 &Mat3::operator-=(float b) { return *this = *this - b; }
+inline Mat3 &Mat3::operator*=(float b) { return *this = *this * b; }
+inline Mat3 &Mat3::operator/=(float b) { return *this = *this / b; }
+
+struct Mat4 {
+    using M = std::array<float, 16>;
+    using V = std::array<Vec4, 4>;
+
+    // Row-major
+    // [ 0,  1,  2,  3
+    //   4,  5,  6,  7
+    //   8,  9, 10, 11
+    //  12, 13, 14, 15]
+    M m;
+
+    MemPropExp(Mat4, rows, V, V({Vec4(self.m[0], self.m[1], self.m[2], self.m[3]), Vec4(self.m[4], self.m[5], self.m[6], self.m[7]), Vec4(self.m[8], self.m[9], self.m[10], self.m[11]), Vec4(self.m[12], self.m[13], self.m[14], self.m[15])}), (self.m = M{value[0].x, value[0].y, value[0].z, value[0].w, value[1].x, value[1].y, value[1].z, value[1].w, value[2].x, value[2].y, value[2].z, value[2].w, value[3].x, value[3].y, value[3].z, value[3].w}));
+
+    MemPropExp(Mat4, cols, V, V({Vec4(self.m[0], self.m[4], self.m[8], self.m[12]), Vec4(self.m[1], self.m[5], self.m[9], self.m[13]), Vec4(self.m[2], self.m[6], self.m[10], self.m[14]), Vec4(self.m[3], self.m[7], self.m[11], self.m[15])}), (self.m = M{value[0].x, value[1].x, value[2].x, value[3].x, value[0].y, value[1].y, value[2].y, value[3].y, value[0].z, value[1].z, value[2].z, value[3].z, value[0].w, value[1].w, value[2].w, value[3].w}));
+
+    MemPropExp(Mat4, diag, Vec4, Vec4(self.m[0], self.m[5], self.m[10], self.m[15]), (self.m = {value.x, self.m[1], self.m[2], self.m[3], self.m[4], value.y, self.m[6], self.m[7], self.m[8], self.m[9], value.z, self.m[11], self.m[12], self.m[13], self.m[14], value.w}));
+
+    Mat4() = default;
+    Mat4(M m) : m({m[0], m[1], m[2], m[3], m[4], m[5], m[6], m[7], m[8]}) {}
+    Mat4(float m0, float m1, float m2, float m3, float m4, float m5, float m6, float m7, float m8, float m9, float m10, float m11, float m12, float m13, float m14, float m15) : m({m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15}) {}
+
+    inline explicit Mat4(Mat2 m);
+    inline explicit Mat4(Mat3 m);
+
+    inline Mat4 &operator+=(Mat4 b);
+    inline Mat4 &operator-=(Mat4 b);
+    inline Mat4 &operator*=(Mat4 b);
+    inline Mat4 &operator/=(Mat4 b);
+    inline Mat4 &operator+=(float b);
+    inline Mat4 &operator-=(float b);
+    inline Mat4 &operator*=(float b);
+    inline Mat4 &operator/=(float b);
+};
+
+inline Mat4 operator+(Mat4 a) { return Mat4(+a.m[0], +a.m[1], +a.m[2], +a.m[3], +a.m[4], +a.m[5], +a.m[6], +a.m[7], +a.m[8], +a.m[9], +a.m[10], +a.m[11], +a.m[12], +a.m[13], +a.m[14], +a.m[15]); }
+inline Mat4 operator-(Mat4 a) { return Mat4(-a.m[0], -a.m[1], -a.m[2], -a.m[3], -a.m[4], -a.m[5], -a.m[6], -a.m[7], -a.m[8], -a.m[9], -a.m[10], -a.m[11], -a.m[12], -a.m[13], -a.m[14], -a.m[15]); }
+
+inline Mat4 operator+(Mat4 a, Mat4 b) { return Mat4(a.m[0] + b.m[0], a.m[1] + b.m[1], a.m[2] + b.m[2], a.m[3] + b.m[3], a.m[4] + b.m[4], a.m[5] + b.m[5], a.m[6] + b.m[6], a.m[7] + b.m[7], a.m[8] + b.m[8], a.m[9] + b.m[9], a.m[10] + b.m[10], a.m[11] + b.m[11], a.m[12] + b.m[12], a.m[13] + b.m[13], a.m[14] + b.m[14], a.m[15] + b.m[15]); }
+inline Mat4 operator-(Mat4 a, Mat4 b) { return Mat4(a.m[0] - b.m[0], a.m[1] - b.m[1], a.m[2] - b.m[2], a.m[3] - b.m[3], a.m[4] - b.m[4], a.m[5] - b.m[5], a.m[6] - b.m[6], a.m[7] - b.m[7], a.m[8] - b.m[8], a.m[9] - b.m[9], a.m[10] - b.m[10], a.m[11] - b.m[11], a.m[12] - b.m[12], a.m[13] - b.m[13], a.m[14] - b.m[14], a.m[15] - b.m[15]); }
+inline Mat4 operator*(Mat4 a, Mat4 b) { return Mat4(a.m[0] * b.m[0], a.m[1] * b.m[1], a.m[2] * b.m[2], a.m[3] * b.m[3], a.m[4] * b.m[4], a.m[5] * b.m[5], a.m[6] * b.m[6], a.m[7] * b.m[7], a.m[8] * b.m[8], a.m[9] * b.m[9], a.m[10] * b.m[10], a.m[11] * b.m[11], a.m[12] * b.m[12], a.m[13] * b.m[13], a.m[14] * b.m[14], a.m[15] * b.m[15]); }
+inline Mat4 operator/(Mat4 a, Mat4 b) { return Mat4(a.m[0] / b.m[0], a.m[1] / b.m[1], a.m[2] / b.m[2], a.m[3] / b.m[3], a.m[4] / b.m[4], a.m[5] / b.m[5], a.m[6] / b.m[6], a.m[7] / b.m[7], a.m[8] / b.m[8], a.m[9] / b.m[9], a.m[10] / b.m[10], a.m[11] / b.m[11], a.m[12] / b.m[12], a.m[13] / b.m[13], a.m[14] / b.m[14], a.m[15] / b.m[15]); }
+inline Mat4 operator+(Mat4 a, float b) { return Mat4(a.m[0] + b, a.m[1] + b, a.m[2] + b, a.m[3] + b, a.m[4] + b, a.m[5] + b, a.m[6] + b, a.m[7] + b, a.m[8] + b, a.m[9] + b, a.m[10] + b, a.m[11] + b, a.m[12] + b, a.m[13] + b, a.m[14] + b, a.m[15] + b); }
+inline Mat4 operator-(Mat4 a, float b) { return Mat4(a.m[0] - b, a.m[1] - b, a.m[2] - b, a.m[3] - b, a.m[4] - b, a.m[5] - b, a.m[6] - b, a.m[7] - b, a.m[8] - b, a.m[9] - b, a.m[10] - b, a.m[11] - b, a.m[12] - b, a.m[13] - b, a.m[14] - b, a.m[15] - b); }
+inline Mat4 operator*(Mat4 a, float b) { return Mat4(a.m[0] * b, a.m[1] * b, a.m[2] * b, a.m[3] * b, a.m[4] * b, a.m[5] * b, a.m[6] * b, a.m[7] * b, a.m[8] * b, a.m[9] * b, a.m[10] * b, a.m[11] * b, a.m[12] * b, a.m[13] * b, a.m[14] * b, a.m[15] * b); }
+inline Mat4 operator/(Mat4 a, float b) { return Mat4(a.m[0] / b, a.m[1] / b, a.m[2] / b, a.m[3] / b, a.m[4] / b, a.m[5] / b, a.m[6] / b, a.m[7] / b, a.m[8] / b, a.m[9] / b, a.m[10] / b, a.m[11] / b, a.m[12] / b, a.m[13] / b, a.m[14] / b, a.m[15] / b); }
+inline Mat4 operator+(float a, Mat4 b) { return Mat4(a + b.m[0], a + b.m[1], a + b.m[2], a + b.m[3], a + b.m[4], a + b.m[5], a + b.m[6], a + b.m[7], a + b.m[8], a + b.m[9], a + b.m[10], a + b.m[11], a + b.m[12], a + b.m[13], a + b.m[14], a + b.m[15]); }
+inline Mat4 operator-(float a, Mat4 b) { return Mat4(a - b.m[0], a - b.m[1], a - b.m[2], a - b.m[3], a - b.m[4], a - b.m[5], a - b.m[6], a - b.m[7], a - b.m[8], a - b.m[9], a - b.m[10], a - b.m[11], a - b.m[12], a - b.m[13], a - b.m[14], a - b.m[15]); }
+inline Mat4 operator*(float a, Mat4 b) { return Mat4(a * b.m[0], a * b.m[1], a * b.m[2], a * b.m[3], a * b.m[4], a * b.m[5], a * b.m[6], a * b.m[7], a * b.m[8], a * b.m[9], a * b.m[10], a * b.m[11], a * b.m[12], a * b.m[13], a * b.m[14], a * b.m[15]); }
+inline Mat4 operator/(float a, Mat4 b) { return Mat4(a / b.m[0], a / b.m[1], a / b.m[2], a / b.m[3], a / b.m[4], a / b.m[5], a / b.m[6], a / b.m[7], a / b.m[8], a / b.m[9], a / b.m[10], a / b.m[11], a / b.m[12], a / b.m[13], a / b.m[14], a / b.m[15]); }
+
+inline Mat4 &Mat4::operator+=(Mat4 b) { return *this = *this + b; }
+inline Mat4 &Mat4::operator-=(Mat4 b) { return *this = *this - b; }
+inline Mat4 &Mat4::operator*=(Mat4 b) { return *this = *this * b; }
+inline Mat4 &Mat4::operator/=(Mat4 b) { return *this = *this / b; }
+inline Mat4 &Mat4::operator+=(float b) { return *this = *this + b; }
+inline Mat4 &Mat4::operator-=(float b) { return *this = *this - b; }
+inline Mat4 &Mat4::operator*=(float b) { return *this = *this * b; }
+inline Mat4 &Mat4::operator/=(float b) { return *this = *this / b; }
+
+inline Mat2::Mat2(Mat3 m) : m({m.m[0], m.m[1], m.m[3], m.m[4]}) {}
+inline Mat2::Mat2(Mat4 m) : m({m.m[0], m.m[1], m.m[4], m.m[5]}) {}
+inline Mat3::Mat3(Mat2 m) : m({m.m[0], m.m[1], 0.0f, m.m[2], m.m[3], 0.0f, 0.0f, 0.0f, 0.0f}) {}
+inline Mat3::Mat3(Mat4 m) : m({m.m[0], m.m[1], m.m[2], m.m[4], m.m[5], m.m[6], m.m[8], m.m[9], m.m[10]}) {}
+inline Mat4::Mat4(Mat2 m) : m({m.m[0], m.m[1], 0.0f, 0.0f, m.m[2], m.m[3], 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}) {}
+inline Mat4::Mat4(Mat3 m) : m({m.m[0], m.m[1], m.m[2], 0.0f, m.m[3], m.m[4], m.m[5], 0.0f, m.m[6], m.m[7], m.m[8], 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}) {}
+
+inline Mat2 abs(Mat2 m) { return Mat2(fabs(m.m[0]), fabs(m.m[1]), fabs(m.m[2]), fabs(m.m[3])); }
+inline Mat3 abs(Mat3 m) { return Mat3(fabs(m.m[0]), fabs(m.m[1]), fabs(m.m[2]), fabs(m.m[3]), fabs(m.m[4]), fabs(m.m[5]), fabs(m.m[6]), fabs(m.m[7]), fabs(m.m[8])); }
+inline Mat4 abs(Mat4 m) { return Mat4(fabs(m.m[0]), fabs(m.m[1]), fabs(m.m[2]), fabs(m.m[3]), fabs(m.m[4]), fabs(m.m[5]), fabs(m.m[6]), fabs(m.m[7]), fabs(m.m[8]), fabs(m.m[9]), fabs(m.m[10]), fabs(m.m[11]), fabs(m.m[12]), fabs(m.m[13]), fabs(m.m[14]), fabs(m.m[15])); }
+
+inline Mat2 pow(Mat2 a, Mat2 b) { return Mat2(pow(a.m[0], b.m[0]), pow(a.m[1], b.m[1]), pow(a.m[2], b.m[2]), pow(a.m[3], b.m[3])); }
+inline Mat3 pow(Mat3 a, Mat3 b) { return Mat3(pow(a.m[0], b.m[0]), pow(a.m[1], b.m[1]), pow(a.m[2], b.m[2]), pow(a.m[3], b.m[3]), pow(a.m[4], b.m[4]), pow(a.m[5], b.m[5]), pow(a.m[6], b.m[6]), pow(a.m[7], b.m[7]), pow(a.m[8], b.m[8])); }
+inline Mat4 pow(Mat4 a, Mat4 b) { return Mat4(pow(a.m[0], b.m[0]), pow(a.m[1], b.m[1]), pow(a.m[2], b.m[2]), pow(a.m[3], b.m[3]), pow(a.m[4], b.m[4]), pow(a.m[5], b.m[5]), pow(a.m[6], b.m[6]), pow(a.m[7], b.m[7]), pow(a.m[8], b.m[8]), pow(a.m[9], b.m[9]), pow(a.m[10], b.m[10]), pow(a.m[11], b.m[11]), pow(a.m[12], b.m[12]), pow(a.m[13], b.m[13]), pow(a.m[14], b.m[14]), pow(a.m[15], b.m[15])); }
+
+inline Mat2 mod(Mat2 a, Mat2 b) { return Mat2(fmod(a.m[0], b.m[0]), fmod(a.m[1], b.m[1]), fmod(a.m[2], b.m[2]), fmod(a.m[3], b.m[3])); }
+inline Mat3 mod(Mat3 a, Mat3 b) { return Mat3(fmod(a.m[0], b.m[0]), fmod(a.m[1], b.m[1]), fmod(a.m[2], b.m[2]), fmod(a.m[3], b.m[3]), fmod(a.m[4], b.m[4]), fmod(a.m[5], b.m[5]), fmod(a.m[6], b.m[6]), fmod(a.m[7], b.m[7]), fmod(a.m[8], b.m[8])); }
+inline Mat4 mod(Mat4 a, Mat4 b) { return Mat4(fmod(a.m[0], b.m[0]), fmod(a.m[1], b.m[1]), fmod(a.m[2], b.m[2]), fmod(a.m[3], b.m[3]), fmod(a.m[4], b.m[4]), fmod(a.m[5], b.m[5]), fmod(a.m[6], b.m[6]), fmod(a.m[7], b.m[7]), fmod(a.m[8], b.m[8]), fmod(a.m[9], b.m[9]), fmod(a.m[10], b.m[10]), fmod(a.m[11], b.m[11]), fmod(a.m[12], b.m[12]), fmod(a.m[13], b.m[13]), fmod(a.m[14], b.m[14]), fmod(a.m[15], b.m[15])); }
+
+inline Mat2 log(Mat2 a, float b) { return Mat2(log(a.m[0]) / log(b), log(a.m[1]) / log(b), log(a.m[2]) / log(b), log(a.m[3]) / log(b)); }
+inline Mat3 log(Mat3 a, float b) { return Mat3(log(a.m[0]) / log(b), log(a.m[1]) / log(b), log(a.m[2]) / log(b), log(a.m[3]) / log(b), log(a.m[4]) / log(b), log(a.m[5]) / log(b), log(a.m[6]) / log(b), log(a.m[7]) / log(b), log(a.m[8]) / log(b)); }
+inline Mat4 log(Mat4 a, float b) { return Mat4(log(a.m[0]) / log(b), log(a.m[1]) / log(b), log(a.m[2]) / log(b), log(a.m[3]) / log(b), log(a.m[4]) / log(b), log(a.m[5]) / log(b), log(a.m[6]) / log(b), log(a.m[7]) / log(b), log(a.m[8]) / log(b), log(a.m[9]) / log(b), log(a.m[10]) / log(b), log(a.m[11]) / log(b), log(a.m[12]) / log(b), log(a.m[13]) / log(b), log(a.m[14]) / log(b), log(a.m[15]) / log(b)); }
+
+inline Mat2 sqrt(Mat2 m) { return Mat2(sqrt(m.m[0]), sqrt(m.m[1]), sqrt(m.m[2]), sqrt(m.m[3])); }
+inline Mat3 sqrt(Mat3 m) { return Mat3(sqrt(m.m[0]), sqrt(m.m[1]), sqrt(m.m[2]), sqrt(m.m[3]), sqrt(m.m[4]), sqrt(m.m[5]), sqrt(m.m[6]), sqrt(m.m[7]), sqrt(m.m[8])); }
+inline Mat4 sqrt(Mat4 m) { return Mat4(sqrt(m.m[0]), sqrt(m.m[1]), sqrt(m.m[2]), sqrt(m.m[3]), sqrt(m.m[4]), sqrt(m.m[5]), sqrt(m.m[6]), sqrt(m.m[7]), sqrt(m.m[8]), sqrt(m.m[9]), sqrt(m.m[10]), sqrt(m.m[11]), sqrt(m.m[12]), sqrt(m.m[13]), sqrt(m.m[14]), sqrt(m.m[15])); }
+
+template <typename Fn> Mat2 fore(Mat2 m, Fn fn) { return Mat2(fn(m.m[0]), fn(m.m[1]), fn(m.m[2]), fn(m.m[3])); }
+template <typename Fn> Mat3 fore(Mat3 m, Fn fn) { return Mat3(fn(m.m[0]), fn(m.m[1]), fn(m.m[2]), fn(m.m[3]), fn(m.m[4]), fn(m.m[5]), fn(m.m[6]), fn(m.m[7]), fn(m.m[8])); }
+template <typename Fn> Mat4 fore(Mat4 m, Fn fn) { return Mat4(fn(m.m[0]), fn(m.m[1]), fn(m.m[2]), fn(m.m[3]), fn(m.m[4]), fn(m.m[5]), fn(m.m[6]), fn(m.m[7]), fn(m.m[8]), fn(m.m[9]), fn(m.m[10]), fn(m.m[11]), fn(m.m[12]), fn(m.m[13]), fn(m.m[14]), fn(m.m[15])); }
+
+template <typename Fn> Mat2 fore(Mat2 a, Mat2 b, Fn fn) { return Mat2(fn(a.m[0], b.m[0]), fn(a.m[1], b.m[1]), fn(a.m[2], b.m[2]), fn(a.m[3], b.m[3])); }
+template <typename Fn> Mat3 fore(Mat3 a, Mat3 b, Fn fn) { return Mat3(fn(a.m[0], b.m[0]), fn(a.m[1], b.m[1]), fn(a.m[2], b.m[2]), fn(a.m[3], b.m[3]), fn(a.m[4], b.m[4]), fn(a.m[5], b.m[5]), fn(a.m[6], b.m[6]), fn(a.m[7], b.m[7]), fn(a.m[8], b.m[8])); }
+template <typename Fn> Mat4 fore(Mat4 a, Mat4 b, Fn fn) { return Mat4(fn(a.m[0], b.m[0]), fn(a.m[1], b.m[1]), fn(a.m[2], b.m[2]), fn(a.m[3], b.m[3]), fn(a.m[4], b.m[4]), fn(a.m[5], b.m[5]), fn(a.m[6], b.m[6]), fn(a.m[7], b.m[7]), fn(a.m[8], b.m[8]), fn(a.m[9], b.m[9]), fn(a.m[10], b.m[10]), fn(a.m[11], b.m[11]), fn(a.m[12], b.m[12]), fn(a.m[13], b.m[13]), fn(a.m[14], b.m[14]), fn(a.m[15], b.m[15])); }
+
+template <typename Fn> Mat2 fore(Mat2 a, float b, Fn fn) { return Mat2(fn(a.m[0], b), fn(a.m[1], b), fn(a.m[2], b), fn(a.m[3], b)); }
+template <typename Fn> Mat3 fore(Mat3 a, float b, Fn fn) { return Mat3(fn(a.m[0], b), fn(a.m[1], b), fn(a.m[2], b), fn(a.m[3], b), fn(a.m[4], b), fn(a.m[5], b), fn(a.m[6], b), fn(a.m[7], b), fn(a.m[8], b)); }
+template <typename Fn> Mat4 fore(Mat4 a, float b, Fn fn) { return Mat4(fn(a.m[0], b), fn(a.m[1], b), fn(a.m[2], b), fn(a.m[3], b), fn(a.m[4], b), fn(a.m[5], b), fn(a.m[6], b), fn(a.m[7], b), fn(a.m[8], b), fn(a.m[9], b), fn(a.m[10], b), fn(a.m[11], b), fn(a.m[12], b), fn(a.m[13], b), fn(a.m[14], b), fn(a.m[15], b)); }
+
+template <typename Fn> Mat2 fore(float a, Mat2 b, Fn fn) { return Mat2(fn(a, b.m[0]), fn(a, b.m[1]), fn(a, b.m[2]), fn(a, b.m[3])); }
+template <typename Fn> Mat3 fore(float a, Mat3 b, Fn fn) { return Mat3(fn(a, b.m[0]), fn(a, b.m[1]), fn(a, b.m[2]), fn(a, b.m[3]), fn(a, b.m[4]), fn(a, b.m[5]), fn(a, b.m[6]), fn(a, b.m[7]), fn(a, b.m[8])); }
+template <typename Fn> Mat4 fore(float a, Mat4 b, Fn fn) { return Mat4(fn(a, b.m[0]), fn(a, b.m[1]), fn(a, b.m[2]), fn(a, b.m[3]), fn(a, b.m[4]), fn(a, b.m[5]), fn(a, b.m[6]), fn(a, b.m[7]), fn(a, b.m[8]), fn(a, b.m[9]), fn(a, b.m[10]), fn(a, b.m[11]), fn(a, b.m[12]), fn(a, b.m[13]), fn(a, b.m[14]), fn(a, b.m[15])); }
+
+inline float add_m(Mat2 m) {
+    float result = 0.0f;
+    for (float m : m.m) {
+        result += m;
+    }
+    return result;
+}
+
+inline float add_m(Mat3 m) {
+    float result = 0.0f;
+    for (float m : m.m) {
+        result += m;
+    }
+    return result;
+}
+
+inline float add_m(Mat4 m) {
+    float result = 0.0f;
+    for (float m : m.m) {
+        result += m;
+    }
+    return result;
+}
+
+inline float sub_m(Mat2 m) {
+    float result = 0.0f;
+    for (float m : m.m) {
+        result -= m;
+    }
+    return result;
+}
+
+inline float sub_m(Mat3 m) {
+    float result = 0.0f;
+    for (float m : m.m) {
+        result -= m;
+    }
+    return result;
+}
+
+inline float sub_m(Mat4 m) {
+    float result = 0.0f;
+    for (float m : m.m) {
+        result -= m;
+    }
+    return result;
+}
+
+inline float mul_m(Mat2 m) {
+    float result = 1.0f;
+    for (float m : m.m) {
+        result *= m;
+    }
+    return result;
+}
+
+inline float mul_m(Mat3 m) {
+    float result = 1.0f;
+    for (float m : m.m) {
+        result *= m;
+    }
+    return result;
+}
+
+inline float mul_m(Mat4 m) {
+    float result = 1.0f;
+    for (float m : m.m) {
+        result *= m;
+    }
+    return result;
+}
+
+inline float div_m(Mat2 m) {
+    float result = 1.0f;
+    for (float m : m.m) {
+        result /= m;
+    }
+    return result;
+}
+
+inline float div_m(Mat3 m) {
+    float result = 1.0f;
+    for (float m : m.m) {
+        result /= m;
+    }
+    return result;
+}
+
+inline float div_m(Mat4 m) {
+    float result = 1.0f;
+    for (float m : m.m) {
+        result /= m;
+    }
+    return result;
+}
+
+inline float det(Mat2 m) {
+    return m.m[0] * m.m[3] - m.m[1] * m.m[2];
+}
+
+inline float det(Mat3 m) {
+    return m.m[0] * (m.m[4] * m.m[8] - m.m[5] * m.m[7]) -
+           m.m[1] * (m.m[3] * m.m[8] - m.m[5] * m.m[6]) +
+           m.m[2] * (m.m[3] * m.m[7] - m.m[4] * m.m[6]);
+}
+
+inline float det(Mat4 m) {
+    return m.m[0] * m.m[5] * m.m[10] * m.m[15] +
+           m.m[0] * m.m[6] * m.m[11] * m.m[13] +
+           m.m[0] * m.m[7] * m.m[9] * m.m[14] +
+
+           m.m[1] * m.m[4] * m.m[11] * m.m[14] +
+           m.m[1] * m.m[6] * m.m[8] * m.m[15] +
+           m.m[1] * m.m[7] * m.m[10] * m.m[12] +
+
+           m.m[2] * m.m[4] * m.m[9] * m.m[15] +
+           m.m[2] * m.m[5] * m.m[11] * m.m[12] +
+           m.m[2] * m.m[7] * m.m[8] * m.m[13] +
+
+           m.m[3] * m.m[4] * m.m[10] * m.m[13] +
+           m.m[3] * m.m[5] * m.m[8] * m.m[14] +
+           m.m[3] * m.m[6] * m.m[9] * m.m[12] -
+
+           m.m[0] * m.m[5] * m.m[11] * m.m[14] -
+           m.m[0] * m.m[6] * m.m[9] * m.m[15] -
+           m.m[0] * m.m[7] * m.m[10] * m.m[13] -
+
+           m.m[1] * m.m[4] * m.m[10] * m.m[15] -
+           m.m[1] * m.m[6] * m.m[11] * m.m[12] -
+           m.m[1] * m.m[7] * m.m[8] * m.m[14] -
+
+           m.m[2] * m.m[4] * m.m[11] * m.m[13] -
+           m.m[2] * m.m[5] * m.m[8] * m.m[15] -
+           m.m[2] * m.m[7] * m.m[9] * m.m[12] -
+
+           m.m[3] * m.m[4] * m.m[9] * m.m[14] -
+           m.m[3] * m.m[5] * m.m[10] * m.m[12] -
+           m.m[3] * m.m[6] * m.m[8] * m.m[13];
+}
+
+inline Mat2 inv(Mat2 m) {
+    float d = det(m);
+    Mat2  r;
+
+    r.m[0] = m.m[3] / d;
+    r.m[1] = -m.m[1] / d;
+    r.m[2] = -m.m[2] / d;
+    r.m[3] = m.m[0] / d;
+
+    return r;
+}
+
+inline Mat3 inv(Mat3 m) {
+    float d = det(m);
+    Mat3  r;
+
+    r.m[0] = (m.m[4] * m.m[8] - m.m[5] * m.m[7]) / d;
+    r.m[1] = -(m.m[1] * m.m[8] - m.m[2] * m.m[7]) / d;
+    r.m[2] = (m.m[1] * m.m[5] - m.m[2] * m.m[4]) / d;
+    r.m[3] = -(m.m[3] * m.m[8] - m.m[5] * m.m[6]) / d;
+    r.m[4] = (m.m[0] * m.m[8] - m.m[2] * m.m[6]) / d;
+    r.m[5] = -(m.m[0] * m.m[5] - m.m[2] * m.m[3]) / d;
+    r.m[6] = (m.m[3] * m.m[7] - m.m[4] * m.m[6]) / d;
+    r.m[7] = -(m.m[0] * m.m[7] - m.m[1] * m.m[6]) / d;
+    r.m[8] = (m.m[0] * m.m[4] - m.m[1] * m.m[3]) / d;
+
+    return r;
+}
+
+inline Mat4 inv(Mat4 m) {
+    float d = det(m);
+    Mat4  r;
+
+    r.m[0]  = (m.m[5] * (m.m[10] * m.m[15] - m.m[11] * m.m[14]) - m.m[6] * (m.m[9] * m.m[15] - m.m[11] * m.m[13]) + m.m[7] * (m.m[9] * m.m[14] - m.m[10] * m.m[13])) / d;
+    r.m[1]  = (-m.m[1] * (m.m[10] * m.m[15] - m.m[11] * m.m[14]) + m.m[2] * (m.m[9] * m.m[15] - m.m[11] * m.m[13]) - m.m[3] * (m.m[9] * m.m[14] - m.m[10] * m.m[13])) / d;
+    r.m[2]  = (m.m[1] * (m.m[6] * m.m[15] - m.m[7] * m.m[14]) - m.m[2] * (m.m[5] * m.m[15] - m.m[7] * m.m[13]) + m.m[3] * (m.m[5] * m.m[14] - m.m[6] * m.m[13])) / d;
+    r.m[3]  = (-m.m[1] * (m.m[6] * m.m[11] - m.m[7] * m.m[10]) + m.m[2] * (m.m[5] * m.m[11] - m.m[7] * m.m[9]) - m.m[3] * (m.m[5] * m.m[10] - m.m[6] * m.m[9])) / d;
+    r.m[4]  = (-m.m[4] * (m.m[10] * m.m[15] - m.m[11] * m.m[14]) + m.m[6] * (m.m[8] * m.m[15] - m.m[11] * m.m[12]) - m.m[7] * (m.m[8] * m.m[14] - m.m[10] * m.m[12])) / d;
+    r.m[5]  = (m.m[0] * (m.m[10] * m.m[15] - m.m[11] * m.m[14]) - m.m[2] * (m.m[8] * m.m[15] - m.m[11] * m.m[12]) + m.m[3] * (m.m[8] * m.m[14] - m.m[10] * m.m[12])) / d;
+    r.m[6]  = (-m.m[0] * (m.m[6] * m.m[15] - m.m[7] * m.m[14]) + m.m[2] * (m.m[4] * m.m[15] - m.m[7] * m.m[12]) - m.m[3] * (m.m[4] * m.m[14] - m.m[6] * m.m[12])) / d;
+    r.m[7]  = (m.m[0] * (m.m[6] * m.m[11] - m.m[7] * m.m[10]) - m.m[2] * (m.m[4] * m.m[11] - m.m[7] * m.m[8]) + m.m[3] * (m.m[4] * m.m[10] - m.m[6] * m.m[8])) / d;
+    r.m[8]  = (m.m[4] * (m.m[9] * m.m[15] - m.m[11] * m.m[13]) - m.m[5] * (m.m[8] * m.m[15] - m.m[11] * m.m[12]) + m.m[7] * (m.m[8] * m.m[13] - m.m[9] * m.m[12])) / d;
+    r.m[9]  = (-m.m[0] * (m.m[9] * m.m[15] - m.m[11] * m.m[13]) + m.m[1] * (m.m[8] * m.m[15] - m.m[11] * m.m[12]) - m.m[3] * (m.m[8] * m.m[13] - m.m[9] * m.m[12])) / d;
+    r.m[10] = (m.m[0] * (m.m[5] * m.m[15] - m.m[7] * m.m[13]) - m.m[1] * (m.m[4] * m.m[15] - m.m[7] * m.m[12]) + m.m[3] * (m.m[4] * m.m[13] - m.m[5] * m.m[12])) / d;
+    r.m[11] = (-m.m[0] * (m.m[5] * m.m[11] - m.m[7] * m.m[9]) + m.m[1] * (m.m[4] * m.m[11] - m.m[7] * m.m[8]) - m.m[3] * (m.m[4] * m.m[9] - m.m[5] * m.m[8])) / d;
+    r.m[12] = (-m.m[4] * (m.m[9] * m.m[14] - m.m[10] * m.m[13]) + m.m[5] * (m.m[8] * m.m[14] - m.m[10] * m.m[12]) - m.m[6] * (m.m[8] * m.m[13] - m.m[9] * m.m[12])) / d;
+    r.m[13] = (m.m[0] * (m.m[9] * m.m[14] - m.m[10] * m.m[13]) - m.m[1] * (m.m[8] * m.m[14] - m.m[10] * m.m[12]) + m.m[2] * (m.m[8] * m.m[13] - m.m[9] * m.m[12])) / d;
+    r.m[14] = (-m.m[0] * (m.m[5] * m.m[14] - m.m[6] * m.m[13]) + m.m[1] * (m.m[4] * m.m[14] - m.m[6] * m.m[12]) - m.m[2] * (m.m[4] * m.m[13] - m.m[5] * m.m[12])) / d;
+    r.m[15] = (m.m[0] * (m.m[5] * m.m[10] - m.m[6] * m.m[9]) - m.m[1] * (m.m[4] * m.m[10] - m.m[6] * m.m[8]) + m.m[2] * (m.m[4] * m.m[9] - m.m[5] * m.m[8])) / d;
+
+    return r;
+}
+
+inline Mat2 mm(Mat2 a, Mat2 b) {
+    return Mat2(
+        a.m[0] * b.m[0] + a.m[1] * b.m[2],
+        a.m[0] * b.m[1] + a.m[1] * b.m[3],
+
+        a.m[2] * b.m[0] + a.m[3] * b.m[2],
+        a.m[2] * b.m[1] + a.m[3] * b.m[3]
+    );
+}
+
+inline Mat3 mm(Mat3 a, Mat3 b) {
+    return Mat3(
+        a.m[0] * b.m[0] + a.m[1] * b.m[3] + a.m[2] * b.m[6],
+        a.m[0] * b.m[1] + a.m[1] * b.m[4] + a.m[2] * b.m[7],
+        a.m[0] * b.m[2] + a.m[1] * b.m[5] + a.m[2] * b.m[8],
+
+        a.m[3] * b.m[0] + a.m[4] * b.m[3] + a.m[5] * b.m[6],
+        a.m[3] * b.m[1] + a.m[4] * b.m[4] + a.m[5] * b.m[7],
+        a.m[3] * b.m[2] + a.m[4] * b.m[5] + a.m[5] * b.m[8],
+
+        a.m[6] * b.m[0] + a.m[7] * b.m[3] + a.m[8] * b.m[6],
+        a.m[6] * b.m[1] + a.m[7] * b.m[4] + a.m[8] * b.m[7],
+        a.m[6] * b.m[2] + a.m[7] * b.m[5] + a.m[8] * b.m[8]
+    );
+}
+
+inline Mat4 mm(Mat4 a, Mat4 b) {
+    return Mat4(
+        a.m[0] * b.m[0] + a.m[1] * b.m[4] + a.m[2] * b.m[8] + a.m[3] * b.m[12],
+        a.m[0] * b.m[1] + a.m[1] * b.m[5] + a.m[2] * b.m[9] + a.m[3] * b.m[13],
+        a.m[0] * b.m[2] + a.m[1] * b.m[6] + a.m[2] * b.m[10] + a.m[3] * b.m[14],
+        a.m[0] * b.m[3] + a.m[1] * b.m[7] + a.m[2] * b.m[11] + a.m[3] * b.m[15],
+
+        a.m[4] * b.m[0] + a.m[5] * b.m[4] + a.m[6] * b.m[8] + a.m[7] * b.m[12],
+        a.m[4] * b.m[1] + a.m[5] * b.m[5] + a.m[6] * b.m[9] + a.m[7] * b.m[13],
+        a.m[4] * b.m[2] + a.m[5] * b.m[6] + a.m[6] * b.m[10] + a.m[7] * b.m[14],
+        a.m[4] * b.m[3] + a.m[5] * b.m[7] + a.m[6] * b.m[11] + a.m[7] * b.m[15],
+
+        a.m[8] * b.m[0] + a.m[9] * b.m[4] + a.m[10] * b.m[8] + a.m[11] * b.m[12],
+        a.m[8] * b.m[1] + a.m[9] * b.m[5] + a.m[10] * b.m[9] + a.m[11] * b.m[13],
+        a.m[8] * b.m[2] + a.m[9] * b.m[6] + a.m[10] * b.m[10] + a.m[11] * b.m[14],
+        a.m[8] * b.m[3] + a.m[9] * b.m[7] + a.m[10] * b.m[11] + a.m[11] * b.m[15],
+
+        a.m[12] * b.m[0] + a.m[13] * b.m[4] + a.m[14] * b.m[8] + a.m[15] * b.m[12],
+        a.m[12] * b.m[1] + a.m[13] * b.m[5] + a.m[14] * b.m[9] + a.m[15] * b.m[13],
+        a.m[12] * b.m[2] + a.m[13] * b.m[6] + a.m[14] * b.m[10] + a.m[15] * b.m[14],
+        a.m[12] * b.m[3] + a.m[13] * b.m[7] + a.m[14] * b.m[11] + a.m[15] * b.m[15]
+    );
+}
+
+inline Vec2 mr(Mat2 m, Vec2 v) {
+    return Vec2(
+        m.m[0] * v.x + m.m[1] * v.y,
+        m.m[2] * v.x + m.m[3] * v.y
+    );
+}
+
+inline Vec2 mc(Mat2 m, Vec2 v) {
+    return Vec2(
+        m.m[0] * v.x + m.m[2] * v.y,
+        m.m[1] * v.x + m.m[3] * v.y
+    );
+}
+
+inline Vec3 mr(Mat3 m, Vec3 v) {
+    return Vec3(
+        m.m[0] * v.x + m.m[1] * v.y + m.m[2] * v.z,
+        m.m[3] * v.x + m.m[4] * v.y + m.m[5] * v.z,
+        m.m[6] * v.x + m.m[7] * v.y + m.m[8] * v.z
+    );
+}
+
+inline Vec3 mc(Mat3 m, Vec3 v) {
+    return Vec3(
+        m.m[0] * v.x + m.m[3] * v.y + m.m[6] * v.z,
+        m.m[1] * v.x + m.m[4] * v.y + m.m[7] * v.z,
+        m.m[2] * v.x + m.m[5] * v.y + m.m[8] * v.z
+    );
+}
+
+inline Vec4 mr(Mat4 m, Vec4 v) {
+    return Vec4(
+        m.m[0] * v.x + m.m[1] * v.y + m.m[2] * v.z + m.m[3] * v.w,
+        m.m[4] * v.x + m.m[5] * v.y + m.m[6] * v.z + m.m[7] * v.w,
+        m.m[8] * v.x + m.m[9] * v.y + m.m[10] * v.z + m.m[11] * v.w,
+        m.m[12] * v.x + m.m[13] * v.y + m.m[14] * v.z + m.m[15] * v.w
+    );
+}
+
+inline Vec4 mc(Mat4 m, Vec4 v) {
+    return Vec4(
+        m.m[0] * v.x + m.m[4] * v.y + m.m[8] * v.z + m.m[12] * v.w,
+        m.m[1] * v.x + m.m[5] * v.y + m.m[9] * v.z + m.m[13] * v.w,
+        m.m[2] * v.x + m.m[6] * v.y + m.m[10] * v.z + m.m[14] * v.w,
+        m.m[3] * v.x + m.m[7] * v.y + m.m[11] * v.z + m.m[15] * v.w
+    );
+}
+
+inline Mat2 tp(Mat2 m) {
+    return Mat2(
+        m.m[0], m.m[2],
+        m.m[1], m.m[3]
+    );
+}
+
+inline Mat3 tp(Mat3 m) {
+    return Mat3(
+        m.m[0], m.m[3], m.m[6],
+        m.m[1], m.m[4], m.m[7],
+        m.m[2], m.m[5], m.m[8]
+    );
+}
+
+inline Mat4 tp(Mat4 m) {
+    return Mat4(
+        m.m[0], m.m[4], m.m[8], m.m[12],
+        m.m[1], m.m[5], m.m[9], m.m[13],
+        m.m[2], m.m[6], m.m[10], m.m[14],
+        m.m[3], m.m[7], m.m[11], m.m[15]
+    );
+}
+
+inline Mat2 sym(Mat2 m) { return 0.5f * (m + tp(m)); }
+inline Mat3 sym(Mat3 m) { return 0.5f * (m + tp(m)); }
+inline Mat4 sym(Mat4 m) { return 0.5f * (m + tp(m)); }
+
+inline Mat2 skew(Mat2 m) { return 0.5f * (m - tp(m)); }
+inline Mat3 skew(Mat3 m) { return 0.5f * (m - tp(m)); }
+inline Mat4 skew(Mat4 m) { return 0.5f * (m - tp(m)); }
 
 struct Rect {
     Vec2 center;
