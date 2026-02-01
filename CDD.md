@@ -10,6 +10,7 @@
         - [x] Basic vector operators
         - [x] Element-wise vector functions
         - [x] Advanced vector functions
+        - [x] Vector Swizzling
         - [x] Matrix classes
         - [x] Basic matrix operators
         - [x] Element-wise matrix functions
@@ -18,10 +19,10 @@
         - [-] Rectangle operators (if any)
         - [-] Advanced rectangle manipulation functions (if any)
         - [x] Color class
-        - [x] Basic color operators
         - [x] Color space conversion
-        - [x] Element-wise color functions
-        - [ ] Advanced color operations
+        - [ ] Basic color operators
+        - [ ] Element-wise color functions
+        - [ ] Advanced gamma-correct color operations
     - [x] SDL window setup
     - [x] Debugging SDL setup
     - [x] Render lines
