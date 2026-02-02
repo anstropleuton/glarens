@@ -15,7 +15,6 @@
 #include <concepts>
 #include <cstdint>
 #include <cstdlib>
-#include <numbers>
 
 struct Vec2;
 struct Vec3;
@@ -1865,107 +1864,6 @@ inline Mat2 skew(Mat2 m) { return 0.5f * (m - tp(m)); }
 inline Mat3 skew(Mat3 m) { return 0.5f * (m - tp(m)); }
 inline Mat4 skew(Mat4 m) { return 0.5f * (m - tp(m)); }
 
-template <typename T>
-concept Vec =
-    std::same_as<T, Vec2> ||
-    std::same_as<T, Vec3> ||
-    std::same_as<T, Vec4>;
-
-template <typename T>
-concept Mat =
-    std::same_as<T, Mat2> ||
-    std::same_as<T, Mat3> ||
-    std::same_as<T, Mat4>;
-
-template <typename T>
-concept VecOrMat = Vec<T> || Mat<T>;
-
-// clang-format off
-template <VecOrMat T> T abs(T t) { return fore(t, [](float x) { return fabsf(x); }); }
-
-template <VecOrMat T> T sqrt(T t) { return fore(t, [](float x) { return sqrtf(x); }); }
-
-template <VecOrMat T> T cbrt(T t) { return fore(t, [](float x) { return cbrtf(x); }); }
-
-template <VecOrMat T> T exp(T t) { return fore(t, [](float x) { return expf(x); }); }
-
-template <VecOrMat T> T exp2(T t) { return fore(t, [](float x) { return exp2f(x); }); }
-
-template <VecOrMat T> T ln(T t) { return fore(t, [](float x) { return logf(x); }); }
-
-template <VecOrMat T> T log10(T t) { return fore(t, [](float x) { return log10f(x); }); }
-
-template <VecOrMat T> T log2(T t) { return fore(t, [](float x) { return log2f(x); }); }
-
-template <VecOrMat T> T sin(T t) { return fore(t, [](float x) { return sinf(x); }); }
-
-template <VecOrMat T> T cos(T t) { return fore(t, [](float x) { return cosf(x); }); }
-
-template <VecOrMat T> T tan(T t) { return fore(t, [](float x) { return tanf(x); }); }
-
-template <VecOrMat T> T asin(T t) { return fore(t, [](float x) { return asinf(x); }); }
-
-template <VecOrMat T> T acos(T t) { return fore(t, [](float x) { return acosf(x); }); }
-
-template <VecOrMat T> T atan(T t) { return fore(t, [](float x) { return atanf(x); }); }
-
-template <VecOrMat T> T sinh(T t) { return fore(t, [](float x) { return sinhf(x); }); }
-
-template <VecOrMat T> T cosh(T t) { return fore(t, [](float x) { return coshf(x); }); }
-
-template <VecOrMat T> T tanh(T t) { return fore(t, [](float x) { return tanhf(x); }); }
-
-template <VecOrMat T> T asinh(T t) { return fore(t, [](float x) { return asinhf(x); }); }
-
-template <VecOrMat T> T acosh(T t) { return fore(t, [](float x) { return acoshf(x); }); }
-
-template <VecOrMat T> T atanh(T t) { return fore(t, [](float x) { return atanhf(x); }); }
-
-template <VecOrMat T> T ceil(T t) { return fore(t, [](float x) { return ceilf(x); }); }
-
-template <VecOrMat T> T floor(T t) { return fore(t, [](float x) { return floorf(x); }); }
-
-template <VecOrMat T> T trunc(T t) { return fore(t, [](float x) { return truncf(x); }); }
-
-template <VecOrMat T> T round(T t) { return fore(t, [](float x) { return roundf(x); }); }
-
-template <VecOrMat T> T mod(T a, T b) { return fore(a, b, [](float x, float y) { return fmodf(x, y); }); }
-template <VecOrMat T> T mod(T a, float b) { return fore(a, b, [](float x, float y) { return fmodf(x, y); }); }
-template <VecOrMat T> T mod(float a, T b) { return fore(a, b, [](float x, float y) { return fmodf(x, y); }); }
-
-template <VecOrMat T> T min(T a, T b) { return fore(a, b, [](float x, float y) { return fminf(x, y); }); }
-template <VecOrMat T> T min(T a, float b) { return fore(a, b, [](float x, float y) { return fminf(x, y); }); }
-template <VecOrMat T> T min(float a, T b) { return fore(a, b, [](float x, float y) { return fminf(x, y); }); }
-
-template <VecOrMat T> T max(T a, T b) { return fore(a, b, [](float x, float y) { return fmaxf(x, y); }); }
-template <VecOrMat T> T max(T a, float b) { return fore(a, b, [](float x, float y) { return fmaxf(x, y); }); }
-template <VecOrMat T> T max(float a, T b) { return fore(a, b, [](float x, float y) { return fmaxf(x, y); }); }
-
-template <VecOrMat T> T pow(T a, T b) { return fore(a, b, [](float x, float y) { return powf(x, y); }); }
-template <VecOrMat T> T pow(T a, float b) { return fore(a, b, [](float x, float y) { return powf(x, y); }); }
-template <VecOrMat T> T pow(float a, T b) { return fore(a, b, [](float x, float y) { return powf(x, y); }); }
-
-template <VecOrMat T> T log(T a, T b) { return fore(a, b, [](float x, float y) { return logf(x) / logf(y); }); }
-template <VecOrMat T> T log(T a, float b) { return fore(a, b, [](float x, float y) { return logf(x) / logf(y); }); }
-template <VecOrMat T> T log(float a, T b) { return fore(a, b, [](float x, float y) { return logf(x) / logf(y); }); }
-
-template <VecOrMat T> T atan2(T a, T b) { return fore(a, b, [](float x, float y) { return atan2f(x, y); }); }
-template <VecOrMat T> T atan2(T a, float b) { return fore(a, b, [](float x, float y) { return atan2f(x, y); }); }
-template <VecOrMat T> T atan2(float a, T b) { return fore(a, b, [](float x, float y) { return atan2f(x, y); }); }
-
-template <VecOrMat T> T clamp(T a, T l, T u) { return min(max(a, l), u); }
-template <VecOrMat T> T clamp(T a, T l, float u) { return min(max(a, l), u); }
-template <VecOrMat T> T clamp(T a, float l, T u) { return min(max(a, l), u); }
-template <VecOrMat T> T clamp(T a, float l, float u) { return min(max(a, l), u); }
-template <VecOrMat T> T clamp(float a, T l, T u) { return min(max(a, l), u); }
-template <VecOrMat T> T clamp(float a, T l, float u) { return min(max(a, l), u); }
-template <VecOrMat T> T clamp(float a, float l, T u) { return min(fmax(a, l), u); }
-
-template <VecOrMat T> T lerp(T a, T b, float t) { return a * (1.0f - t) + b * t; }
-template <VecOrMat T> T lerp(T a, float b, float t) { return a * (1.0f - t) + b * t; }
-template <VecOrMat T> T lerp(float a, T b, float t) { return a * (1.0f - t) + b * t; }
-// clang-format on
-
 struct Rect {
     Vec2 center;
     Vec2 extent;
@@ -2091,113 +1989,46 @@ struct Color {
         return s <= 0.04045f ? s / 12.92f : pow((s + 0.055f) / 1.055f, 2.4f);
     }
 
-    static Color from_linear(Vec4 c) { return Color(encode(c.x), encode(c.y), encode(c.z), quant(c.w)); }
+    static Color from_linear(Vec4 c);
 
-    static Color from_linear(Vec3 c) { return from_linear(Vec4(c, 1.0f)); }
+    static Color from_linear(Vec3 c);
 
-    Vec4 to_linear() const { return Vec4(decode(r), decode(g), decode(b), norm(a)); }
+    Vec4 to_linear() const;
 
-    static Color from_norm(Vec4 c) { return Color(quant(c.x), quant(c.y), quant(c.z), quant(c.w)); }
+    static Color from_norm(Vec4 c);
 
-    static Color from_norm(Vec3 c) { return from_norm(Vec4(c, 1.0f)); }
+    static Color from_norm(Vec3 c);
 
-    Vec4 to_norm() const { return Vec4(norm(r), norm(g), norm(b), norm(a)); }
+    Vec4 to_norm() const;
 
-    static Color from_hsv(Vec4 h) {
-        Vec3 k   = mod(h.x * 6.0f + Vec3(0.0f, 4.0f, 2.0f), 6.0f);
-        Vec3 f   = clamp(min(k, 4.0f - k), 0.0f, 1.0f);
-        Vec3 rgb = h.z * lerp(Vec3(1.0f), f, h.y);
-        return Color(quant(rgb.x), quant(rgb.y), quant(rgb.z), quant(h.w));
-    }
-    static Color from_hsv(Vec3 h) { return from_hsv(Vec4(h.x, h.y, h.z, 1.0f)); }
+    static Color from_hsv(Vec4 h);
+    static Color from_hsv(Vec3 h);
 
-    Vec4 to_hsv() const {
-        Vec4  c  = to_norm();
-        float mx = fmax(c.x, fmax(c.y, c.z));
-        float mn = fmin(c.x, fmin(c.y, c.z));
-        float d  = mx - mn;
-        float h  = d == 0.0f ? 0.0f : (mx == c.x ? fmod((c.y - c.z) / d, 6.0f) : (mx == c.y ? (c.z - c.x) / d + 2.0f : (c.x - c.y) / d + 4.0f)) / 6.0f;
-        h += h < 0.0f ? 1.0f : 0.0f;
-        float s = mx == 0.0f ? 0.0f : d / mx;
-        return Vec4(h, s, mx, c.w);
-    }
+    Vec4 to_hsv() const;
 
-    static Color from_hsl(Vec4 h) {
-        float l = h.z, s = h.y;
-        float v  = l + s * fmin(l, 1.0f - l);
-        float sv = v == 0.0f ? 0.0f : 2.0f * (1.0f - l / v);
-        return from_hsv(Vec4(h.x, sv, v, h.w));
-    }
+    static Color from_hsl(Vec4 h);
 
-    static Color from_hsl(Vec3 h) { return from_hsl(Vec4(h.x, h.y, h.z, 1.0f)); }
+    static Color from_hsl(Vec3 h);
 
-    Vec4 to_hsl() const {
-        Vec4  c  = to_norm();
-        float mx = fmax(c.x, fmax(c.y, c.z));
-        float mn = fmin(c.x, fmin(c.y, c.z));
-        float d  = mx - mn;
-        float l  = (mx + mn) * 0.5f;
-        float h  = 0.0f;
-        h        = d == 0.0f ? 0.0f : (mx == c.x ? (c.y - c.z) / d + (c.y < c.z ? 6.0f : 0.0f) : (mx == c.y ? (c.z - c.x) / d + 2.0f : (c.x - c.y) / d + 4.0f)) / 6.0f;
-        h += h < 0.0f ? 1.0f : 0.0f;
-        float s = d == 0.0f ? 0.0f : (l > 0.5f ? d / (2.0f - mx - mn) : d / (mx + mn));
-        return Vec4(h, s, l, c.w);
-    }
+    Vec4 to_hsl() const;
 
-    static Color from_hwb(Vec4 h) {
-        Vec3  k   = mod(h.x * 6.0f + Vec3(0.0f, 4.0f, 2.0f), 6.0f);
-        Vec3  f   = clamp(min(k, 4.0f - k), 0.0f, 1.0f);
-        Vec3  rgb = lerp(Vec3(1.0f), f, 1.0f); // base hue at v=1,s=1
-        float w = h.y, bl = h.z;
-        float q = quant(w / (w + bl));
-        Vec3  r = rgb * (1.0f - w - bl) + Vec3(w);
-        return (w + bl >= 1.0f) ? Color(q, q, q, quant(h.w))
-                                : Color(quant(r.x), quant(r.y), quant(r.z), quant(h.w));
-    }
+    static Color from_hwb(Vec4 h);
 
-    static Color from_hwb(Vec3 h) { return from_hwb(Vec4(h.x, h.y, h.z, 1.0f)); }
+    static Color from_hwb(Vec3 h);
 
-    Vec4 to_hwb() const {
-        Vec4  c  = to_norm();
-        float mx = fmax(c.x, fmax(c.y, c.z));
-        float mn = fmin(c.x, fmin(c.y, c.z));
-        return Vec4(to_hsv().x, mn, 1.0f - mx, c.w);
-    }
+    Vec4 to_hwb() const;
 
-    static Color from_oklab(Vec4 v) {
-        Vec3 lab = Vec3(v.x, v.y, v.z);
-        Vec3 t   = Vec3(lab.x, lab.x, lab.x) + Vec3(0.3963377774f, -0.1055613458f, -0.0894841775f) * lab.y + Vec3(0.2158037573f, -0.0638541728f, -1.2914855480f) * lab.z;
-        Vec3 c   = t * t * t;
-        Vec3 rgb = Vec3(4.0767416621f, -1.2684380046f, -0.0041960863f) * c.x + Vec3(-3.3077115913f, 2.6097574011f, -0.7034186147f) * c.y + Vec3(0.2309699292f, -0.3413193965f, 1.7076147010f) * c.z;
-        return Color(encode(rgb.x), encode(rgb.y), encode(rgb.z), quant(v.w));
-    }
+    static Color from_oklab(Vec4 v);
 
-    static Color from_oklab(Vec3 v) { return from_oklab(Vec4(v.x, v.y, v.z, 1.0f)); }
+    static Color from_oklab(Vec3 v);
 
-    Vec4 to_oklab() const {
-        Vec4  L   = to_linear();
-        Vec3  lms = Vec3(0.4122214708f, 0.2119034982f, 0.0883024619f) * L.x + Vec3(0.5363325363f, 0.6806995451f, 0.2817188376f) * L.y + Vec3(0.0514459929f, 0.1073969566f, 0.6299787005f) * L.z;
-        Vec3  c   = cbrt(lms);
-        float L_  = 0.2104542553f * c.x + 0.7936177850f * c.y - 0.0040720468f * c.z;
-        float a_  = 1.9779984951f * c.x - 2.4285922050f * c.y + 0.4505937099f * c.z;
-        float b_  = 0.0259040371f * c.x + 0.7827717662f * c.y - 0.8086757660f * c.z;
-        return Vec4(L_, a_, b_, L.w);
-    }
+    Vec4 to_oklab() const;
 
-    static Color from_oklch(Vec4 v) {
-        float h = v.z * 2.0f * M_PI;
-        return from_oklab(Vec4(v.x, v.y * cos(h), v.y * sin(h), v.w));
-    }
+    static Color from_oklch(Vec4 v);
 
-    static Color from_oklch(Vec3 v) { return from_oklch(Vec4(v.x, v.y, v.z, 1.0f)); }
+    static Color from_oklch(Vec3 v);
 
-    Vec4 to_oklch() const {
-        Vec4  lab = to_oklab();
-        float C   = sqrt(lab.y * lab.y + lab.z * lab.z);
-        float h   = atan2(lab.z, lab.y);
-        h += h < 0.0f ? 2.0f * M_PI : 0.0f;
-        return Vec4(lab.x, C, h / (2.0f * M_PI), lab.w);
-    }
+    Vec4 to_oklch() const;
 
     operator std::uint32_t() const { return (r << 24) + (g << 16) + (b << 8) + a; }
 };
@@ -2233,3 +2064,329 @@ inline Color operator+(float a, Color b) { return Color::from_linear(Vec4(a, a, 
 inline Color operator-(float a, Color b) { return Color::from_linear(Vec4(a, a, a, 0.0f) - b.to_linear()); }
 inline Color operator*(float a, Color b) { return Color::from_linear(Vec4(a, a, a, 1.0f) * b.to_linear()); }
 inline Color operator/(float a, Color b) { return Color::from_linear(Vec4(a, a, a, 1.0f) / b.to_linear()); }
+
+template <typename Fn> Color fore(Color c, Fn fn) { return Color(Color::encode(fn(Color::decode(c.r))), Color::encode(fn(Color::decode(c.g))), Color::encode(fn(Color::decode(c.b))), Color::encode(fn(Color::decode(c.a)))); }
+
+template <typename Fn> Color fore(Color a, Color b, Fn fn) { return Color(Color::encode(fn(Color::decode(a.r), Color::decode(b.r))), Color::encode(fn(Color::decode(a.g), Color::decode(b.g))), Color::encode(fn(Color::decode(a.b), Color::decode(b.b))), Color::encode(fn(Color::decode(a.a), Color::decode(b.a)))); }
+template <typename Fn> Color fore(Color a, Vec4 b, Fn fn) { return Color(Color::encode(fn(Color::decode(a.r), b.x)), Color::encode(fn(Color::decode(a.g), b.y)), Color::encode(fn(Color::decode(a.b), b.z)), Color::encode(fn(Color::decode(a.a), b.w))); }
+template <typename Fn> Color fore(Vec4 a, Color b, Fn fn) { return Color(Color::encode(fn(a.x, Color::decode(b.r))), Color::encode(fn(a.y, Color::decode(b.g))), Color::encode(fn(a.z, Color::decode(b.b))), Color::encode(fn(a.w, Color::decode(b.a)))); }
+template <typename Fn> Color fore(Color a, float b, Fn fn) { return Color(Color::encode(fn(Color::decode(a.r), b)), Color::encode(fn(Color::decode(a.g), b)), Color::encode(fn(Color::decode(a.b), b)), Color::encode(fn(Color::decode(a.a), b))); }
+template <typename Fn> Color fore(float a, Color b, Fn fn) { return Color(Color::encode(fn(a, Color::decode(b.r))), Color::encode(fn(a, Color::decode(b.g))), Color::encode(fn(a, Color::decode(b.b))), Color::encode(fn(a, Color::decode(b.a)))); }
+template <typename Fn> Color fore(Color a, Vec3 b, Fn fn) { return Color(Color::encode(fn(Color::decode(a.r), b.x)), Color::encode(fn(Color::decode(a.g), b.y)), Color::encode(fn(Color::decode(a.b), b.z)), a.a); }
+template <typename Fn> Color fore(Vec3 a, Color b, Fn fn) { return Color(Color::encode(fn(a.x, Color::decode(b.r))), Color::encode(fn(a.y, Color::decode(b.g))), Color::encode(fn(a.z, Color::decode(b.b))), b.a); }
+
+template <typename T>
+concept Fore = std::same_as<T, Vec2> ||
+               std::same_as<T, Vec3> ||
+               std::same_as<T, Vec4> ||
+               std::same_as<T, Mat2> ||
+               std::same_as<T, Mat3> ||
+               std::same_as<T, Mat4> ||
+               std::same_as<T, Color>;
+
+// clang-format off
+template <Fore T> T abs(T t) { return fore(t, [](float x) { return fabsf(x); }); }
+
+template <Fore T> T sqrt(T t) { return fore(t, [](float x) { return sqrtf(x); }); }
+
+template <Fore T> T cbrt(T t) { return fore(t, [](float x) { return cbrtf(x); }); }
+
+template <Fore T> T exp(T t) { return fore(t, [](float x) { return expf(x); }); }
+
+template <Fore T> T exp2(T t) { return fore(t, [](float x) { return exp2f(x); }); }
+
+template <Fore T> T ln(T t) { return fore(t, [](float x) { return logf(x); }); }
+
+template <Fore T> T log10(T t) { return fore(t, [](float x) { return log10f(x); }); }
+
+template <Fore T> T log2(T t) { return fore(t, [](float x) { return log2f(x); }); }
+
+template <Fore T> T sin(T t) { return fore(t, [](float x) { return sinf(x); }); }
+
+template <Fore T> T cos(T t) { return fore(t, [](float x) { return cosf(x); }); }
+
+template <Fore T> T tan(T t) { return fore(t, [](float x) { return tanf(x); }); }
+
+template <Fore T> T asin(T t) { return fore(t, [](float x) { return asinf(x); }); }
+
+template <Fore T> T acos(T t) { return fore(t, [](float x) { return acosf(x); }); }
+
+template <Fore T> T atan(T t) { return fore(t, [](float x) { return atanf(x); }); }
+
+template <Fore T> T sinh(T t) { return fore(t, [](float x) { return sinhf(x); }); }
+
+template <Fore T> T cosh(T t) { return fore(t, [](float x) { return coshf(x); }); }
+
+template <Fore T> T tanh(T t) { return fore(t, [](float x) { return tanhf(x); }); }
+
+template <Fore T> T asinh(T t) { return fore(t, [](float x) { return asinhf(x); }); }
+
+template <Fore T> T acosh(T t) { return fore(t, [](float x) { return acoshf(x); }); }
+
+template <Fore T> T atanh(T t) { return fore(t, [](float x) { return atanhf(x); }); }
+
+template <Fore T> T ceil(T t) { return fore(t, [](float x) { return ceilf(x); }); }
+
+template <Fore T> T floor(T t) { return fore(t, [](float x) { return floorf(x); }); }
+
+template <Fore T> T trunc(T t) { return fore(t, [](float x) { return truncf(x); }); }
+
+template <Fore T> T round(T t) { return fore(t, [](float x) { return roundf(x); }); }
+
+template <Fore T> T mod(T a, T b) { return fore(a, b, [](float x, float y) { return fmodf(x, y); }); }
+template <Fore T> T mod(T a, float b) { return fore(a, b, [](float x, float y) { return fmodf(x, y); }); }
+template <Fore T> T mod(float a, T b) { return fore(a, b, [](float x, float y) { return fmodf(x, y); }); }
+
+template <Fore T> T min(T a, T b) { return fore(a, b, [](float x, float y) { return fminf(x, y); }); }
+template <Fore T> T min(T a, float b) { return fore(a, b, [](float x, float y) { return fminf(x, y); }); }
+template <Fore T> T min(float a, T b) { return fore(a, b, [](float x, float y) { return fminf(x, y); }); }
+
+template <Fore T> T max(T a, T b) { return fore(a, b, [](float x, float y) { return fmaxf(x, y); }); }
+template <Fore T> T max(T a, float b) { return fore(a, b, [](float x, float y) { return fmaxf(x, y); }); }
+template <Fore T> T max(float a, T b) { return fore(a, b, [](float x, float y) { return fmaxf(x, y); }); }
+
+template <Fore T> T pow(T a, T b) { return fore(a, b, [](float x, float y) { return powf(x, y); }); }
+template <Fore T> T pow(T a, float b) { return fore(a, b, [](float x, float y) { return powf(x, y); }); }
+template <Fore T> T pow(float a, T b) { return fore(a, b, [](float x, float y) { return powf(x, y); }); }
+
+template <Fore T> T log(T a, T b) { return fore(a, b, [](float x, float y) { return logf(x) / logf(y); }); }
+template <Fore T> T log(T a, float b) { return fore(a, b, [](float x, float y) { return logf(x) / logf(y); }); }
+template <Fore T> T log(float a, T b) { return fore(a, b, [](float x, float y) { return logf(x) / logf(y); }); }
+
+template <Fore T> T atan2(T a, T b) { return fore(a, b, [](float x, float y) { return atan2f(x, y); }); }
+template <Fore T> T atan2(T a, float b) { return fore(a, b, [](float x, float y) { return atan2f(x, y); }); }
+template <Fore T> T atan2(float a, T b) { return fore(a, b, [](float x, float y) { return atan2f(x, y); }); }
+
+template <Fore T> T clamp(T a, T l, T u) { return min(max(a, l), u); }
+template <Fore T> T clamp(T a, T l, float u) { return min(max(a, l), u); }
+template <Fore T> T clamp(T a, float l, T u) { return min(max(a, l), u); }
+template <Fore T> T clamp(T a, float l, float u) { return min(max(a, l), u); }
+template <Fore T> T clamp(float a, T l, T u) { return min(max(a, l), u); }
+template <Fore T> T clamp(float a, T l, float u) { return min(max(a, l), u); }
+template <Fore T> T clamp(float a, float l, T u) { return min(fmax(a, l), u); }
+template <Fore T> T clamp01(T a) { return min(max(a, 0.0f), 1.0f); }
+
+template <Fore T> T lerp(T a, T b, float t) { return a * (1.0f - t) + b * t; }
+template <Fore T> T lerp(T a, float b, float t) { return a * (1.0f - t) + b * t; }
+template <Fore T> T lerp(float a, T b, float t) { return a * (1.0f - t) + b * t; }
+// clang-format on
+
+inline Color Color::from_linear(Vec4 c) { return Color(encode(c.x), encode(c.y), encode(c.z), quant(c.w)); }
+
+inline Color Color::from_linear(Vec3 c) { return from_linear(Vec4(c, 1.0f)); }
+
+inline Vec4 Color::to_linear() const { return Vec4(decode(r), decode(g), decode(b), norm(a)); }
+
+inline Color Color::from_norm(Vec4 c) { return Color(quant(c.x), quant(c.y), quant(c.z), quant(c.w)); }
+
+inline Color Color::from_norm(Vec3 c) { return from_norm(Vec4(c, 1.0f)); }
+
+inline Vec4 Color::to_norm() const { return Vec4(norm(r), norm(g), norm(b), norm(a)); }
+
+inline Color Color::from_hsv(Vec4 h) {
+    Vec3 k   = mod(h.x * 6.0f + Vec3(0.0f, 4.0f, 2.0f), 6.0f);
+    Vec3 f   = clamp(min(k, 4.0f - k), 0.0f, 1.0f);
+    Vec3 rgb = h.z * lerp(Vec3(1.0f), f, h.y);
+    return Color(quant(rgb.x), quant(rgb.y), quant(rgb.z), quant(h.w));
+}
+
+inline Color Color::from_hsv(Vec3 h) { return from_hsv(Vec4(h.x, h.y, h.z, 1.0f)); }
+
+inline Vec4 Color::to_hsv() const {
+    Vec4  c  = to_norm();
+    float mx = fmax(c.x, fmax(c.y, c.z));
+    float mn = fmin(c.x, fmin(c.y, c.z));
+    float d  = mx - mn;
+    float h  = d == 0.0f ? 0.0f : (mx == c.x ? fmod((c.y - c.z) / d, 6.0f) : (mx == c.y ? (c.z - c.x) / d + 2.0f : (c.x - c.y) / d + 4.0f)) / 6.0f;
+    h += h < 0.0f ? 1.0f : 0.0f;
+    float s = mx == 0.0f ? 0.0f : d / mx;
+    return Vec4(h, s, mx, c.w);
+}
+
+inline Color Color::from_hsl(Vec4 h) {
+    float l = h.z, s = h.y;
+    float v  = l + s * fmin(l, 1.0f - l);
+    float sv = v == 0.0f ? 0.0f : 2.0f * (1.0f - l / v);
+    return from_hsv(Vec4(h.x, sv, v, h.w));
+}
+
+inline Color Color::from_hsl(Vec3 h) { return from_hsl(Vec4(h.x, h.y, h.z, 1.0f)); }
+
+inline Vec4 Color::to_hsl() const {
+    Vec4  c  = to_norm();
+    float mx = fmax(c.x, fmax(c.y, c.z));
+    float mn = fmin(c.x, fmin(c.y, c.z));
+    float d  = mx - mn;
+    float l  = (mx + mn) * 0.5f;
+    float h  = 0.0f;
+    h        = d == 0.0f ? 0.0f : (mx == c.x ? (c.y - c.z) / d + (c.y < c.z ? 6.0f : 0.0f) : (mx == c.y ? (c.z - c.x) / d + 2.0f : (c.x - c.y) / d + 4.0f)) / 6.0f;
+    h += h < 0.0f ? 1.0f : 0.0f;
+    float s = d == 0.0f ? 0.0f : (l > 0.5f ? d / (2.0f - mx - mn) : d / (mx + mn));
+    return Vec4(h, s, l, c.w);
+}
+
+inline Color Color::from_hwb(Vec4 h) {
+    Vec3  k   = mod(h.x * 6.0f + Vec3(0.0f, 4.0f, 2.0f), 6.0f);
+    Vec3  f   = clamp(min(k, 4.0f - k), 0.0f, 1.0f);
+    Vec3  rgb = lerp(Vec3(1.0f), f, 1.0f); // base hue at v=1,s=1
+    float w = h.y, bl = h.z;
+    float q = quant(w / (w + bl));
+    Vec3  r = rgb * (1.0f - w - bl) + Vec3(w);
+    return (w + bl >= 1.0f) ? Color(q, q, q, quant(h.w))
+                            : Color(quant(r.x), quant(r.y), quant(r.z), quant(h.w));
+}
+
+inline Color Color::from_hwb(Vec3 h) { return from_hwb(Vec4(h.x, h.y, h.z, 1.0f)); }
+
+inline Vec4 Color::to_hwb() const {
+    Vec4  c  = to_norm();
+    float mx = fmax(c.x, fmax(c.y, c.z));
+    float mn = fmin(c.x, fmin(c.y, c.z));
+    return Vec4(to_hsv().x, mn, 1.0f - mx, c.w);
+}
+
+inline Color Color::from_oklab(Vec4 v) {
+    Vec3 lab = Vec3(v.x, v.y, v.z);
+    Vec3 t   = Vec3(lab.x, lab.x, lab.x) + Vec3(0.3963377774f, -0.1055613458f, -0.0894841775f) * lab.y + Vec3(0.2158037573f, -0.0638541728f, -1.2914855480f) * lab.z;
+    Vec3 c   = t * t * t;
+    Vec3 rgb = Vec3(4.0767416621f, -1.2684380046f, -0.0041960863f) * c.x + Vec3(-3.3077115913f, 2.6097574011f, -0.7034186147f) * c.y + Vec3(0.2309699292f, -0.3413193965f, 1.7076147010f) * c.z;
+    return Color(encode(rgb.x), encode(rgb.y), encode(rgb.z), quant(v.w));
+}
+
+inline Color Color::from_oklab(Vec3 v) { return from_oklab(Vec4(v.x, v.y, v.z, 1.0f)); }
+
+inline Vec4 Color::to_oklab() const {
+    Vec4  L   = to_linear();
+    Vec3  lms = Vec3(0.4122214708f, 0.2119034982f, 0.0883024619f) * L.x + Vec3(0.5363325363f, 0.6806995451f, 0.2817188376f) * L.y + Vec3(0.0514459929f, 0.1073969566f, 0.6299787005f) * L.z;
+    Vec3  c   = cbrt(lms);
+    float L_  = 0.2104542553f * c.x + 0.7936177850f * c.y - 0.0040720468f * c.z;
+    float a_  = 1.9779984951f * c.x - 2.4285922050f * c.y + 0.4505937099f * c.z;
+    float b_  = 0.0259040371f * c.x + 0.7827717662f * c.y - 0.8086757660f * c.z;
+    return Vec4(L_, a_, b_, L.w);
+}
+
+inline Color Color::from_oklch(Vec4 v) {
+    float h = v.z * 2.0f * M_PI;
+    return from_oklab(Vec4(v.x, v.y * cos(h), v.y * sin(h), v.w));
+}
+
+inline Color Color::from_oklch(Vec3 v) { return from_oklch(Vec4(v.x, v.y, v.z, 1.0f)); }
+
+inline Vec4 Color::to_oklch() const {
+    Vec4  lab = to_oklab();
+    float C   = sqrt(lab.y * lab.y + lab.z * lab.z);
+    float h   = atan2(lab.z, lab.y);
+    h += h < 0.0f ? 2.0f * M_PI : 0.0f;
+    return Vec4(lab.x, C, h / (2.0f * M_PI), lab.w);
+}
+
+inline Vec4 premul(Color c) {
+    Vec4 lin = c.to_linear();
+    return Vec4(lin.x * lin.w, lin.y * lin.w, lin.z * lin.w, lin.w);
+}
+
+inline Color prediv(Vec4 c) { return Color::from_linear(Vec4(c.w == 0.0f ? 0.0f : c.x / c.w, c.w == 0.0f ? 0.0f : c.y / c.w, c.w == 0.0f ? 0.0f : c.z / c.w, c.w)); }
+
+inline float luminance(Color c) {
+    Vec4 lin = c.to_linear();
+    return 0.2126f * lin.x + 0.7152f * lin.y + 0.0722f * lin.z;
+}
+
+inline float brightness(Color c) { return fmax(Color::norm(c.r), fmax(Color::norm(c.g), Color::norm(c.b))); }
+
+inline Color brightness(Color c, float v) {
+    Vec4  n = c.to_norm();
+    float b = fmax(n.x, fmax(n.y, n.z));
+    return b == 0.0f ? Color(Color::quant(v), Color::quant(v), Color::quant(v), Color::quant(n.w)) : Color::from_norm(Vec4(n.x * (v / b), n.y * (v / b), n.z * (v / b), n.w));
+}
+
+inline Color saturation(Color c, float v) {
+    Vec4 h = c.to_hsv();
+    return Color::from_hsv(Vec4(h.x, v, h.z, h.w));
+}
+
+inline Color hue(Color c, float v) {
+    Vec4  h    = c.to_hsv();
+    float newH = fmodf(h.x + v, 1.0f);
+    newH += newH < 0.0f ? 1.0f : 0.0f;
+    return Color::from_hsv(Vec4(newH, h.y, h.z, h.w));
+}
+
+inline Color contrast(Color c, float v) {
+    Vec4 n = c.to_norm();
+    return Color::from_norm(Vec4((n.x - 0.5f) * v + 0.5f, (n.y - 0.5f) * v + 0.5f, (n.z - 0.5f) * v + 0.5f, n.w));
+}
+
+// Linear blending
+
+inline Color lb_screen(Color a, Color b) {
+    return fore(a, b, [](float x, float y) { return 1.0f - (1.0f - x) * (1.0f - y); });
+}
+
+inline Color lb_multiply(Color a, Color b) {
+    return fore(a, b, [](float x, float y) { return x * y; });
+}
+
+inline Color lb_overlay(Color a, Color b) {
+    return fore(a, b, [](float x, float y) { return x < 0.5f ? 2.0f * x * y : 1.0f - 2.0f * (1.0f - x) * (1.0f - y); });
+}
+
+inline Color lb_soft_light(Color a, Color b) {
+    return fore(a, b, [](float x, float y) { return (1.0f - 2.0f * y) * x * x + 2.0f * y * x; });
+}
+
+inline Color lb_hard_light(Color a, Color b) {
+    return fore(a, b, [](float x, float y) { return y < 0.5f ? 2.0f * x * y : 1.0f - 2.0f * (1.0f - x) * (1.0f - y); });
+}
+
+inline Color lb_difference(Color a, Color b) {
+    return fore(a, b, [](float x, float y) { return fabsf(x - y); });
+}
+
+inline Color lb_exclusion(Color a, Color b) {
+    return fore(a, b, [](float x, float y) { return x + y - 2.0f * x * y; });
+}
+
+// Gamma blending
+
+inline Color gb_screen(Color a, Color b) {
+    Vec4 A = a.to_norm();
+    Vec4 B = b.to_norm();
+    return Color::from_norm(Vec4(1.0f - (1.0f - A.x) * (1.0f - B.x), 1.0f - (1.0f - A.y) * (1.0f - B.y), 1.0f - (1.0f - A.z) * (1.0f - B.z), A.w + B.w * (1.0f - A.w)));
+}
+
+inline Color gb_multiply(Color a, Color b) {
+    Vec4 A = a.to_norm();
+    Vec4 B = b.to_norm();
+    return Color::from_norm(Vec4(A.x * B.x, A.y * B.y, A.z * B.z, A.w + B.w * (1.0f - A.w)));
+}
+
+inline Color gb_overlay(Color a, Color b) {
+    Vec4 A = a.to_norm();
+    Vec4 B = b.to_norm();
+    return Color::from_norm(Vec4(A.x < 0.5f ? 2.0f * A.x * B.x : 1.0f - 2.0f * (1.0f - A.x) * (1.0f - B.x), A.y < 0.5f ? 2.0f * A.y * B.y : 1.0f - 2.0f * (1.0f - A.y) * (1.0f - B.y), A.z < 0.5f ? 2.0f * A.z * B.z : 1.0f - 2.0f * (1.0f - A.z) * (1.0f - B.z), A.w + B.w * (1.0f - A.w)));
+}
+
+inline Color gb_soft_light(Color a, Color b) {
+    Vec4 A = a.to_norm();
+    Vec4 B = b.to_norm();
+    return Color::from_norm(Vec4((1.0f - 2.0f * B.x) * A.x * A.x + 2.0f * B.x * A.x, (1.0f - 2.0f * B.y) * A.y * A.y + 2.0f * B.y * A.y, (1.0f - 2.0f * B.z) * A.z * A.z + 2.0f * B.z * A.z, A.w + B.w * (1.0f - A.w)));
+}
+
+inline Color gb_hard_light(Color a, Color b) {
+    Vec4 A = a.to_norm();
+    Vec4 B = b.to_norm();
+    return Color::from_norm(Vec4(B.x < 0.5f ? 2.0f * A.x * B.x : 1.0f - 2.0f * (1.0f - A.x) * (1.0f - B.x), B.y < 0.5f ? 2.0f * A.y * B.y : 1.0f - 2.0f * (1.0f - A.y) * (1.0f - B.y), B.z < 0.5f ? 2.0f * A.z * B.z : 1.0f - 2.0f * (1.0f - A.z) * (1.0f - B.z), A.w + B.w * (1.0f - A.w)));
+}
+
+inline Color gb_difference(Color a, Color b) {
+    Vec4 A = a.to_norm();
+    Vec4 B = b.to_norm();
+    return Color::from_norm(Vec4(fabsf(A.x - B.x), fabsf(A.y - B.y), fabsf(A.z - B.z), A.w + B.w * (1.0f - A.w)));
+}
+
+inline Color gb_exclusion(Color a, Color b) {
+    Vec4 A = a.to_norm();
+    Vec4 B = b.to_norm();
+    return Color::from_norm(Vec4(A.x + B.x - 2.0f * A.x * B.x, A.y + B.y - 2.0f * A.y * B.y, A.z + B.z - 2.0f * A.z * B.z, A.w + B.w * (1.0f - A.w)));
+}

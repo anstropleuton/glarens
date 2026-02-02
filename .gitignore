@@ -1,8 +1,7 @@
 # Build files
 build
 
-# clangd files
+# Editor files
 .cache
-
-# VS Code files
 .vscode
+.zed

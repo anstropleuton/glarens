@@ -1,58 +1,58 @@
 ## Checkpoints
 
 - [ ] Fundamentals
-    - [x] CMake setup
-    - [x] Clang LSP setup
-    - [x] Dummy files
-    - [x] Property system (yoinked from my other project)
-    - [x] Math framework (also yoinked from my other project)
-        - [x] Vector classes
-        - [x] Basic vector operators
-        - [x] Element-wise vector functions
-        - [x] Advanced vector functions
-        - [x] Vector Swizzling
-        - [x] Matrix classes
-        - [x] Basic matrix operators
-        - [x] Element-wise matrix functions
-        - [x] Advanced matrix functions
-        - [x] Rectangle class
-        - [-] Rectangle operators (if any)
-        - [-] Advanced rectangle manipulation functions (if any)
-        - [x] Color class
-        - [x] Color space conversion
-        - [ ] Basic color operators
-        - [ ] Element-wise color functions
-        - [ ] Advanced gamma-correct color operations
-    - [x] SDL window setup
-    - [x] Debugging SDL setup
-    - [x] Render lines
-    - [x] Get input
-    - [ ] Compile shaders
-        - [ ] Precompile shaders using SDL_shadercross CLI
-        - [ ] Livecompile shaders using SDL_shadercross API
-    - [ ] Render shaders
-        - [ ] Load SPIRV, MSL or DXIL depending on backend
-        - [ ] Set shader uniforms
-        - [ ] Display shader
+  - [x] CMake setup
+  - [x] Clang LSP setup
+  - [x] Dummy files
+  - [x] Property system (yoinked from my other project)
+  - [x] Math framework (also yoinked from my other project)
+    - [x] Vector classes
+    - [x] Basic vector operators
+    - [x] Element-wise vector functions
+    - [x] Advanced vector functions
+    - [x] Vector Swizzling
+    - [x] Matrix classes
+    - [x] Basic matrix operators
+    - [x] Element-wise matrix functions
+    - [x] Advanced matrix functions
+    - [x] Rectangle class
+    - [ ] Rectangle operators (if any)
+    - [ ] Advanced rectangle manipulation functions (if any)
+    - [x] Color class
+    - [x] Color space conversion
+    - [x] Basic color operators
+    - [x] Element-wise color functions
+    - [x] Advanced gamma-correct color operations
+  - [x] SDL window setup
+  - [x] Debugging SDL setup
+  - [x] Render lines
+  - [x] Get input
+  - [ ] Compile shaders
+    - [ ] Precompile shaders using SDL_shadercross CLI
+    - [ ] Livecompile shaders using SDL_shadercross API
+  - [ ] Render shaders
+    - [ ] Load SPIRV, MSL or DXIL depending on backend
+    - [ ] Set shader uniforms
+    - [ ] Display shader
 - [ ] Get node graph working
-    - [ ] Indirection-based unidimensional array of nodes (no actual tree datastructure)
-    - [ ] Layout system
-    - [ ] Visualization (just color-coded lines)
-    - [ ] Min/max clamping
-    - [ ] Dynamic editing for testing purposes
-    - [ ] Templating and syncing
-    - [ ] Garbage collection to delete soft-deleted nodes
+  - [ ] Indirection-based unidimensional array of nodes (no actual tree datastructure)
+  - [ ] Layout system
+  - [ ] Visualization (just color-coded lines)
+  - [ ] Min/max clamping
+  - [ ] Dynamic editing for testing purposes
+  - [ ] Templating and syncing
+  - [ ] Garbage collection to delete soft-deleted nodes
 - [ ] Create shape shader
-    - [ ] Point-based
-    - [ ] Rounded corner
-    - [ ] Distance from pixel to nearest edge
-    - [ ] Units traveled from point to point
-    - [ ] Customizability, perhaps using formatted shaders
+  - [ ] Point-based
+  - [ ] Rounded corner
+  - [ ] Distance from pixel to nearest edge
+  - [ ] Units traveled from point to point
+  - [ ] Customizability, perhaps using formatted shaders
 - [ ] Create shape system
-    - [ ] literally same structure just upload to shader
+  - [ ] literally same structure just upload to shader
 - [ ] Render modern looking layouts
-    - [ ] Hook shape system to node graph with component system
+  - [ ] Hook shape system to node graph with component system
 - [ ] Event handling nodes
-    - [ ] Do they have to be nodes?
-    - [ ] Keyboard & Mouse support
+  - [ ] Do they have to be nodes?
+  - [ ] Keyboard & Mouse support
 - [ ] TODO: write more todo
