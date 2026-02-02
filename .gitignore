@@ -5,3 +5,4 @@ build
 .cache
 .vscode
 .zed
+__cmake_systeminformation # whatever this is

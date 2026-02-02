@@ -18,6 +18,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 find_package(glm CONFIG REQUIRED)
 find_package(SDL3 CONFIG REQUIRED)
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+include(CompileShader)
+
 file(GLOB_RECURSE GLARENS_SOURCES CONFIGURE_DEPENDS
     src/*.cpp
 )

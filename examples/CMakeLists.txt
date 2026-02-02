@@ -20,6 +20,40 @@ foreach(example_dir ${EXAMPLE_DIRS})
                 PRIVATE
                     glarens::glarens
             )
+
+            set(ASSETS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/${example_dir}/assets")
+
+            if (EXISTS "${ASSETS_DIR}")
+                add_custom_command(
+                    TARGET ${example_target}
+                    POST_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E copy_directory
+                            "${ASSETS_DIR}"
+                            "$<TARGET_FILE_DIR:${example_target}>/assets"
+                    COMMENT "Copying assets for ${example_target}"
+                )
+
+                file(GLOB_RECURSE SHADERS
+                    "${ASSETS_DIR}/*.vert.hlsl"
+                    "${ASSETS_DIR}/*.frag.hlsl"
+                )
+
+                foreach(shader_src ${SHADERS})
+                    file(RELATIVE_PATH shader_rel "${ASSETS_DIR}" "${shader_src}")
+
+                    string(REGEX REPLACE "\\.hlsl$" "" shader_rel_base "${shader_rel}")
+
+                    set(shader_dest
+                        "$<TARGET_FILE_DIR:${example_target}>/assets/${shader_rel_base}"
+                    )
+
+                    compile_shader(
+                        TARGET ${example_target}
+                        SOURCE "${shader_src}"
+                        DEST   "${shader_dest}"
+                    )
+                endforeach()
+            endif()
         endif()
     endif()
 endforeach()

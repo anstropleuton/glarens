@@ -29,7 +29,15 @@
   - [x] Get input
   - [ ] Compile shaders
     - [ ] Precompile shaders using SDL_shadercross CLI
+      - [x] CMake setup to use shadercross CLI
+      - [x] Compile shaders using CMake
+      - [x] Load shaders
+      - [ ] Render shaders
     - [ ] Livecompile shaders using SDL_shadercross API
+      - [ ] CMake setup to use shadercross API
+      - [ ] Compile shaders using source code
+      - [ ] Load shaders
+      - [ ] Render shaders
   - [ ] Render shaders
     - [ ] Load SPIRV, MSL or DXIL depending on backend
     - [ ] Set shader uniforms
