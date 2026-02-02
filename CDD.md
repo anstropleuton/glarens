@@ -28,20 +28,17 @@
   - [x] Render lines
   - [x] Get input
   - [ ] Compile shaders
-    - [ ] Precompile shaders using SDL_shadercross CLI
+    - [x] Precompile shaders using SDL_shadercross CLI
       - [x] CMake setup to use shadercross CLI
       - [x] Compile shaders using CMake
       - [x] Load shaders
-      - [ ] Render shaders
+      - [x] Render shaders
     - [ ] Livecompile shaders using SDL_shadercross API
       - [ ] CMake setup to use shadercross API
       - [ ] Compile shaders using source code
       - [ ] Load shaders
       - [ ] Render shaders
-  - [ ] Render shaders
-    - [ ] Load SPIRV, MSL or DXIL depending on backend
-    - [ ] Set shader uniforms
-    - [ ] Display shader
+    - [ ] Fix SDL window resize causing flickering
 - [ ] Get node graph working
   - [ ] Indirection-based unidimensional array of nodes (no actual tree datastructure)
   - [ ] Layout system
