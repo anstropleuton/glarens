@@ -8,6 +8,11 @@
 
 #pragma once
 
-#include "glarens/node.hpp" // IWYU pragma: keep
+#include "glarens/math.hpp"     // IWYU pragma: keep
+#include "glarens/node.hpp"     // IWYU pragma: keep
 #include "glarens/property.hpp" // IWYU pragma: keep
-#include "glarens/math.hpp" // IWYU pragma: keep
+#include <SDL3/SDL_render.h>
+#include <SDL3/SDL_video.h>
+
+void glarens_init(SDL_Window *window, SDL_Renderer *renderer); // Initializes Glarens
+void glarens_term();                                           // Terminates Glarens

@@ -30,6 +30,7 @@ SDL_GPUShader *fragShader = nullptr;
 SDL_GPUGraphicsPipeline *pipeline = nullptr;
 
 SDL_AppResult SDL_AppInit(void **, int argc, char *argv[]) {
+    SDL_setenv_unsafe("SDL_VIDEO_DRIVER", "wayland", 1);
     SDL_SetAppMetadata("Dummy Application", "0.0.1", "user.anstropleuton.dummy_application");
 
     if (!SDL_Init(SDL_INIT_VIDEO)) {
@@ -51,6 +52,9 @@ SDL_AppResult SDL_AppInit(void **, int argc, char *argv[]) {
         std::cout << "Failed to \"claim window for GPU device\": " << SDL_GetError() << std::endl;
         return SDL_APP_FAILURE;
     }
+
+    std::cout << "SDL video driver: " << SDL_GetCurrentVideoDriver() << std::endl;
+    std::cout << "SDL GPU driver: " << SDL_GetGPUDeviceDriver(device) << std::endl;
 
     SDL_GPUShaderFormat shaderFormat;
     std::string         formatExt;
@@ -105,9 +109,6 @@ SDL_AppResult SDL_AppInit(void **, int argc, char *argv[]) {
         .stage      = SDL_GPU_SHADERSTAGE_FRAGMENT,
     };
 
-    vertShader = SDL_CreateGPUShader(device, &vertCreateInfo);
-    fragShader = SDL_CreateGPUShader(device, &fragCreateInfo);
-
     if (!(vertShader = SDL_CreateGPUShader(device, &vertCreateInfo))) {
         std::cout << "Failed to create vertex shader: " << SDL_GetError() << std::endl;
         return SDL_APP_FAILURE;
@@ -145,7 +146,6 @@ SDL_AppResult SDL_AppInit(void **, int argc, char *argv[]) {
 }
 
 SDL_AppResult SDL_AppEvent(void *, SDL_Event *event) {
-    std::cout << "Event" << std::endl;
     switch (event->type) {
     case SDL_EVENT_QUIT: return SDL_APP_SUCCESS;
     }
@@ -154,32 +154,33 @@ SDL_AppResult SDL_AppEvent(void *, SDL_Event *event) {
 }
 
 SDL_AppResult SDL_AppIterate(void *) {
-    std::cout << "Frame" << std::endl;
     SDL_GPUCommandBuffer *cmd = SDL_AcquireGPUCommandBuffer(device);
     if (!cmd) {
         std::cout << "Failed to acquire command buffer: " << SDL_GetError() << std::endl;
         return SDL_APP_FAILURE;
     }
 
-    SDL_GPUTexture *texture;
-    if (!SDL_WaitAndAcquireGPUSwapchainTexture(cmd, window, &texture, nullptr, nullptr)) {
+    SDL_GPUTexture *texture = nullptr;
+    if (!SDL_AcquireGPUSwapchainTexture(cmd, window, &texture, nullptr, nullptr)) {
         std::cout << "Failed to acquire \"swapchain texture\": " << SDL_GetError() << std::endl;
         return SDL_APP_FAILURE;
     }
 
-    if (texture) {
-        SDL_GPUColorTargetInfo colorTargetInfo = {
-            .texture  = texture,
-            .load_op  = SDL_GPU_LOADOP_CLEAR,
-            .store_op = SDL_GPU_STOREOP_STORE
-        };
-
-        SDL_GPURenderPass *pass = SDL_BeginGPURenderPass(cmd, &colorTargetInfo, 1, nullptr);
-        SDL_BindGPUGraphicsPipeline(pass, pipeline);
-        SDL_DrawGPUPrimitives(pass, 6, 1, 0, 0);
-        SDL_EndGPURenderPass(pass);
+    if (!texture) {
+        SDL_SubmitGPUCommandBuffer(cmd);
+        return SDL_APP_CONTINUE;
     }
 
+    SDL_GPUColorTargetInfo colorTargetInfo = {
+        .texture  = texture,
+        .load_op  = SDL_GPU_LOADOP_CLEAR,
+        .store_op = SDL_GPU_STOREOP_STORE
+    };
+
+    SDL_GPURenderPass *pass = SDL_BeginGPURenderPass(cmd, &colorTargetInfo, 1, nullptr);
+    SDL_BindGPUGraphicsPipeline(pass, pipeline);
+    SDL_DrawGPUPrimitives(pass, 6, 1, 0, 0);
+    SDL_EndGPURenderPass(pass);
     SDL_SubmitGPUCommandBuffer(cmd);
 
     return SDL_APP_CONTINUE;

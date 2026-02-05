@@ -27,34 +27,23 @@
   - [x] Debugging SDL setup
   - [x] Render lines
   - [x] Get input
-  - [ ] Compile shaders
-    - [x] Precompile shaders using SDL_shadercross CLI
-      - [x] CMake setup to use shadercross CLI
-      - [x] Compile shaders using CMake
-      - [x] Load shaders
-      - [x] Render shaders
-    - [ ] Livecompile shaders using SDL_shadercross API
-      - [ ] CMake setup to use shadercross API
-      - [ ] Compile shaders using source code
-      - [ ] Load shaders
-      - [ ] Render shaders
-    - [ ] Fix SDL window resize causing flickering
+  - [ ] Load image
+  - [ ] Render image
+  - [ ] Generate image
 - [ ] Get node graph working
   - [ ] Indirection-based unidimensional array of nodes (no actual tree datastructure)
-  - [ ] Layout system
+  - [x] Layout system
   - [ ] Visualization (just color-coded lines)
-  - [ ] Min/max clamping
+  - [x] Min/max clamping
   - [ ] Dynamic editing for testing purposes
   - [ ] Templating and syncing
   - [ ] Garbage collection to delete soft-deleted nodes
-- [ ] Create shape shader
+- [ ] Create shape shader (CPU-shader)
   - [ ] Point-based
   - [ ] Rounded corner
   - [ ] Distance from pixel to nearest edge
   - [ ] Units traveled from point to point
   - [ ] Customizability, perhaps using formatted shaders
-- [ ] Create shape system
-  - [ ] literally same structure just upload to shader
 - [ ] Render modern looking layouts
   - [ ] Hook shape system to node graph with component system
 - [ ] Event handling nodes
