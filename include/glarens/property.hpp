@@ -186,9 +186,9 @@ struct Prop : PropRO<G> {
 #define mem_prop_set(O, N, T, S) \
     static void mem_prop_set_##N(O &self, const T &value) { S; }
 
-#define MemPropROExp(O, N, T, G) mem_prop_get(O, N, T, G) MemPropRO(O, N, T, mem_prop_get_##N)
+#define MEM_PROP_RO_EXP(O, N, T, G) mem_prop_get(O, N, T, G) MemPropRO(O, N, T, mem_prop_get_##N)
 
-#define MemPropExp(O, N, T, G, S) mem_prop_get(O, N, T, G) mem_prop_set(O, N, T, S) MemProp(O, N, T, mem_prop_get_##N, mem_prop_set_##N)
+#define MEM_PROP_EXP(O, N, T, G, S) mem_prop_get(O, N, T, G) mem_prop_set(O, N, T, S) MemProp(O, N, T, mem_prop_get_##N, mem_prop_set_##N)
 
 #define mem_obs_get(O, N, T, G)               \
     static T mem_obs_get_##N(const O &self) { \
@@ -202,8 +202,8 @@ struct Prop : PropRO<G> {
         self.N##__ = value;                                \
     }
 
-#define MemObsExp(O, N, T, G, S) \
-    T N##__;                     \
+#define MEM_OBS_EXP(O, N, T, G, S) \
+    T N##__;                       \
     mem_obs_get(O, N, T, G) mem_obs_set(O, N, T, S) MemProp(O, N, T, mem_obs_get_##N, mem_obs_set_##N)
 
 #define MemPropRODecl(O, N, T)                                            \
@@ -242,9 +242,9 @@ struct Prop : PropRO<G> {
 #define mem_prop_set_decl(O, N, T) \
     static void mem_prop_set_##N(O &self, const T &value);
 
-#define MemPropROExpDecl(O, N, T) mem_prop_get_decl(O, N, T) MemPropRODecl(O, N, T)
+#define MEM_PROP_RO_EXP_DECL(O, N, T) mem_prop_get_decl(O, N, T) MemPropRODecl(O, N, T)
 
-#define MemPropExpDecl(O, N, T) mem_prop_get_decl(O, N, T) mem_prop_set_decl(O, N, T, S) MemPropDecl(O, N, T)
+#define MEM_PROP_EXP_DECL(O, N, T) mem_prop_get_decl(O, N, T) mem_prop_set_decl(O, N, T, S) MemPropDecl(O, N, T)
 
 #define mem_obs_get_decl(O, N, T) \
     static T mem_obs_get_##N(const O &self);
@@ -252,8 +252,8 @@ struct Prop : PropRO<G> {
 #define mem_obs_set_decl(O, N, T) \
     static void mem_obs_set_##N(O &self, const T &value);
 
-#define MemObsExpDecl(O, N, T) \
-    T N##__;                   \
+#define MEM_OBS_EXP_DECL(O, N, T) \
+    T N##__;                      \
     mem_obs_get_decl(O, N, T) mem_obs_set_decl(O, N, T) MemPropDecl(O, N, T)
 
 #define MemPropRODef(O, N, T, G)                                                 \
@@ -279,9 +279,9 @@ struct Prop : PropRO<G> {
 #define mem_prop_set_def(O, N, T, S) \
     inline void O::mem_prop_set_##N(O &self, const T &value) { S; }
 
-#define MemPropROExpDef(O, N, T, G) mem_prop_get_def(O, N, T, G) MemPropRODef(O, N, T, mem_prop_get_##N)
+#define MEM_PROP_RO_EXP_DEF(O, N, T, G) mem_prop_get_def(O, N, T, G) MemPropRODef(O, N, T, mem_prop_get_##N)
 
-#define MemPropExpDef(O, N, T, G, S) mem_prop_get_def(O, N, T, G) mem_prop_set_def(O, N, T, S) MemPropDef(O, N, T, mem_prop_get_##N, mem_prop_set_##N)
+#define MEM_PROP_EXP_DEF(O, N, T, G, S) mem_prop_get_def(O, N, T, G) mem_prop_set_def(O, N, T, S) MemPropDef(O, N, T, mem_prop_get_##N, mem_prop_set_##N)
 
 #define mem_obs_get_def(O, N, T, G)              \
     inline T O::mem_obs_get_##N(const O &self) { \
@@ -295,6 +295,6 @@ struct Prop : PropRO<G> {
         self.N##__ = value;                                   \
     }
 
-#define MemObsExpDef(O, N, T, G, S) \
-    T N##__;                        \
+#define MEM_OBS_EXP_DEF(O, N, T, G, S) \
+    T N##__;                           \
     mem_obs_get_def(O, N, T, G) mem_obs_set_def(O, N, T, S) MemPropDef(O, N, T, mem_obs_get_##N, mem_obs_set_##N)

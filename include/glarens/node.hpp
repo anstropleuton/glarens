@@ -9,7 +9,13 @@
 #pragma once
 
 #include "glarens/math.hpp"
+#include "glarens/property.hpp"
+#include <algorithm>
 #include <memory>
+#include <optional>
+#include <type_traits>
+#include <typeindex>
+#include <unordered_map>
 #include <vector>
 
 enum ReferenceMode {
@@ -59,195 +65,171 @@ struct Transformation {
 
 using TStack = std::vector<Transformation>;
 
-BoxMetric ModelDim(BoxDim dim, BoxMetric parentMetric);
-BoxMetric ModelBox(BoxModel model, BoxMetric parentMetric);
-BoxMetric TransformBox(BoxMetric metric, Transformation t, BoxMetric parentMetric);
-BoxMetric TransformBox(BoxMetric metric, const TStack &tStack, BoxMetric parentMetric);
+BoxMetric model_dim(BoxDim dim, BoxMetric parentMetric);
+BoxMetric model_box(BoxModel model, BoxMetric parentMetric);
+BoxMetric tramsform_box(BoxMetric metric, Transformation t, BoxMetric parentMetric);
+BoxMetric transform_box(BoxMetric metric, const TStack &tStack, BoxMetric parentMetric);
 
-struct Context {
-    virtual ~Context() = default;
+template <typename T>
+class Param {
+    T                base = T();
+    std::optional<T> override;
+
+  public:
+    const T &get() const {
+        if (override.has_value()) return *override;
+        return base;
+    }
+
+    void set(T value) {
+        override = std::move(value);
+    }
+
+    void clear() {
+        override.reset();
+    }
+
+    void set_base(T value) {
+        base = std::move(value);
+    }
+
+    bool has_override() const {
+        return override.has_value();
+    }
 };
 
-struct Node {
-  private:
-    BoxModel boxModel_;
-    TStack   tStack_;
+class Context : public std::enable_shared_from_this<Context> {
+    int id = 0; // Unique identifier
 
-    mutable BoxMetric modeledMetric_;
-    mutable BoxMetric transformedMetric_;
+  public:
+    Context();
+};
 
-    void UpdateModeled_();
-    void UpdateTransformed_();
+class Node : public std::enable_shared_from_this<Node> {
+    int id = 0; // Unique identifier
 
-    std::vector<std::shared_ptr<Context>> contexts_;
+    Param<BoxModel> model_;
+    Param<TStack>   tStack_;
 
-    mutable std::vector<std::weak_ptr<void>> contextAncestors_;
-    mutable std::vector<std::weak_ptr<void>> contextDescendents_;
+    BoxMetric modeledMetric_;
+    BoxMetric tMetric_;
+
+    std::weak_ptr<Node>                parent_;
+    std::vector<std::shared_ptr<Node>> children_;
+
+    std::weak_ptr<Node>              proto_;
+    std::vector<std::weak_ptr<Node>> clones_;
+
+    std::unordered_map<std::type_index, std::shared_ptr<Context>> contexts_;
+
+    static void dupe_values(const std::shared_ptr<Node> &proto, const std::shared_ptr<Node> &clone) {
+        clone->model_.set_base(proto->model_.get());
+        clone->tStack_.set_base(proto->tStack_.get());
+    }
+
+    void gen_id();
 
   public:
     Node();
-
     virtual ~Node() = default;
 
-    int                      id = 0;
-    std::string              name;
-    std::vector<std::string> tags;
-    bool                     noupdate = false;
-    bool                     nodraw   = false;
+    MEM_PROP_EXP(Node, model, BoxModel, self.model_.get(), self.model_.set(value));
+    MEM_PROP_EXP(Node, tStack, TStack, self.tStack_.get(), self.tStack_.set(value));
 
-    MemPropExp(Node, boxModel, BoxModel, self.boxModel_, self.UpdateModeled_(); self.boxModel_ = value);
-    MemPropExp(Node, tStack, TStack, self.tStack_, self.UpdateTransformed_(); self.tStack_ = value);
-    MemPropROExp(Node, modeledMetric, BoxMetric, self.modeledMetric_);
-    MemPropROExp(Node, transformedMetric, BoxMetric, self.transformedMetric_);
+    MEM_PROP_RO_EXP(Node, modeledMetric, BoxMetric, self.modeledMetric_);
+    MEM_PROP_RO_EXP(Node, tMetric, BoxMetric, self.tMetric_);
 
-    std::weak_ptr<Node>                parent;
-    std::vector<std::shared_ptr<Node>> children;
+    MEM_PROP_RO_EXP(Node, parent, const std::weak_ptr<Node> &, self.parent_);
+    MEM_PROP_RO_EXP(Node, children, const std::vector<std::shared_ptr<Node>> &, self.children_);
 
-    template <typename T = Node>
-    static std::shared_ptr<T> New(const BoxModel &boxModel = {}, const TStack &tStack = {}, const std::string &name = "", const std::vector<std::string> &tags = {}) {
-        auto node      = std::make_shared<T>();
-        node->boxModel = boxModel;
-        node->tStack   = tStack;
-        node->name     = name;
-        node->tags     = tags;
-        return node;
+    // Derived must provide their own factory
+    static std::shared_ptr<Node> create_node() {
+        return std::make_shared<Node>();
     }
 
-    template <typename T = Node>
-    std::shared_ptr<T> Insert(std::size_t index = -1, const BoxModel &boxModel = {}, const TStack &tStack = {}, const std::string &name = "", const std::vector<std::string> &tags = {}) {
-        auto node = New(boxModel, tStack, name, tags);
-        if (index == -1) {
-            children.emplace_back(node);
-        } else {
-            children.insert(children.begin() + index, node);
+    // Derived must provide their own clone function
+    virtual std::shared_ptr<Node> clone_node() {
+        auto clone = std::make_shared<Node>();
+
+        dupe_values(shared_from_this(), clone);
+
+        clones_.push_back(clone);
+        clone->proto_ = shared_from_this();
+
+        for (const auto &child : children_) {
+            clone->add_child(child->clone_node());
         }
-        return node;
+
+        return clone;
     }
 
-    template <typename T = Node>
-    void Insert(std::shared_ptr<T> node, std::size_t index = -1) {
-        if (index == -1) {
-            children.emplace_back(node);
-        } else {
-            children.insert(children.begin() + index, node);
-        }
-    }
-
-    template <typename T = Node>
-    void Remove(std::shared_ptr<T> node) {
-        for (std::size_t i = 0; i < children.size(); i++) {
-            if (node == children[i]) {
-                children.erase(children.begin() + i);
-                return;
+    // Derived must provide their own sync function
+    virtual void sync_clones() {
+        clones_.erase(std::remove_if(clones_.begin(), clones_.end(), [](const std::weak_ptr<Node> &clone) { return clone.expired(); }), clones_.end());
+        for (const auto &clone_ : clones_) {
+            if (auto clone = clone_.lock()) {
+                dupe_values(shared_from_this(), clone);
             }
         }
     }
 
-    void Remove(std::size_t index) {
-        children.erase(children.begin() + index);
+    // Note: node tree graph management does not enforce anything
+
+    void add_child(std::shared_ptr<Node> child) {
+        children_.push_back(child);
+        child->parent_ = shared_from_this();
     }
 
-    template <typename T>
-    void AttachContext(const T &context) {
-        if (HasContext<T>()) {
+    void remove_child(int id) {
+        auto it = std::find_if(children_.begin(), children_.end(), [id](const std::shared_ptr<Node> &child) { return child->id == id; });
+        if (it == children_.end()) {
             return;
         }
-        contexts_.emplace_back(context);
+        (*it)->parent_.reset();
+        children_.erase(it);
+    }
+
+    bool has_child(int id) const {
+        return std::find_if(children_.begin(), children_.end(), [id](const std::shared_ptr<Node> &child) { return child->id == id; }) != children_.end();
+    }
+
+    std::shared_ptr<Node> get_child(int id) const {
+        auto it = std::find_if(children_.begin(), children_.end(), [id](const std::shared_ptr<Node> &child) { return child->id == id; });
+        if (it == children_.end()) {
+            return nullptr;
+        }
+        return *it;
     }
 
     template <typename T>
-    void DetachContext() {
-        if (!HasContext<T>()) {
-            return;
-        }
-        for (std::size_t i = 0; i < contexts_.size(); i++) {
-            if (std::dynamic_pointer_cast<T>(contexts_[i])) {
-                contexts_.erase(contexts_.begin() + i);
-                return;
-            }
-        }
+        requires std::is_base_of_v<Context, T>
+    void set_context(std::shared_ptr<T> context) {
+        std::type_index type = typeid(T);
+        contexts_[type]      = context;
     }
 
     template <typename T>
-    bool HasContext() {
-        return GetContext<T>() != nullptr;
+        requires std::is_base_of_v<Context, T>
+    void reset_context() {
+        std::type_index type = typeid(T);
+        contexts_.erase(type);
     }
 
     template <typename T>
-    std::weak_ptr<T> GetContext() const {
-        for (std::size_t i = 0; i < contexts_.size(); i++) {
-            if (auto casted = std::dynamic_pointer_cast<T>(contexts_[i])) {
-                return casted;
-            }
-        }
-
-        return nullptr;
+        requires std::is_base_of_v<Context, T>
+    bool has_context() const {
+        std::type_index type = typeid(T);
+        return contexts_.contains(type);
     }
 
     template <typename T>
-    std::weak_ptr<T> GetContextInAncestor() const {
-        std::weak_ptr<T> context = GetContext<T>();
-        if (context) {
-            return context;
+        requires std::is_base_of_v<Context, T>
+    std::shared_ptr<T> get_context() const {
+        if (!has_context<T>()) {
+            return nullptr;
         }
 
-        if (auto casted = parent.lock()) {
-            return casted->GetContextInAncestor<T>();
-        }
-
-        return nullptr;
-    }
-
-    template <typename T>
-    std::weak_ptr<T> GetContextInDescendent() const {
-        std::weak_ptr<T> context = GetContext<T>();
-        if (context) {
-            return context;
-        }
-
-        for (auto &child : children) {
-            context = child->GetContextInDescendent<T>();
-            if (context) {
-                return context;
-            }
-        }
-
-        return nullptr;
-    }
-
-    virtual bool HitTest(Vec2 position) const;
-
-    virtual void OnModel() {}
-
-    virtual void PreUpdate() {}
-
-    virtual void PostUpdate() {}
-
-    virtual void Update() {
-        if (!noupdate) {
-            PreUpdate();
-
-            for (auto &child : children) {
-                child->Update();
-            }
-
-            PostUpdate();
-        }
-    }
-
-    virtual void PreDraw() const {}
-
-    virtual void PostDraw() const {}
-
-    virtual void Draw() const {
-        if (!nodraw) {
-            PreDraw();
-
-            for (auto &child : children) {
-                child->Draw();
-            }
-
-            PostDraw();
-        }
+        std::type_index type = typeid(T);
+        return std::static_pointer_cast<T>(contexts_.at(type));
     }
 };

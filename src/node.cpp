@@ -10,7 +10,7 @@
 #include "internal/app-data.hpp"
 #include <SDL3/SDL_video.h>
 
-BoxMetric ModelDim(BoxDim dim, BoxMetric parentMetric) {
+BoxMetric model_dim(BoxDim dim, BoxMetric parentMetric) {
     int width, height;
     SDL_GetWindowSize(appData.window, &width, &height);
 
@@ -27,17 +27,17 @@ BoxMetric ModelDim(BoxDim dim, BoxMetric parentMetric) {
     };
 }
 
-BoxMetric ModelBox(BoxModel model, BoxMetric parentMetric) {
-    BoxMetric metric = ModelDim(model, parentMetric);
+BoxMetric model_box(BoxModel model, BoxMetric parentMetric) {
+    BoxMetric metric = model_dim(model, parentMetric);
 
     if (model.useMin) {
-        BoxMetric minMetric       = ModelDim(model.min, parentMetric);
+        BoxMetric minMetric       = model_dim(model.min, parentMetric);
         metric.bounds.topLeft     = max(Vec2(metric.bounds.topLeft), Vec2(minMetric.bounds.topLeft));
         metric.bounds.bottomRight = min(Vec2(metric.bounds.bottomRight), Vec2(minMetric.bounds.bottomRight));
     }
 
     if (model.useMax) {
-        BoxMetric maxMetric       = ModelDim(model.max, parentMetric);
+        BoxMetric maxMetric       = model_dim(model.max, parentMetric);
         metric.bounds.topLeft     = min(Vec2(metric.bounds.topLeft), Vec2(maxMetric.bounds.topLeft));
         metric.bounds.bottomRight = max(Vec2(metric.bounds.bottomRight), Vec2(maxMetric.bounds.bottomRight));
     }
@@ -45,7 +45,7 @@ BoxMetric ModelBox(BoxModel model, BoxMetric parentMetric) {
     return metric;
 }
 
-BoxMetric TransformBox(BoxMetric metric, Transformation t, BoxMetric parentMetric) {
+BoxMetric tramsform_box(BoxMetric metric, Transformation t, BoxMetric parentMetric) {
     int width, height;
     SDL_GetWindowSize(appData.window, &width, &height);
 
@@ -68,47 +68,10 @@ BoxMetric TransformBox(BoxMetric metric, Transformation t, BoxMetric parentMetri
     return metric;
 }
 
-BoxMetric TransformBox(BoxMetric metric, const TStack &tStack, BoxMetric parentMetric) {
+BoxMetric transform_box(BoxMetric metric, const TStack &tStack, BoxMetric parentMetric) {
     for (const Transformation &t : tStack) {
-        metric = TransformBox(metric, t, parentMetric);
+        metric = tramsform_box(metric, t, parentMetric);
     }
 
     return metric;
-}
-
-void Node::UpdateModeled_() {
-    int width, height;
-    SDL_GetWindowSize(appData.window, &width, &height);
-
-    BoxMetric parentMetric = BoxMetric(Rect::from_xywh(0.0f, 0.0f, width, height));
-    if (auto pLock = parent.lock()) {
-        parentMetric = pLock->modeledMetric_;
-    }
-
-    modeledMetric_ = ModelBox(boxModel_, parentMetric);
-    for (auto &child : children) {
-        child->UpdateModeled_();
-    }
-}
-
-void Node::UpdateTransformed_() {
-    int width, height;
-    SDL_GetWindowSize(appData.window, &width, &height);
-
-    BoxMetric parentMetric = BoxMetric(Rect::from_xywh(0.0f, 0.0f, width, height));
-    if (auto pLock = parent.lock()) {
-        parentMetric = pLock->modeledMetric_;
-    }
-
-    transformedMetric_ = TransformBox(modeledMetric_, tStack_, parentMetric);
-    for (auto &child : children) {
-        child->UpdateTransformed_();
-    }
-}
-
-Node::Node() {
-}
-
-bool Node::HitTest(Vec2 position) const {
-    return false;
 }

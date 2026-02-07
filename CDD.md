@@ -31,12 +31,13 @@
   - [ ] Render image
   - [ ] Generate image
 - [ ] Get node graph working
-  - [ ] Indirection-based unidimensional array of nodes (no actual tree datastructure)
   - [x] Layout system
   - [ ] Visualization (just color-coded lines)
   - [x] Min/max clamping
   - [ ] Dynamic editing for testing purposes
-  - [ ] Templating and syncing
+  - [x] Prototyping and syncing
+  - [x] Prototype parameter
+  - [x] Context system for unrelated data storage
   - [ ] Garbage collection to delete soft-deleted nodes
 - [ ] Create shape shader (CPU-shader)
   - [ ] Point-based
