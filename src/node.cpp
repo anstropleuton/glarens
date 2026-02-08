@@ -10,13 +10,13 @@
 #include "internal/app-data.hpp"
 #include <SDL3/SDL_video.h>
 
-BoxMetric model_dim(BoxDim dim, BoxMetric parentMetric) {
+BoxMetric model_dim(BoxDim dim, BoxMetric parentMetric) noexcept {
     int width, height;
     SDL_GetWindowSize(appData.window, &width, &height);
 
     Vec2 screen  = Vec2(width, height);
-    Vec2 refPos  = dim.positioningRefMode == Absolute ? screen / 2.0f : parentMetric.bounds.center;
-    Vec2 refSize = dim.sizingRefMode == Absolute ? screen : parentMetric.bounds.extent;
+    Vec2 refPos  = dim.positioningRefMode == REF_MODE_ABSOLUTE ? screen / 2.0f : parentMetric.bounds.center;
+    Vec2 refSize = dim.sizingRefMode == REF_MODE_ABSOLUTE ? screen : parentMetric.bounds.extent;
 
     Vec2 finalSize = dim.size + dim.scale * refSize;
     Vec2 finalPos  = dim.pos + refPos + dim.anchor * refSize + dim.floating * finalSize;
@@ -27,7 +27,7 @@ BoxMetric model_dim(BoxDim dim, BoxMetric parentMetric) {
     };
 }
 
-BoxMetric model_box(BoxModel model, BoxMetric parentMetric) {
+BoxMetric model_box(BoxModel model, BoxMetric parentMetric) noexcept {
     BoxMetric metric = model_dim(model, parentMetric);
 
     if (model.useMin) {
@@ -45,13 +45,13 @@ BoxMetric model_box(BoxModel model, BoxMetric parentMetric) {
     return metric;
 }
 
-BoxMetric tramsform_box(BoxMetric metric, Transformation t, BoxMetric parentMetric) {
+BoxMetric transform_box(BoxMetric metric, Transformation t, BoxMetric parentMetric) noexcept {
     int width, height;
     SDL_GetWindowSize(appData.window, &width, &height);
 
     Vec2 screen  = Vec2(width, height);
-    Vec2 refPos  = t.originRefMode == Absolute ? screen / 2.0f : parentMetric.bounds.center;
-    Vec2 refSize = t.originRefMode == Absolute ? screen : parentMetric.bounds.extent;
+    Vec2 refPos  = t.originRefMode == REF_MODE_ABSOLUTE ? screen / 2.0f : parentMetric.bounds.center;
+    Vec2 refSize = t.originRefMode == REF_MODE_ABSOLUTE ? screen : parentMetric.bounds.extent;
 
     Vec2 origin = refPos + t.originPos + t.originAnchor * refSize + t.originFloating * metric.bounds.extent;
 
@@ -68,9 +68,9 @@ BoxMetric tramsform_box(BoxMetric metric, Transformation t, BoxMetric parentMetr
     return metric;
 }
 
-BoxMetric transform_box(BoxMetric metric, const TStack &tStack, BoxMetric parentMetric) {
+BoxMetric transform_box(BoxMetric metric, const TStack &tStack, BoxMetric parentMetric) noexcept {
     for (const Transformation &t : tStack) {
-        metric = tramsform_box(metric, t, parentMetric);
+        metric = transform_box(metric, t, parentMetric);
     }
 
     return metric;

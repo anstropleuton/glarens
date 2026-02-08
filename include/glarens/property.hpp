@@ -22,104 +22,104 @@ concept HasSet = requires {
     { std::declval<P>().set };
 };
 
-template <HasGet P> auto             operator+(const P &a) { return +a.get(); }
-template <HasGet P> auto             operator-(const P &a) { return -a.get(); }
-template <HasGet P, typename T> auto operator+(const P &a, const P &b) { return a.get() + b.get(); }
-template <HasGet P, typename T> auto operator+(const P &a, const T &b) { return a.get() + b; }
-template <HasGet P, typename T> auto operator+(const T &a, const P &b) { return a + b.get(); }
-template <HasGet P, typename T> auto operator-(const P &a, const P &b) { return a.get() - b.get(); }
-template <HasGet P, typename T> auto operator-(const P &a, const T &b) { return a.get() - b; }
-template <HasGet P, typename T> auto operator-(const T &a, const P &b) { return a - b.get(); }
-template <HasGet P, typename T> auto operator*(const P &a, const P &b) { return a.get() * b.get(); }
-template <HasGet P, typename T> auto operator*(const P &a, const T &b) { return a.get() * b; }
-template <HasGet P, typename T> auto operator*(const T &a, const P &b) { return a * b.get(); }
-template <HasGet P, typename T> auto operator/(const P &a, const P &b) { return a.get() / b.get(); }
-template <HasGet P, typename T> auto operator/(const P &a, const T &b) { return a.get() / b; }
-template <HasGet P, typename T> auto operator/(const T &a, const P &b) { return a / b.get(); }
-template <HasGet P, typename T> auto operator%(const P &a, const P &b) { return a.get() % b.get(); }
-template <HasGet P, typename T> auto operator%(const P &a, const T &b) { return a.get() % b; }
-template <HasGet P, typename T> auto operator%(const T &a, const P &b) { return a % b.get(); }
-template <HasGet P> auto             operator~(const P &a) { return ~a.get(); }
-template <HasGet P, typename T> auto operator&(const P &a, const P &b) { return a.get() & b.get(); }
-template <HasGet P, typename T> auto operator&(const P &a, const T &b) { return a.get() & b; }
-template <HasGet P, typename T> auto operator&(const T &a, const P &b) { return a & b.get(); }
-template <HasGet P, typename T> auto operator|(const P &a, const P &b) { return a.get() | b.get(); }
-template <HasGet P, typename T> auto operator|(const P &a, const T &b) { return a.get() | b; }
-template <HasGet P, typename T> auto operator|(const T &a, const P &b) { return a | b.get(); }
-template <HasGet P, typename T> auto operator^(const P &a, const P &b) { return a.get() ^ b.get(); }
-template <HasGet P, typename T> auto operator^(const P &a, const T &b) { return a.get() ^ b; }
-template <HasGet P, typename T> auto operator^(const T &a, const P &b) { return a ^ b.get(); }
-template <HasGet P, typename T> auto operator<<(const P &a, const P &b) { return a.get() << b.get(); }
-template <HasGet P, typename T> auto operator<<(const P &a, const T &b) { return a.get() << b; }
-template <HasGet P, typename T> auto operator<<(const T &a, const P &b) { return a << b.get(); }
-template <HasGet P, typename T> auto operator>>(const P &a, const P &b) { return a.get() >> b.get(); }
-template <HasGet P, typename T> auto operator>>(const P &a, const T &b) { return a.get() >> b; }
-template <HasGet P, typename T> auto operator>>(const T &a, const P &b) { return a >> b.get(); }
-template <HasGet P> auto             operator!(const P &a) { return !a.get(); }
-template <HasGet P, typename T> auto operator&&(const P &a, const P &b) { return a.get() && b.get(); }
-template <HasGet P, typename T> auto operator&&(const P &a, const T &b) { return a.get() && b; }
-template <HasGet P, typename T> auto operator&&(const T &a, const P &b) { return a && b.get(); }
-template <HasGet P, typename T> auto operator==(const P &a, const P &b) { return a.get() == b.get(); }
-template <HasGet P, typename T> auto operator==(const P &a, const T &b) { return a.get() == b; }
-template <HasGet P, typename T> auto operator==(const T &a, const P &b) { return a == b.get(); }
-template <HasGet P, typename T> auto operator!=(const P &a, const P &b) { return a.get() != b.get(); }
-template <HasGet P, typename T> auto operator!=(const P &a, const T &b) { return a.get() != b; }
-template <HasGet P, typename T> auto operator!=(const T &a, const P &b) { return a != b.get(); }
-template <HasGet P, typename T> auto operator<(const P &a, const P &b) { return a.get() < b.get(); }
-template <HasGet P, typename T> auto operator<(const P &a, const T &b) { return a.get() < b; }
-template <HasGet P, typename T> auto operator<(const T &a, const P &b) { return a < b.get(); }
-template <HasGet P, typename T> auto operator>(const P &a, const P &b) { return a.get() > b.get(); }
-template <HasGet P, typename T> auto operator>(const P &a, const T &b) { return a.get() > b; }
-template <HasGet P, typename T> auto operator>(const T &a, const P &b) { return a > b.get(); }
-template <HasGet P, typename T> auto operator<=(const P &a, const P &b) { return a.get() <= b.get(); }
-template <HasGet P, typename T> auto operator<=(const P &a, const T &b) { return a.get() <= b; }
-template <HasGet P, typename T> auto operator<=(const T &a, const P &b) { return a <= b.get(); }
-template <HasGet P, typename T> auto operator>=(const P &a, const P &b) { return a.get() >= b.get(); }
-template <HasGet P, typename T> auto operator>=(const P &a, const T &b) { return a.get() >= b; }
-template <HasGet P, typename T> auto operator>=(const T &a, const P &b) { return a >= b.get(); }
+template <HasGet P> [[nodiscard]] constexpr inline auto             operator+(const P &a) { return +a.get(); }
+template <HasGet P> [[nodiscard]] constexpr inline auto             operator-(const P &a) { return -a.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator+(const P &a, const P &b) { return a.get() + b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator+(const P &a, const T &b) { return a.get() + b; }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator+(const T &a, const P &b) { return a + b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator-(const P &a, const P &b) { return a.get() - b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator-(const P &a, const T &b) { return a.get() - b; }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator-(const T &a, const P &b) { return a - b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator*(const P &a, const P &b) { return a.get() * b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator*(const P &a, const T &b) { return a.get() * b; }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator*(const T &a, const P &b) { return a * b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator/(const P &a, const P &b) { return a.get() / b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator/(const P &a, const T &b) { return a.get() / b; }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator/(const T &a, const P &b) { return a / b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator%(const P &a, const P &b) { return a.get() % b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator%(const P &a, const T &b) { return a.get() % b; }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator%(const T &a, const P &b) { return a % b.get(); }
+template <HasGet P> [[nodiscard]] constexpr inline auto             operator~(const P &a) { return ~a.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator&(const P &a, const P &b) { return a.get() & b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator&(const P &a, const T &b) { return a.get() & b; }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator&(const T &a, const P &b) { return a & b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator|(const P &a, const P &b) { return a.get() | b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator|(const P &a, const T &b) { return a.get() | b; }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator|(const T &a, const P &b) { return a | b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator^(const P &a, const P &b) { return a.get() ^ b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator^(const P &a, const T &b) { return a.get() ^ b; }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator^(const T &a, const P &b) { return a ^ b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator<<(const P &a, const P &b) { return a.get() << b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator<<(const P &a, const T &b) { return a.get() << b; }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator<<(const T &a, const P &b) { return a << b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator>>(const P &a, const P &b) { return a.get() >> b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator>>(const P &a, const T &b) { return a.get() >> b; }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator>>(const T &a, const P &b) { return a >> b.get(); }
+template <HasGet P> [[nodiscard]] constexpr inline auto             operator!(const P &a) { return !a.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator&&(const P &a, const P &b) { return a.get() && b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator&&(const P &a, const T &b) { return a.get() && b; }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator&&(const T &a, const P &b) { return a && b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator==(const P &a, const P &b) { return a.get() == b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator==(const P &a, const T &b) { return a.get() == b; }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator==(const T &a, const P &b) { return a == b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator!=(const P &a, const P &b) { return a.get() != b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator!=(const P &a, const T &b) { return a.get() != b; }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator!=(const T &a, const P &b) { return a != b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator<(const P &a, const P &b) { return a.get() < b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator<(const P &a, const T &b) { return a.get() < b; }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator<(const T &a, const P &b) { return a < b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator>(const P &a, const P &b) { return a.get() > b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator>(const P &a, const T &b) { return a.get() > b; }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator>(const T &a, const P &b) { return a > b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator<=(const P &a, const P &b) { return a.get() <= b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator<=(const P &a, const T &b) { return a.get() <= b; }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator<=(const T &a, const P &b) { return a <= b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator>=(const P &a, const P &b) { return a.get() >= b.get(); }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator>=(const P &a, const T &b) { return a.get() >= b; }
+template <HasGet P, typename T> [[nodiscard]] constexpr inline auto operator>=(const T &a, const P &b) { return a >= b.get(); }
 
-template <HasSet P, typename T> auto &operator+=(P &a, const T &b) { return (set(a.get() + b), a); }
-template <HasSet P, HasGet Q> auto   &operator+=(P &a, const Q &b) { return (set(a.get() + b.get()), a); }
-template <HasSet P, typename T> auto &operator-=(P &a, const T &b) { return (set(a.get() - b), a); }
-template <HasSet P, HasGet Q> auto   &operator-=(P &a, const Q &b) { return (set(a.get() - b.get()), a); }
-template <HasSet P, typename T> auto &operator*=(P &a, const T &b) { return (set(a.get() * b), a); }
-template <HasSet P, HasGet Q> auto   &operator*=(P &a, const Q &b) { return (set(a.get() * b.get()), a); }
-template <HasSet P, typename T> auto &operator/=(P &a, const T &b) { return (set(a.get() / b), a); }
-template <HasSet P, HasGet Q> auto   &operator/=(P &a, const Q &b) { return (set(a.get() / b.get()), a); }
-template <HasSet P, typename T> auto &operator%=(P &a, const T &b) { return (set(a.get() % b), a); }
-template <HasSet P, HasGet Q> auto   &operator%=(P &a, const Q &b) { return (set(a.get() % b.get()), a); }
-template <HasSet P, typename T> auto &operator&=(P &a, const T &b) { return (set(a.get() & b), a); }
-template <HasSet P, HasGet Q> auto   &operator&=(P &a, const Q &b) { return (set(a.get() & b.get()), a); }
-template <HasSet P, typename T> auto &operator|=(P &a, const T &b) { return (set(a.get() | b), a); }
-template <HasSet P, HasGet Q> auto   &operator|=(P &a, const Q &b) { return (set(a.get() | b.get()), a); }
-template <HasSet P, typename T> auto &operator^=(P &a, const T &b) { return (set(a.get() ^ b), a); }
-template <HasSet P, HasGet Q> auto   &operator^=(P &a, const Q &b) { return (set(a.get() ^ b.get()), a); }
-template <HasSet P, typename T> auto &operator<<=(P &a, const T &b) { return (set(a.get() << b), a); }
-template <HasSet P, HasGet Q> auto   &operator<<=(P &a, const Q &b) { return (set(a.get() << b.get()), a); }
-template <HasSet P, typename T> auto &operator>>=(P &a, const T &b) { return (set(a.get() >> b), a); }
-template <HasSet P, HasGet Q> auto   &operator>>=(P &a, const Q &b) { return (set(a.get() >> b.get()), a); }
+template <HasSet P, typename T> constexpr inline auto &operator+=(P &a, const T &b) { return (set(a.get() + b), a); }
+template <HasSet P, HasGet Q> constexpr inline auto   &operator+=(P &a, const Q &b) { return (set(a.get() + b.get()), a); }
+template <HasSet P, typename T> constexpr inline auto &operator-=(P &a, const T &b) { return (set(a.get() - b), a); }
+template <HasSet P, HasGet Q> constexpr inline auto   &operator-=(P &a, const Q &b) { return (set(a.get() - b.get()), a); }
+template <HasSet P, typename T> constexpr inline auto &operator*=(P &a, const T &b) { return (set(a.get() * b), a); }
+template <HasSet P, HasGet Q> constexpr inline auto   &operator*=(P &a, const Q &b) { return (set(a.get() * b.get()), a); }
+template <HasSet P, typename T> constexpr inline auto &operator/=(P &a, const T &b) { return (set(a.get() / b), a); }
+template <HasSet P, HasGet Q> constexpr inline auto   &operator/=(P &a, const Q &b) { return (set(a.get() / b.get()), a); }
+template <HasSet P, typename T> constexpr inline auto &operator%=(P &a, const T &b) { return (set(a.get() % b), a); }
+template <HasSet P, HasGet Q> constexpr inline auto   &operator%=(P &a, const Q &b) { return (set(a.get() % b.get()), a); }
+template <HasSet P, typename T> constexpr inline auto &operator&=(P &a, const T &b) { return (set(a.get() & b), a); }
+template <HasSet P, HasGet Q> constexpr inline auto   &operator&=(P &a, const Q &b) { return (set(a.get() & b.get()), a); }
+template <HasSet P, typename T> constexpr inline auto &operator|=(P &a, const T &b) { return (set(a.get() | b), a); }
+template <HasSet P, HasGet Q> constexpr inline auto   &operator|=(P &a, const Q &b) { return (set(a.get() | b.get()), a); }
+template <HasSet P, typename T> constexpr inline auto &operator^=(P &a, const T &b) { return (set(a.get() ^ b), a); }
+template <HasSet P, HasGet Q> constexpr inline auto   &operator^=(P &a, const Q &b) { return (set(a.get() ^ b.get()), a); }
+template <HasSet P, typename T> constexpr inline auto &operator<<=(P &a, const T &b) { return (set(a.get() << b), a); }
+template <HasSet P, HasGet Q> constexpr inline auto   &operator<<=(P &a, const Q &b) { return (set(a.get() << b.get()), a); }
+template <HasSet P, typename T> constexpr inline auto &operator>>=(P &a, const T &b) { return (set(a.get() >> b), a); }
+template <HasSet P, HasGet Q> constexpr inline auto   &operator>>=(P &a, const Q &b) { return (set(a.get() >> b.get()), a); }
 
 template <HasSet P>
-auto &operator++(P &a) {
+constexpr inline auto &operator++(P &a) {
     set(++a.get());
     return a;
 }
 
 template <HasSet P>
-auto operator++(P &a, int) {
+constexpr inline auto operator++(P &a, int) {
     auto temp = a.get();
     set(++a.get());
     return temp;
 }
 
 template <HasSet P>
-auto &operator--(P &a) {
+constexpr inline auto &operator--(P &a) {
     set(--a.get());
     return a;
 }
 
 template <HasSet P>
-auto operator--(P &a, int) {
+constexpr inline auto operator--(P &a, int) {
     auto temp = a.get();
     set(--a.get());
     return temp;
@@ -129,9 +129,9 @@ template <auto G>
 struct PropRO {
     using T = decltype(G());
 
-    T get() const { return G(); }
+    [[nodiscard]] T get() const { return G(); }
 
-    operator T() const { return get(); }
+    [[nodiscard]] operator T() const { return get(); }
 };
 
 template <auto G, auto S>
@@ -154,9 +154,9 @@ struct Prop : PropRO<G> {
     struct MemPropRO_##N {                                                \
         O &self() const { return *(O *)((char *)this - offsetof(O, N)); } \
                                                                           \
-        T get() const { return G(self()); }                               \
+        [[nodiscard]] T get() const { return G(self()); }                 \
                                                                           \
-        operator T() const { return get(); }                              \
+        [[nodiscard]] operator T() const { return get(); }                \
     };                                                                    \
     [[no_unique_address]] MemPropRO_##N N
 
@@ -164,9 +164,9 @@ struct Prop : PropRO<G> {
     struct MemProp_##N {                                                                                 \
         O &self() const { return *(O *)((char *)this - offsetof(O, N)); }                                \
                                                                                                          \
-        T get() const { return G(self()); }                                                              \
+        [[nodiscard]] T get() const { return G(self()); }                                                \
                                                                                                          \
-        operator T() const { return get(); }                                                             \
+        [[nodiscard]] operator T() const { return get(); }                                               \
                                                                                                          \
         template <typename U> void set(const U &v) const { S(this->self(), v); }                         \
                                                                                                          \
@@ -210,9 +210,9 @@ struct Prop : PropRO<G> {
     struct MemPropRO_##N {                                                \
         O &self() const { return *(O *)((char *)this - offsetof(O, N)); } \
                                                                           \
-        inline T get() const;                                             \
+        [[nodiscard]] inline T get() const;                               \
                                                                           \
-        operator T() const;                                               \
+        [[nodiscard]] operator T() const;                                 \
     };                                                                    \
     [[no_unique_address]] MemPropRO_##N N
 
@@ -220,9 +220,9 @@ struct Prop : PropRO<G> {
     struct MemProp_##N {                                                  \
         O &self() const { return *(O *)((char *)this - offsetof(O, N)); } \
                                                                           \
-        inline T get() const;                                             \
+        [[nodiscard]] inline T get() const;                               \
                                                                           \
-        inline operator T() const;                                        \
+        [[nodiscard]] inline operator T() const;                          \
                                                                           \
         template <typename U> inline void set(const U &v) const;          \
                                                                           \
@@ -256,14 +256,15 @@ struct Prop : PropRO<G> {
     T N##__;                      \
     mem_obs_get_decl(O, N, T) mem_obs_set_decl(O, N, T) MemPropDecl(O, N, T)
 
-#define MemPropRODef(O, N, T, G)                                                 \
-    inline T                 O::MemPropRO_##N::get() const { return G(self()); } \
-    inline O::MemPropRO_##N::operator T() const { return get(); }
+#define MemPropRODef(O, N, T, G)                                               \
+    [[nodiscard]] inline T O::MemPropRO_##N::get() const { return G(self()); } \
+                                                                               \
+    [[nodiscard]] inline O::MemPropRO_##N::operator T() const { return get(); }
 
 #define MemPropDef(O, N, T, G, S)                                                                                               \
-    inline T O::MemProp_##N::get() const { return G(self()); }                                                                  \
+    [[nodiscard]] inline T O::MemProp_##N::get() const { return G(self()); }                                                    \
                                                                                                                                 \
-    inline O::MemProp_##N::operator T() const { return get(); }                                                                 \
+    [[nodiscard]] inline O::MemProp_##N::operator T() const { return get(); }                                                   \
                                                                                                                                 \
     template <typename U> inline void O::MemProp_##N::set(const U &v) const { S(this->self(), v); }                             \
                                                                                                                                 \

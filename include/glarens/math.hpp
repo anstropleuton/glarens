@@ -24,29 +24,29 @@ struct Vec2 {
     float x;
     float y;
 
-    Vec2() = default;
-    Vec2(float xy) : x(xy), y(xy) {}
-    Vec2(float x, float y) : x(x), y(y) {}
+    Vec2() noexcept = default;
+    Vec2(float xy) noexcept : x(xy), y(xy) {}
+    Vec2(float x, float y) noexcept : x(x), y(y) {}
 
-    Vec2(SDL_FPoint v) : x(v.x), y(v.y) {}
+    Vec2(SDL_FPoint v) noexcept : x(v.x), y(v.y) {}
 
-    inline explicit Vec2(Vec3 v);
-    inline explicit Vec2(Vec4 v);
+    inline explicit Vec2(Vec3 v) noexcept;
+    inline explicit Vec2(Vec4 v) noexcept;
 
-    operator SDL_FPoint() const { return {x, y}; }
+    [[nodiscard]] operator SDL_FPoint() const noexcept { return {x, y}; }
 
-    inline Vec2 &operator+=(Vec2 b);
-    inline Vec2 &operator-=(Vec2 b);
-    inline Vec2 &operator*=(Vec2 b);
-    inline Vec2 &operator/=(Vec2 b);
-    inline Vec2 &operator+=(SDL_FPoint b);
-    inline Vec2 &operator-=(SDL_FPoint b);
-    inline Vec2 &operator*=(SDL_FPoint b);
-    inline Vec2 &operator/=(SDL_FPoint b);
-    inline Vec2 &operator+=(float b);
-    inline Vec2 &operator-=(float b);
-    inline Vec2 &operator*=(float b);
-    inline Vec2 &operator/=(float b);
+    inline Vec2 &operator+=(Vec2 b) noexcept;
+    inline Vec2 &operator-=(Vec2 b) noexcept;
+    inline Vec2 &operator*=(Vec2 b) noexcept;
+    inline Vec2 &operator/=(Vec2 b) noexcept;
+    inline Vec2 &operator+=(SDL_FPoint b) noexcept;
+    inline Vec2 &operator-=(SDL_FPoint b) noexcept;
+    inline Vec2 &operator*=(SDL_FPoint b) noexcept;
+    inline Vec2 &operator/=(SDL_FPoint b) noexcept;
+    inline Vec2 &operator+=(float b) noexcept;
+    inline Vec2 &operator-=(float b) noexcept;
+    inline Vec2 &operator*=(float b) noexcept;
+    inline Vec2 &operator/=(float b) noexcept;
 
     MEM_PROP_RO_EXP_DECL(Vec2, xx, Vec2);
     MEM_PROP_RO_EXP_DECL(Vec2, xy, Vec2);
@@ -80,66 +80,66 @@ struct Vec2 {
     MEM_PROP_RO_EXP_DECL(Vec2, yyyy, Vec4);
 };
 
-inline Vec2 operator+(Vec2 a) { return Vec2(+a.x, +a.y); }
-inline Vec2 operator-(Vec2 a) { return Vec2(-a.x, -a.y); }
+[[nodiscard]] inline Vec2 operator+(Vec2 a) noexcept { return Vec2(+a.x, +a.y); }
+[[nodiscard]] inline Vec2 operator-(Vec2 a) noexcept { return Vec2(-a.x, -a.y); }
 
-inline Vec2 operator+(Vec2 a, Vec2 b) { return {a.x + b.x, a.y + b.y}; }
-inline Vec2 operator-(Vec2 a, Vec2 b) { return {a.x - b.x, a.y - b.y}; }
-inline Vec2 operator*(Vec2 a, Vec2 b) { return {a.x * b.x, a.y * b.y}; }
-inline Vec2 operator/(Vec2 a, Vec2 b) { return {a.x / b.x, a.y / b.y}; }
-inline Vec2 operator+(Vec2 a, SDL_FPoint b) { return {a.x + b.x, a.y + b.y}; }
-inline Vec2 operator-(Vec2 a, SDL_FPoint b) { return {a.x - b.x, a.y - b.y}; }
-inline Vec2 operator*(Vec2 a, SDL_FPoint b) { return {a.x * b.x, a.y * b.y}; }
-inline Vec2 operator/(Vec2 a, SDL_FPoint b) { return {a.x / b.x, a.y / b.y}; }
-inline Vec2 operator+(SDL_FPoint a, Vec2 b) { return {a.x + b.x, a.y + b.y}; }
-inline Vec2 operator-(SDL_FPoint a, Vec2 b) { return {a.x - b.x, a.y - b.y}; }
-inline Vec2 operator*(SDL_FPoint a, Vec2 b) { return {a.x * b.x, a.y * b.y}; }
-inline Vec2 operator/(SDL_FPoint a, Vec2 b) { return {a.x / b.x, a.y / b.y}; }
-inline Vec2 operator+(Vec2 a, float b) { return {a.x + b, a.y + b}; }
-inline Vec2 operator-(Vec2 a, float b) { return {a.x - b, a.y - b}; }
-inline Vec2 operator*(Vec2 a, float b) { return {a.x * b, a.y * b}; }
-inline Vec2 operator/(Vec2 a, float b) { return {a.x / b, a.y / b}; }
-inline Vec2 operator+(float a, Vec2 b) { return {a + b.x, a + b.y}; }
-inline Vec2 operator-(float a, Vec2 b) { return {a - b.x, a - b.y}; }
-inline Vec2 operator*(float a, Vec2 b) { return {a * b.x, a * b.y}; }
-inline Vec2 operator/(float a, Vec2 b) { return {a / b.x, a / b.y}; }
+[[nodiscard]] inline Vec2 operator+(Vec2 a, Vec2 b) noexcept { return {a.x + b.x, a.y + b.y}; }
+[[nodiscard]] inline Vec2 operator-(Vec2 a, Vec2 b) noexcept { return {a.x - b.x, a.y - b.y}; }
+[[nodiscard]] inline Vec2 operator*(Vec2 a, Vec2 b) noexcept { return {a.x * b.x, a.y * b.y}; }
+[[nodiscard]] inline Vec2 operator/(Vec2 a, Vec2 b) noexcept { return {a.x / b.x, a.y / b.y}; }
+[[nodiscard]] inline Vec2 operator+(Vec2 a, SDL_FPoint b) noexcept { return {a.x + b.x, a.y + b.y}; }
+[[nodiscard]] inline Vec2 operator-(Vec2 a, SDL_FPoint b) noexcept { return {a.x - b.x, a.y - b.y}; }
+[[nodiscard]] inline Vec2 operator*(Vec2 a, SDL_FPoint b) noexcept { return {a.x * b.x, a.y * b.y}; }
+[[nodiscard]] inline Vec2 operator/(Vec2 a, SDL_FPoint b) noexcept { return {a.x / b.x, a.y / b.y}; }
+[[nodiscard]] inline Vec2 operator+(SDL_FPoint a, Vec2 b) noexcept { return {a.x + b.x, a.y + b.y}; }
+[[nodiscard]] inline Vec2 operator-(SDL_FPoint a, Vec2 b) noexcept { return {a.x - b.x, a.y - b.y}; }
+[[nodiscard]] inline Vec2 operator*(SDL_FPoint a, Vec2 b) noexcept { return {a.x * b.x, a.y * b.y}; }
+[[nodiscard]] inline Vec2 operator/(SDL_FPoint a, Vec2 b) noexcept { return {a.x / b.x, a.y / b.y}; }
+[[nodiscard]] inline Vec2 operator+(Vec2 a, float b) noexcept { return {a.x + b, a.y + b}; }
+[[nodiscard]] inline Vec2 operator-(Vec2 a, float b) noexcept { return {a.x - b, a.y - b}; }
+[[nodiscard]] inline Vec2 operator*(Vec2 a, float b) noexcept { return {a.x * b, a.y * b}; }
+[[nodiscard]] inline Vec2 operator/(Vec2 a, float b) noexcept { return {a.x / b, a.y / b}; }
+[[nodiscard]] inline Vec2 operator+(float a, Vec2 b) noexcept { return {a + b.x, a + b.y}; }
+[[nodiscard]] inline Vec2 operator-(float a, Vec2 b) noexcept { return {a - b.x, a - b.y}; }
+[[nodiscard]] inline Vec2 operator*(float a, Vec2 b) noexcept { return {a * b.x, a * b.y}; }
+[[nodiscard]] inline Vec2 operator/(float a, Vec2 b) noexcept { return {a / b.x, a / b.y}; }
 
-inline Vec2 &Vec2::operator+=(Vec2 b) { return *this = *this + b; }
-inline Vec2 &Vec2::operator-=(Vec2 b) { return *this = *this - b; }
-inline Vec2 &Vec2::operator*=(Vec2 b) { return *this = *this * b; }
-inline Vec2 &Vec2::operator/=(Vec2 b) { return *this = *this / b; }
-inline Vec2 &Vec2::operator+=(SDL_FPoint b) { return *this = *this + b; }
-inline Vec2 &Vec2::operator-=(SDL_FPoint b) { return *this = *this - b; }
-inline Vec2 &Vec2::operator*=(SDL_FPoint b) { return *this = *this * b; }
-inline Vec2 &Vec2::operator/=(SDL_FPoint b) { return *this = *this / b; }
-inline Vec2 &Vec2::operator+=(float b) { return *this = *this + b; }
-inline Vec2 &Vec2::operator-=(float b) { return *this = *this - b; }
-inline Vec2 &Vec2::operator*=(float b) { return *this = *this * b; }
-inline Vec2 &Vec2::operator/=(float b) { return *this = *this / b; }
+inline Vec2 &Vec2::operator+=(Vec2 b) noexcept { return *this = *this + b; }
+inline Vec2 &Vec2::operator-=(Vec2 b) noexcept { return *this = *this - b; }
+inline Vec2 &Vec2::operator*=(Vec2 b) noexcept { return *this = *this * b; }
+inline Vec2 &Vec2::operator/=(Vec2 b) noexcept { return *this = *this / b; }
+inline Vec2 &Vec2::operator+=(SDL_FPoint b) noexcept { return *this = *this + b; }
+inline Vec2 &Vec2::operator-=(SDL_FPoint b) noexcept { return *this = *this - b; }
+inline Vec2 &Vec2::operator*=(SDL_FPoint b) noexcept { return *this = *this * b; }
+inline Vec2 &Vec2::operator/=(SDL_FPoint b) noexcept { return *this = *this / b; }
+inline Vec2 &Vec2::operator+=(float b) noexcept { return *this = *this + b; }
+inline Vec2 &Vec2::operator-=(float b) noexcept { return *this = *this - b; }
+inline Vec2 &Vec2::operator*=(float b) noexcept { return *this = *this * b; }
+inline Vec2 &Vec2::operator/=(float b) noexcept { return *this = *this / b; }
 
 struct Vec3 {
     float x;
     float y;
     float z;
 
-    Vec3() = default;
-    Vec3(float xyz) : x(xyz), y(xyz), z(xyz) {}
-    Vec3(float x, float y, float z) : x(x), y(y), z(z) {}
+    Vec3() noexcept = default;
+    Vec3(float xyz) noexcept : x(xyz), y(xyz), z(xyz) {}
+    Vec3(float x, float y, float z) noexcept : x(x), y(y), z(z) {}
 
-    Vec3(Vec2 v, float z) : x(v.x), y(v.y), z(z) {}
-    Vec3(float x, Vec2 v) : x(x), y(v.x), z(v.y) {}
+    Vec3(Vec2 v, float z) noexcept : x(v.x), y(v.y), z(z) {}
+    Vec3(float x, Vec2 v) noexcept : x(x), y(v.x), z(v.y) {}
 
-    inline explicit Vec3(Vec2 v);
-    inline explicit Vec3(Vec4 v);
+    inline explicit Vec3(Vec2 v) noexcept;
+    inline explicit Vec3(Vec4 v) noexcept;
 
-    inline Vec3 &operator+=(Vec3 b);
-    inline Vec3 &operator-=(Vec3 b);
-    inline Vec3 &operator*=(Vec3 b);
-    inline Vec3 &operator/=(Vec3 b);
-    inline Vec3 &operator+=(float b);
-    inline Vec3 &operator-=(float b);
-    inline Vec3 &operator*=(float b);
-    inline Vec3 &operator/=(float b);
+    inline Vec3 &operator+=(Vec3 b) noexcept;
+    inline Vec3 &operator-=(Vec3 b) noexcept;
+    inline Vec3 &operator*=(Vec3 b) noexcept;
+    inline Vec3 &operator/=(Vec3 b) noexcept;
+    inline Vec3 &operator+=(float b) noexcept;
+    inline Vec3 &operator-=(float b) noexcept;
+    inline Vec3 &operator*=(float b) noexcept;
+    inline Vec3 &operator/=(float b) noexcept;
 
     MEM_PROP_RO_EXP_DECL(Vec3, xx, Vec2);
     MEM_PROP_RO_EXP_DECL(Vec3, xy, Vec2);
@@ -262,30 +262,30 @@ struct Vec3 {
     MEM_PROP_RO_EXP_DECL(Vec3, zzzz, Vec4);
 };
 
-inline Vec3 operator+(Vec3 a) { return Vec3(+a.x, +a.y, +a.z); }
-inline Vec3 operator-(Vec3 a) { return Vec3(-a.x, -a.y, -a.z); }
+[[nodiscard]] inline Vec3 operator+(Vec3 a) noexcept { return Vec3(+a.x, +a.y, +a.z); }
+[[nodiscard]] inline Vec3 operator-(Vec3 a) noexcept { return Vec3(-a.x, -a.y, -a.z); }
 
-inline Vec3 operator+(Vec3 a, Vec3 b) { return {a.x + b.x, a.y + b.y, a.z + b.z}; }
-inline Vec3 operator-(Vec3 a, Vec3 b) { return {a.x - b.x, a.y - b.y, a.z - b.z}; }
-inline Vec3 operator*(Vec3 a, Vec3 b) { return {a.x * b.x, a.y * b.y, a.z * b.z}; }
-inline Vec3 operator/(Vec3 a, Vec3 b) { return {a.x / b.x, a.y / b.y, a.z / b.z}; }
-inline Vec3 operator+(Vec3 a, float b) { return {a.x + b, a.y + b, a.z + b}; }
-inline Vec3 operator-(Vec3 a, float b) { return {a.x - b, a.y - b, a.z - b}; }
-inline Vec3 operator*(Vec3 a, float b) { return {a.x * b, a.y * b, a.z * b}; }
-inline Vec3 operator/(Vec3 a, float b) { return {a.x / b, a.y / b, a.z / b}; }
-inline Vec3 operator+(float a, Vec3 b) { return {a + b.x, a + b.y, a + b.z}; }
-inline Vec3 operator-(float a, Vec3 b) { return {a - b.x, a - b.y, a - b.z}; }
-inline Vec3 operator*(float a, Vec3 b) { return {a * b.x, a * b.y, a * b.z}; }
-inline Vec3 operator/(float a, Vec3 b) { return {a / b.x, a / b.y, a / b.z}; }
+[[nodiscard]] inline Vec3 operator+(Vec3 a, Vec3 b) noexcept { return {a.x + b.x, a.y + b.y, a.z + b.z}; }
+[[nodiscard]] inline Vec3 operator-(Vec3 a, Vec3 b) noexcept { return {a.x - b.x, a.y - b.y, a.z - b.z}; }
+[[nodiscard]] inline Vec3 operator*(Vec3 a, Vec3 b) noexcept { return {a.x * b.x, a.y * b.y, a.z * b.z}; }
+[[nodiscard]] inline Vec3 operator/(Vec3 a, Vec3 b) noexcept { return {a.x / b.x, a.y / b.y, a.z / b.z}; }
+[[nodiscard]] inline Vec3 operator+(Vec3 a, float b) noexcept { return {a.x + b, a.y + b, a.z + b}; }
+[[nodiscard]] inline Vec3 operator-(Vec3 a, float b) noexcept { return {a.x - b, a.y - b, a.z - b}; }
+[[nodiscard]] inline Vec3 operator*(Vec3 a, float b) noexcept { return {a.x * b, a.y * b, a.z * b}; }
+[[nodiscard]] inline Vec3 operator/(Vec3 a, float b) noexcept { return {a.x / b, a.y / b, a.z / b}; }
+[[nodiscard]] inline Vec3 operator+(float a, Vec3 b) noexcept { return {a + b.x, a + b.y, a + b.z}; }
+[[nodiscard]] inline Vec3 operator-(float a, Vec3 b) noexcept { return {a - b.x, a - b.y, a - b.z}; }
+[[nodiscard]] inline Vec3 operator*(float a, Vec3 b) noexcept { return {a * b.x, a * b.y, a * b.z}; }
+[[nodiscard]] inline Vec3 operator/(float a, Vec3 b) noexcept { return {a / b.x, a / b.y, a / b.z}; }
 
-inline Vec3 &Vec3::operator+=(Vec3 b) { return *this = *this + b; }
-inline Vec3 &Vec3::operator-=(Vec3 b) { return *this = *this - b; }
-inline Vec3 &Vec3::operator*=(Vec3 b) { return *this = *this * b; }
-inline Vec3 &Vec3::operator/=(Vec3 b) { return *this = *this / b; }
-inline Vec3 &Vec3::operator+=(float b) { return *this = *this + b; }
-inline Vec3 &Vec3::operator-=(float b) { return *this = *this - b; }
-inline Vec3 &Vec3::operator*=(float b) { return *this = *this * b; }
-inline Vec3 &Vec3::operator/=(float b) { return *this = *this / b; }
+inline Vec3 &Vec3::operator+=(Vec3 b) noexcept { return *this = *this + b; }
+inline Vec3 &Vec3::operator-=(Vec3 b) noexcept { return *this = *this - b; }
+inline Vec3 &Vec3::operator*=(Vec3 b) noexcept { return *this = *this * b; }
+inline Vec3 &Vec3::operator/=(Vec3 b) noexcept { return *this = *this / b; }
+inline Vec3 &Vec3::operator+=(float b) noexcept { return *this = *this + b; }
+inline Vec3 &Vec3::operator-=(float b) noexcept { return *this = *this - b; }
+inline Vec3 &Vec3::operator*=(float b) noexcept { return *this = *this * b; }
+inline Vec3 &Vec3::operator/=(float b) noexcept { return *this = *this / b; }
 
 struct Vec4 {
     float x;
@@ -293,36 +293,36 @@ struct Vec4 {
     float z;
     float w;
 
-    Vec4() = default;
-    Vec4(float xyzw) : x(xyzw), y(xyzw), z(xyzw), w(xyzw) {}
-    Vec4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
+    Vec4() noexcept = default;
+    Vec4(float xyzw) noexcept : x(xyzw), y(xyzw), z(xyzw), w(xyzw) {}
+    Vec4(float x, float y, float z, float w) noexcept : x(x), y(y), z(z), w(w) {}
 
-    Vec4(SDL_FRect v) : x(v.x), y(v.y), z(v.w), w(v.h) {}
+    Vec4(SDL_FRect v) noexcept : x(v.x), y(v.y), z(v.w), w(v.h) {}
 
-    Vec4(Vec2 v, float z, float w) : x(v.x), y(v.y), z(z), w(w) {}
-    Vec4(float x, Vec2 v, float w) : x(x), y(v.x), z(v.y), w(w) {}
-    Vec4(float x, float y, Vec2 v) : x(x), y(y), z(v.x), w(v.y) {}
-    Vec4(Vec2 v, Vec2 u) : x(v.x), y(v.y), z(u.x), w(u.y) {}
-    Vec4(Vec3 v, float w) : x(v.x), y(v.y), z(v.z), w(w) {}
-    Vec4(float x, Vec3 v) : x(x), y(v.x), z(v.y), w(v.z) {}
+    Vec4(Vec2 v, float z, float w) noexcept : x(v.x), y(v.y), z(z), w(w) {}
+    Vec4(float x, Vec2 v, float w) noexcept : x(x), y(v.x), z(v.y), w(w) {}
+    Vec4(float x, float y, Vec2 v) noexcept : x(x), y(y), z(v.x), w(v.y) {}
+    Vec4(Vec2 v, Vec2 u) noexcept : x(v.x), y(v.y), z(u.x), w(u.y) {}
+    Vec4(Vec3 v, float w) noexcept : x(v.x), y(v.y), z(v.z), w(w) {}
+    Vec4(float x, Vec3 v) noexcept : x(x), y(v.x), z(v.y), w(v.z) {}
 
-    inline explicit Vec4(Vec2 v);
-    inline explicit Vec4(Vec3 v);
+    inline explicit Vec4(Vec2 v) noexcept;
+    inline explicit Vec4(Vec3 v) noexcept;
 
-    operator SDL_FRect() const { return {x, y, z, w}; }
+    [[nodiscard]] operator SDL_FRect() const noexcept { return {x, y, z, w}; }
 
-    inline Vec4 &operator+=(Vec4 b);
-    inline Vec4 &operator-=(Vec4 b);
-    inline Vec4 &operator*=(Vec4 b);
-    inline Vec4 &operator/=(Vec4 b);
-    inline Vec4 &operator+=(SDL_FRect b);
-    inline Vec4 &operator-=(SDL_FRect b);
-    inline Vec4 &operator*=(SDL_FRect b);
-    inline Vec4 &operator/=(SDL_FRect b);
-    inline Vec4 &operator+=(float b);
-    inline Vec4 &operator-=(float b);
-    inline Vec4 &operator*=(float b);
-    inline Vec4 &operator/=(float b);
+    inline Vec4 &operator+=(Vec4 b) noexcept;
+    inline Vec4 &operator-=(Vec4 b) noexcept;
+    inline Vec4 &operator*=(Vec4 b) noexcept;
+    inline Vec4 &operator/=(Vec4 b) noexcept;
+    inline Vec4 &operator+=(SDL_FRect b) noexcept;
+    inline Vec4 &operator-=(SDL_FRect b) noexcept;
+    inline Vec4 &operator*=(SDL_FRect b) noexcept;
+    inline Vec4 &operator/=(SDL_FRect b) noexcept;
+    inline Vec4 &operator+=(float b) noexcept;
+    inline Vec4 &operator-=(float b) noexcept;
+    inline Vec4 &operator*=(float b) noexcept;
+    inline Vec4 &operator/=(float b) noexcept;
 
     MEM_PROP_RO_EXP_DECL(Vec4, xx, Vec2);
     MEM_PROP_RO_EXP_DECL(Vec4, xy, Vec2);
@@ -664,49 +664,49 @@ struct Vec4 {
     MEM_PROP_RO_EXP_DECL(Vec4, wwww, Vec4);
 };
 
-inline Vec4 operator+(Vec4 a) { return Vec4(+a.x, +a.y, +a.z, +a.w); }
-inline Vec4 operator-(Vec4 a) { return Vec4(-a.x, -a.y, -a.z, -a.w); }
+[[nodiscard]] inline Vec4 operator+(Vec4 a) noexcept { return Vec4(+a.x, +a.y, +a.z, +a.w); }
+[[nodiscard]] inline Vec4 operator-(Vec4 a) noexcept { return Vec4(-a.x, -a.y, -a.z, -a.w); }
 
-inline Vec4 operator+(Vec4 a, Vec4 b) { return {a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w}; }
-inline Vec4 operator-(Vec4 a, Vec4 b) { return {a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w}; }
-inline Vec4 operator*(Vec4 a, Vec4 b) { return {a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w}; }
-inline Vec4 operator/(Vec4 a, Vec4 b) { return {a.x / b.x, a.y / b.y, a.z / b.z, a.w / b.w}; }
-inline Vec4 operator+(Vec4 a, SDL_FRect b) { return {a.x + b.x, a.y + b.y, a.z + b.w, a.w + b.h}; }
-inline Vec4 operator-(Vec4 a, SDL_FRect b) { return {a.x - b.x, a.y - b.y, a.z - b.w, a.w - b.h}; }
-inline Vec4 operator*(Vec4 a, SDL_FRect b) { return {a.x * b.x, a.y * b.y, a.z * b.w, a.w * b.h}; }
-inline Vec4 operator/(Vec4 a, SDL_FRect b) { return {a.x / b.x, a.y / b.y, a.z / b.w, a.w / b.h}; }
-inline Vec4 operator+(SDL_FRect a, Vec4 b) { return {a.x + b.x, a.y + b.y, a.w + b.z, a.h + b.w}; }
-inline Vec4 operator-(SDL_FRect a, Vec4 b) { return {a.x - b.x, a.y - b.y, a.w - b.z, a.h - b.w}; }
-inline Vec4 operator*(SDL_FRect a, Vec4 b) { return {a.x * b.x, a.y * b.y, a.w * b.z, a.h * b.w}; }
-inline Vec4 operator/(SDL_FRect a, Vec4 b) { return {a.x / b.x, a.y / b.y, a.w / b.z, a.h / b.w}; }
-inline Vec4 operator+(Vec4 a, float b) { return {a.x + b, a.y + b, a.z + b, a.w + b}; }
-inline Vec4 operator-(Vec4 a, float b) { return {a.x - b, a.y - b, a.z - b, a.w - b}; }
-inline Vec4 operator*(Vec4 a, float b) { return {a.x * b, a.y * b, a.z * b, a.w * b}; }
-inline Vec4 operator/(Vec4 a, float b) { return {a.x / b, a.y / b, a.z / b, a.w / b}; }
-inline Vec4 operator+(float a, Vec4 b) { return {a + b.x, a + b.y, a + b.z, a + b.w}; }
-inline Vec4 operator-(float a, Vec4 b) { return {a - b.x, a - b.y, a - b.z, a - b.w}; }
-inline Vec4 operator*(float a, Vec4 b) { return {a * b.x, a * b.y, a * b.z, a * b.w}; }
-inline Vec4 operator/(float a, Vec4 b) { return {a / b.x, a / b.y, a / b.z, a / b.w}; }
+[[nodiscard]] inline Vec4 operator+(Vec4 a, Vec4 b) noexcept { return {a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w}; }
+[[nodiscard]] inline Vec4 operator-(Vec4 a, Vec4 b) noexcept { return {a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w}; }
+[[nodiscard]] inline Vec4 operator*(Vec4 a, Vec4 b) noexcept { return {a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w}; }
+[[nodiscard]] inline Vec4 operator/(Vec4 a, Vec4 b) noexcept { return {a.x / b.x, a.y / b.y, a.z / b.z, a.w / b.w}; }
+[[nodiscard]] inline Vec4 operator+(Vec4 a, SDL_FRect b) noexcept { return {a.x + b.x, a.y + b.y, a.z + b.w, a.w + b.h}; }
+[[nodiscard]] inline Vec4 operator-(Vec4 a, SDL_FRect b) noexcept { return {a.x - b.x, a.y - b.y, a.z - b.w, a.w - b.h}; }
+[[nodiscard]] inline Vec4 operator*(Vec4 a, SDL_FRect b) noexcept { return {a.x * b.x, a.y * b.y, a.z * b.w, a.w * b.h}; }
+[[nodiscard]] inline Vec4 operator/(Vec4 a, SDL_FRect b) noexcept { return {a.x / b.x, a.y / b.y, a.z / b.w, a.w / b.h}; }
+[[nodiscard]] inline Vec4 operator+(SDL_FRect a, Vec4 b) noexcept { return {a.x + b.x, a.y + b.y, a.w + b.z, a.h + b.w}; }
+[[nodiscard]] inline Vec4 operator-(SDL_FRect a, Vec4 b) noexcept { return {a.x - b.x, a.y - b.y, a.w - b.z, a.h - b.w}; }
+[[nodiscard]] inline Vec4 operator*(SDL_FRect a, Vec4 b) noexcept { return {a.x * b.x, a.y * b.y, a.w * b.z, a.h * b.w}; }
+[[nodiscard]] inline Vec4 operator/(SDL_FRect a, Vec4 b) noexcept { return {a.x / b.x, a.y / b.y, a.w / b.z, a.h / b.w}; }
+[[nodiscard]] inline Vec4 operator+(Vec4 a, float b) noexcept { return {a.x + b, a.y + b, a.z + b, a.w + b}; }
+[[nodiscard]] inline Vec4 operator-(Vec4 a, float b) noexcept { return {a.x - b, a.y - b, a.z - b, a.w - b}; }
+[[nodiscard]] inline Vec4 operator*(Vec4 a, float b) noexcept { return {a.x * b, a.y * b, a.z * b, a.w * b}; }
+[[nodiscard]] inline Vec4 operator/(Vec4 a, float b) noexcept { return {a.x / b, a.y / b, a.z / b, a.w / b}; }
+[[nodiscard]] inline Vec4 operator+(float a, Vec4 b) noexcept { return {a + b.x, a + b.y, a + b.z, a + b.w}; }
+[[nodiscard]] inline Vec4 operator-(float a, Vec4 b) noexcept { return {a - b.x, a - b.y, a - b.z, a - b.w}; }
+[[nodiscard]] inline Vec4 operator*(float a, Vec4 b) noexcept { return {a * b.x, a * b.y, a * b.z, a * b.w}; }
+[[nodiscard]] inline Vec4 operator/(float a, Vec4 b) noexcept { return {a / b.x, a / b.y, a / b.z, a / b.w}; }
 
-inline Vec4 &Vec4::operator+=(Vec4 b) { return *this = *this + b; }
-inline Vec4 &Vec4::operator-=(Vec4 b) { return *this = *this - b; }
-inline Vec4 &Vec4::operator*=(Vec4 b) { return *this = *this * b; }
-inline Vec4 &Vec4::operator/=(Vec4 b) { return *this = *this / b; }
-inline Vec4 &Vec4::operator+=(SDL_FRect b) { return *this = *this + b; }
-inline Vec4 &Vec4::operator-=(SDL_FRect b) { return *this = *this - b; }
-inline Vec4 &Vec4::operator*=(SDL_FRect b) { return *this = *this * b; }
-inline Vec4 &Vec4::operator/=(SDL_FRect b) { return *this = *this / b; }
-inline Vec4 &Vec4::operator+=(float b) { return *this = *this + b; }
-inline Vec4 &Vec4::operator-=(float b) { return *this = *this - b; }
-inline Vec4 &Vec4::operator*=(float b) { return *this = *this * b; }
-inline Vec4 &Vec4::operator/=(float b) { return *this = *this / b; }
+inline Vec4 &Vec4::operator+=(Vec4 b) noexcept { return *this = *this + b; }
+inline Vec4 &Vec4::operator-=(Vec4 b) noexcept { return *this = *this - b; }
+inline Vec4 &Vec4::operator*=(Vec4 b) noexcept { return *this = *this * b; }
+inline Vec4 &Vec4::operator/=(Vec4 b) noexcept { return *this = *this / b; }
+inline Vec4 &Vec4::operator+=(SDL_FRect b) noexcept { return *this = *this + b; }
+inline Vec4 &Vec4::operator-=(SDL_FRect b) noexcept { return *this = *this - b; }
+inline Vec4 &Vec4::operator*=(SDL_FRect b) noexcept { return *this = *this * b; }
+inline Vec4 &Vec4::operator/=(SDL_FRect b) noexcept { return *this = *this / b; }
+inline Vec4 &Vec4::operator+=(float b) noexcept { return *this = *this + b; }
+inline Vec4 &Vec4::operator-=(float b) noexcept { return *this = *this - b; }
+inline Vec4 &Vec4::operator*=(float b) noexcept { return *this = *this * b; }
+inline Vec4 &Vec4::operator/=(float b) noexcept { return *this = *this / b; }
 
-inline Vec2::Vec2(Vec3 v) : x(v.x), y(v.y) {}
-inline Vec2::Vec2(Vec4 v) : x(v.x), y(v.y) {}
-inline Vec3::Vec3(Vec2 v) : x(v.x), y(v.y), z(0.0f) {}
-inline Vec3::Vec3(Vec4 v) : x(v.x), y(v.y), z(v.z) {}
-inline Vec4::Vec4(Vec2 v) : x(v.x), y(v.y), z(0.0f), w(0.0f) {}
-inline Vec4::Vec4(Vec3 v) : x(v.x), y(v.y), z(v.z), w(0.0f) {}
+inline Vec2::Vec2(Vec3 v) noexcept : x(v.x), y(v.y) {}
+inline Vec2::Vec2(Vec4 v) noexcept : x(v.x), y(v.y) {}
+inline Vec3::Vec3(Vec2 v) noexcept : x(v.x), y(v.y), z(0.0f) {}
+inline Vec3::Vec3(Vec4 v) noexcept : x(v.x), y(v.y), z(v.z) {}
+inline Vec4::Vec4(Vec2 v) noexcept : x(v.x), y(v.y), z(0.0f), w(0.0f) {}
+inline Vec4::Vec4(Vec3 v) noexcept : x(v.x), y(v.y), z(v.z), w(0.0f) {}
 
 MEM_PROP_RO_EXP_DEF(Vec2, xx, Vec2, Vec2(self.x, self.x));
 MEM_PROP_RO_EXP_DEF(Vec2, xy, Vec2, Vec2(self.x, self.y));
@@ -1311,10 +1311,18 @@ inline Vec2 rotate(Vec2 v, float a) {
     return Vec2(v.x * c - v.y * s, v.x * s + v.y * c);
 }
 
+inline Vec2 rotate_around(Vec2 v, Vec2 o, float a) {
+    return rotate(v - o, a) + o;
+}
+
 inline Vec3 rotate(Vec3 v, Vec3 axis, float a) {
     float c = cos(a);
     float s = sin(a);
     return v * c + cross(axis, v) * s + axis * dot(axis, v) * (1.0f - c);
+}
+
+inline Vec3 rotate_around(Vec3 v, Vec3 o, Vec3 axis, float a) {
+    return rotate(v - o, axis, a) + o;
 }
 
 inline Vec3 add_vw(Vec4 v) { return Vec3(v.x + v.w, v.y + v.w, v.z + v.w); }
@@ -1349,13 +1357,13 @@ struct Mat2 {
 
     MEM_PROP_EXP(Mat2, diag, Vec2, Vec2(self.m[0], self.m[3]), (self.m = {value.x, self.m[1], self.m[2], value.y}));
 
-    Mat2() = default;
-    Mat2(M m) : m({m[0], m[1], m[2], m[3]}) {}
-    Mat2(float m0, float m1, float m2, float m3) : m({m0, m1, m2, m3}) {}
-    Mat2(Vec2 v1, Vec2 v2) : m({v1.x, v1.y, v2.x, v2.y}) {}
+    Mat2() noexcept = default;
+    Mat2(M m) noexcept : m({m[0], m[1], m[2], m[3]}) {}
+    Mat2(float m0, float m1, float m2, float m3) noexcept : m({m0, m1, m2, m3}) {}
+    Mat2(Vec2 v1, Vec2 v2) noexcept : m({v1.x, v1.y, v2.x, v2.y}) {}
 
-    inline explicit Mat2(Mat3 m);
-    inline explicit Mat2(Mat4 m);
+    inline explicit Mat2(Mat3 m) noexcept;
+    inline explicit Mat2(Mat4 m) noexcept;
 
     static Mat2 from_rows(Vec4 m) { return Mat2(m.x, m.y, m.z, m.w); }
 
@@ -1365,40 +1373,40 @@ struct Mat2 {
 
     Vec4 to_cols() const { return Vec4(m[0], m[2], m[1], m[3]); }
 
-    inline Mat2 &operator+=(Mat2 b);
-    inline Mat2 &operator-=(Mat2 b);
-    inline Mat2 &operator*=(Mat2 b);
-    inline Mat2 &operator/=(Mat2 b);
-    inline Mat2 &operator+=(float b);
-    inline Mat2 &operator-=(float b);
-    inline Mat2 &operator*=(float b);
-    inline Mat2 &operator/=(float b);
+    inline Mat2 &operator+=(Mat2 b) noexcept;
+    inline Mat2 &operator-=(Mat2 b) noexcept;
+    inline Mat2 &operator*=(Mat2 b) noexcept;
+    inline Mat2 &operator/=(Mat2 b) noexcept;
+    inline Mat2 &operator+=(float b) noexcept;
+    inline Mat2 &operator-=(float b) noexcept;
+    inline Mat2 &operator*=(float b) noexcept;
+    inline Mat2 &operator/=(float b) noexcept;
 };
 
-inline Mat2 operator+(Mat2 a) { return Mat2(+a.m[0], +a.m[1], +a.m[2], +a.m[3]); }
-inline Mat2 operator-(Mat2 a) { return Mat2(-a.m[0], -a.m[1], -a.m[2], -a.m[3]); }
+[[nodiscard]] inline Mat2 operator+(Mat2 a) noexcept { return Mat2(+a.m[0], +a.m[1], +a.m[2], +a.m[3]); }
+[[nodiscard]] inline Mat2 operator-(Mat2 a) noexcept { return Mat2(-a.m[0], -a.m[1], -a.m[2], -a.m[3]); }
 
-inline Mat2 operator+(Mat2 a, Mat2 b) { return Mat2(a.m[0] + b.m[0], a.m[1] + b.m[1], a.m[2] + b.m[2], a.m[3] + b.m[3]); }
-inline Mat2 operator-(Mat2 a, Mat2 b) { return Mat2(a.m[0] - b.m[0], a.m[1] - b.m[1], a.m[2] - b.m[2], a.m[3] - b.m[3]); }
-inline Mat2 operator*(Mat2 a, Mat2 b) { return Mat2(a.m[0] * b.m[0], a.m[1] * b.m[1], a.m[2] * b.m[2], a.m[3] * b.m[3]); }
-inline Mat2 operator/(Mat2 a, Mat2 b) { return Mat2(a.m[0] / b.m[0], a.m[1] / b.m[1], a.m[2] / b.m[2], a.m[3] / b.m[3]); }
-inline Mat2 operator+(Mat2 a, float b) { return Mat2(a.m[0] + b, a.m[1] + b, a.m[2] + b, a.m[3] + b); }
-inline Mat2 operator-(Mat2 a, float b) { return Mat2(a.m[0] - b, a.m[1] - b, a.m[2] - b, a.m[3] - b); }
-inline Mat2 operator*(Mat2 a, float b) { return Mat2(a.m[0] * b, a.m[1] * b, a.m[2] * b, a.m[3] * b); }
-inline Mat2 operator/(Mat2 a, float b) { return Mat2(a.m[0] / b, a.m[1] / b, a.m[2] / b, a.m[3] / b); }
-inline Mat2 operator+(float a, Mat2 b) { return Mat2(a + b.m[0], a + b.m[1], a + b.m[2], a + b.m[3]); }
-inline Mat2 operator-(float a, Mat2 b) { return Mat2(a - b.m[0], a - b.m[1], a - b.m[2], a - b.m[3]); }
-inline Mat2 operator*(float a, Mat2 b) { return Mat2(a * b.m[0], a * b.m[1], a * b.m[2], a * b.m[3]); }
-inline Mat2 operator/(float a, Mat2 b) { return Mat2(a / b.m[0], a / b.m[1], a / b.m[2], a / b.m[3]); }
+[[nodiscard]] inline Mat2 operator+(Mat2 a, Mat2 b) noexcept { return Mat2(a.m[0] + b.m[0], a.m[1] + b.m[1], a.m[2] + b.m[2], a.m[3] + b.m[3]); }
+[[nodiscard]] inline Mat2 operator-(Mat2 a, Mat2 b) noexcept { return Mat2(a.m[0] - b.m[0], a.m[1] - b.m[1], a.m[2] - b.m[2], a.m[3] - b.m[3]); }
+[[nodiscard]] inline Mat2 operator*(Mat2 a, Mat2 b) noexcept { return Mat2(a.m[0] * b.m[0], a.m[1] * b.m[1], a.m[2] * b.m[2], a.m[3] * b.m[3]); }
+[[nodiscard]] inline Mat2 operator/(Mat2 a, Mat2 b) noexcept { return Mat2(a.m[0] / b.m[0], a.m[1] / b.m[1], a.m[2] / b.m[2], a.m[3] / b.m[3]); }
+[[nodiscard]] inline Mat2 operator+(Mat2 a, float b) noexcept { return Mat2(a.m[0] + b, a.m[1] + b, a.m[2] + b, a.m[3] + b); }
+[[nodiscard]] inline Mat2 operator-(Mat2 a, float b) noexcept { return Mat2(a.m[0] - b, a.m[1] - b, a.m[2] - b, a.m[3] - b); }
+[[nodiscard]] inline Mat2 operator*(Mat2 a, float b) noexcept { return Mat2(a.m[0] * b, a.m[1] * b, a.m[2] * b, a.m[3] * b); }
+[[nodiscard]] inline Mat2 operator/(Mat2 a, float b) noexcept { return Mat2(a.m[0] / b, a.m[1] / b, a.m[2] / b, a.m[3] / b); }
+[[nodiscard]] inline Mat2 operator+(float a, Mat2 b) noexcept { return Mat2(a + b.m[0], a + b.m[1], a + b.m[2], a + b.m[3]); }
+[[nodiscard]] inline Mat2 operator-(float a, Mat2 b) noexcept { return Mat2(a - b.m[0], a - b.m[1], a - b.m[2], a - b.m[3]); }
+[[nodiscard]] inline Mat2 operator*(float a, Mat2 b) noexcept { return Mat2(a * b.m[0], a * b.m[1], a * b.m[2], a * b.m[3]); }
+[[nodiscard]] inline Mat2 operator/(float a, Mat2 b) noexcept { return Mat2(a / b.m[0], a / b.m[1], a / b.m[2], a / b.m[3]); }
 
-inline Mat2 &Mat2::operator+=(Mat2 b) { return *this = *this + b; }
-inline Mat2 &Mat2::operator-=(Mat2 b) { return *this = *this - b; }
-inline Mat2 &Mat2::operator*=(Mat2 b) { return *this = *this * b; }
-inline Mat2 &Mat2::operator/=(Mat2 b) { return *this = *this / b; }
-inline Mat2 &Mat2::operator+=(float b) { return *this = *this + b; }
-inline Mat2 &Mat2::operator-=(float b) { return *this = *this - b; }
-inline Mat2 &Mat2::operator*=(float b) { return *this = *this * b; }
-inline Mat2 &Mat2::operator/=(float b) { return *this = *this / b; }
+inline Mat2 &Mat2::operator+=(Mat2 b) noexcept { return *this = *this + b; }
+inline Mat2 &Mat2::operator-=(Mat2 b) noexcept { return *this = *this - b; }
+inline Mat2 &Mat2::operator*=(Mat2 b) noexcept { return *this = *this * b; }
+inline Mat2 &Mat2::operator/=(Mat2 b) noexcept { return *this = *this / b; }
+inline Mat2 &Mat2::operator+=(float b) noexcept { return *this = *this + b; }
+inline Mat2 &Mat2::operator-=(float b) noexcept { return *this = *this - b; }
+inline Mat2 &Mat2::operator*=(float b) noexcept { return *this = *this * b; }
+inline Mat2 &Mat2::operator/=(float b) noexcept { return *this = *this / b; }
 
 struct Mat3 {
     using M = std::array<float, 9>;
@@ -1416,48 +1424,48 @@ struct Mat3 {
 
     MEM_PROP_EXP(Mat3, diag, Vec3, Vec3(self.m[0], self.m[3], self.m[6]), (self.m = {value.x, self.m[1], self.m[2], self.m[3], value.y, self.m[5], self.m[6], self.m[7], value.z}));
 
-    Mat3() = default;
-    Mat3(M m) : m({m[0], m[1], m[2], m[3], m[4], m[5], m[6], m[7], m[8]}) {}
-    Mat3(float m0, float m1, float m2, float m3, float m4, float m5, float m6, float m7, float m8) : m({m0, m1, m2, m3, m4, m5, m6, m7, m8}) {}
-    Mat3(Vec3 v1, Vec3 v2, Vec3 v3) : m({v1.x, v1.y, v1.z, v2.x, v2.y, v2.z, v3.x, v3.y, v3.z}) {}
+    Mat3() noexcept = default;
+    Mat3(M m) noexcept : m({m[0], m[1], m[2], m[3], m[4], m[5], m[6], m[7], m[8]}) {}
+    Mat3(float m0, float m1, float m2, float m3, float m4, float m5, float m6, float m7, float m8) noexcept : m({m0, m1, m2, m3, m4, m5, m6, m7, m8}) {}
+    Mat3(Vec3 v1, Vec3 v2, Vec3 v3) noexcept : m({v1.x, v1.y, v1.z, v2.x, v2.y, v2.z, v3.x, v3.y, v3.z}) {}
 
-    inline explicit Mat3(Mat2 m);
-    inline explicit Mat3(Mat4 m);
+    inline explicit Mat3(Mat2 m) noexcept;
+    inline explicit Mat3(Mat4 m) noexcept;
 
-    inline Mat3 &operator+=(Mat3 b);
-    inline Mat3 &operator-=(Mat3 b);
-    inline Mat3 &operator*=(Mat3 b);
-    inline Mat3 &operator/=(Mat3 b);
-    inline Mat3 &operator+=(float b);
-    inline Mat3 &operator-=(float b);
-    inline Mat3 &operator*=(float b);
-    inline Mat3 &operator/=(float b);
+    inline Mat3 &operator+=(Mat3 b) noexcept;
+    inline Mat3 &operator-=(Mat3 b) noexcept;
+    inline Mat3 &operator*=(Mat3 b) noexcept;
+    inline Mat3 &operator/=(Mat3 b) noexcept;
+    inline Mat3 &operator+=(float b) noexcept;
+    inline Mat3 &operator-=(float b) noexcept;
+    inline Mat3 &operator*=(float b) noexcept;
+    inline Mat3 &operator/=(float b) noexcept;
 };
 
-inline Mat3 operator+(Mat3 a) { return Mat3(+a.m[0], +a.m[1], +a.m[2], +a.m[3], +a.m[4], +a.m[5], +a.m[6], +a.m[7], +a.m[8]); }
-inline Mat3 operator-(Mat3 a) { return Mat3(-a.m[0], -a.m[1], -a.m[2], -a.m[3], -a.m[4], -a.m[5], -a.m[6], -a.m[7], -a.m[8]); }
+[[nodiscard]] inline Mat3 operator+(Mat3 a) noexcept { return Mat3(+a.m[0], +a.m[1], +a.m[2], +a.m[3], +a.m[4], +a.m[5], +a.m[6], +a.m[7], +a.m[8]); }
+[[nodiscard]] inline Mat3 operator-(Mat3 a) noexcept { return Mat3(-a.m[0], -a.m[1], -a.m[2], -a.m[3], -a.m[4], -a.m[5], -a.m[6], -a.m[7], -a.m[8]); }
 
-inline Mat3 operator+(Mat3 a, Mat3 b) { return Mat3(a.m[0] + b.m[0], a.m[1] + b.m[1], a.m[2] + b.m[2], a.m[3] + b.m[3], a.m[4] + b.m[4], a.m[5] + b.m[5], a.m[6] + b.m[6], a.m[7] + b.m[7], a.m[8] + b.m[8]); }
-inline Mat3 operator-(Mat3 a, Mat3 b) { return Mat3(a.m[0] - b.m[0], a.m[1] - b.m[1], a.m[2] - b.m[2], a.m[3] - b.m[3], a.m[4] - b.m[4], a.m[5] - b.m[5], a.m[6] - b.m[6], a.m[7] - b.m[7], a.m[8] - b.m[8]); }
-inline Mat3 operator*(Mat3 a, Mat3 b) { return Mat3(a.m[0] * b.m[0], a.m[1] * b.m[1], a.m[2] * b.m[2], a.m[3] * b.m[3], a.m[4] * b.m[4], a.m[5] * b.m[5], a.m[6] * b.m[6], a.m[7] * b.m[7], a.m[8] * b.m[8]); }
-inline Mat3 operator/(Mat3 a, Mat3 b) { return Mat3(a.m[0] / b.m[0], a.m[1] / b.m[1], a.m[2] / b.m[2], a.m[3] / b.m[3], a.m[4] / b.m[4], a.m[5] / b.m[5], a.m[6] / b.m[6], a.m[7] / b.m[7], a.m[8] / b.m[8]); }
-inline Mat3 operator+(Mat3 a, float b) { return Mat3(a.m[0] + b, a.m[1] + b, a.m[2] + b, a.m[3] + b, a.m[4] + b, a.m[5] + b, a.m[6] + b, a.m[7] + b, a.m[8] + b); }
-inline Mat3 operator-(Mat3 a, float b) { return Mat3(a.m[0] - b, a.m[1] - b, a.m[2] - b, a.m[3] - b, a.m[4] - b, a.m[5] - b, a.m[6] - b, a.m[7] - b, a.m[8] - b); }
-inline Mat3 operator*(Mat3 a, float b) { return Mat3(a.m[0] * b, a.m[1] * b, a.m[2] * b, a.m[3] * b, a.m[4] * b, a.m[5] * b, a.m[6] * b, a.m[7] * b, a.m[8] * b); }
-inline Mat3 operator/(Mat3 a, float b) { return Mat3(a.m[0] / b, a.m[1] / b, a.m[2] / b, a.m[3] / b, a.m[4] / b, a.m[5] / b, a.m[6] / b, a.m[7] / b, a.m[8] / b); }
-inline Mat3 operator+(float a, Mat3 b) { return Mat3(a + b.m[0], a + b.m[1], a + b.m[2], a + b.m[3], a + b.m[4], a + b.m[5], a + b.m[6], a + b.m[7], a + b.m[8]); }
-inline Mat3 operator-(float a, Mat3 b) { return Mat3(a - b.m[0], a - b.m[1], a - b.m[2], a - b.m[3], a - b.m[4], a - b.m[5], a - b.m[6], a - b.m[7], a - b.m[8]); }
-inline Mat3 operator*(float a, Mat3 b) { return Mat3(a * b.m[0], a * b.m[1], a * b.m[2], a * b.m[3], a * b.m[4], a * b.m[5], a * b.m[6], a * b.m[7], a * b.m[8]); }
-inline Mat3 operator/(float a, Mat3 b) { return Mat3(a / b.m[0], a / b.m[1], a / b.m[2], a / b.m[3], a / b.m[4], a / b.m[5], a / b.m[6], a / b.m[7], a / b.m[8]); }
+[[nodiscard]] inline Mat3 operator+(Mat3 a, Mat3 b) noexcept { return Mat3(a.m[0] + b.m[0], a.m[1] + b.m[1], a.m[2] + b.m[2], a.m[3] + b.m[3], a.m[4] + b.m[4], a.m[5] + b.m[5], a.m[6] + b.m[6], a.m[7] + b.m[7], a.m[8] + b.m[8]); }
+[[nodiscard]] inline Mat3 operator-(Mat3 a, Mat3 b) noexcept { return Mat3(a.m[0] - b.m[0], a.m[1] - b.m[1], a.m[2] - b.m[2], a.m[3] - b.m[3], a.m[4] - b.m[4], a.m[5] - b.m[5], a.m[6] - b.m[6], a.m[7] - b.m[7], a.m[8] - b.m[8]); }
+[[nodiscard]] inline Mat3 operator*(Mat3 a, Mat3 b) noexcept { return Mat3(a.m[0] * b.m[0], a.m[1] * b.m[1], a.m[2] * b.m[2], a.m[3] * b.m[3], a.m[4] * b.m[4], a.m[5] * b.m[5], a.m[6] * b.m[6], a.m[7] * b.m[7], a.m[8] * b.m[8]); }
+[[nodiscard]] inline Mat3 operator/(Mat3 a, Mat3 b) noexcept { return Mat3(a.m[0] / b.m[0], a.m[1] / b.m[1], a.m[2] / b.m[2], a.m[3] / b.m[3], a.m[4] / b.m[4], a.m[5] / b.m[5], a.m[6] / b.m[6], a.m[7] / b.m[7], a.m[8] / b.m[8]); }
+[[nodiscard]] inline Mat3 operator+(Mat3 a, float b) noexcept { return Mat3(a.m[0] + b, a.m[1] + b, a.m[2] + b, a.m[3] + b, a.m[4] + b, a.m[5] + b, a.m[6] + b, a.m[7] + b, a.m[8] + b); }
+[[nodiscard]] inline Mat3 operator-(Mat3 a, float b) noexcept { return Mat3(a.m[0] - b, a.m[1] - b, a.m[2] - b, a.m[3] - b, a.m[4] - b, a.m[5] - b, a.m[6] - b, a.m[7] - b, a.m[8] - b); }
+[[nodiscard]] inline Mat3 operator*(Mat3 a, float b) noexcept { return Mat3(a.m[0] * b, a.m[1] * b, a.m[2] * b, a.m[3] * b, a.m[4] * b, a.m[5] * b, a.m[6] * b, a.m[7] * b, a.m[8] * b); }
+[[nodiscard]] inline Mat3 operator/(Mat3 a, float b) noexcept { return Mat3(a.m[0] / b, a.m[1] / b, a.m[2] / b, a.m[3] / b, a.m[4] / b, a.m[5] / b, a.m[6] / b, a.m[7] / b, a.m[8] / b); }
+[[nodiscard]] inline Mat3 operator+(float a, Mat3 b) noexcept { return Mat3(a + b.m[0], a + b.m[1], a + b.m[2], a + b.m[3], a + b.m[4], a + b.m[5], a + b.m[6], a + b.m[7], a + b.m[8]); }
+[[nodiscard]] inline Mat3 operator-(float a, Mat3 b) noexcept { return Mat3(a - b.m[0], a - b.m[1], a - b.m[2], a - b.m[3], a - b.m[4], a - b.m[5], a - b.m[6], a - b.m[7], a - b.m[8]); }
+[[nodiscard]] inline Mat3 operator*(float a, Mat3 b) noexcept { return Mat3(a * b.m[0], a * b.m[1], a * b.m[2], a * b.m[3], a * b.m[4], a * b.m[5], a * b.m[6], a * b.m[7], a * b.m[8]); }
+[[nodiscard]] inline Mat3 operator/(float a, Mat3 b) noexcept { return Mat3(a / b.m[0], a / b.m[1], a / b.m[2], a / b.m[3], a / b.m[4], a / b.m[5], a / b.m[6], a / b.m[7], a / b.m[8]); }
 
-inline Mat3 &Mat3::operator+=(Mat3 b) { return *this = *this + b; }
-inline Mat3 &Mat3::operator-=(Mat3 b) { return *this = *this - b; }
-inline Mat3 &Mat3::operator*=(Mat3 b) { return *this = *this * b; }
-inline Mat3 &Mat3::operator/=(Mat3 b) { return *this = *this / b; }
-inline Mat3 &Mat3::operator+=(float b) { return *this = *this + b; }
-inline Mat3 &Mat3::operator-=(float b) { return *this = *this - b; }
-inline Mat3 &Mat3::operator*=(float b) { return *this = *this * b; }
-inline Mat3 &Mat3::operator/=(float b) { return *this = *this / b; }
+inline Mat3 &Mat3::operator+=(Mat3 b) noexcept { return *this = *this + b; }
+inline Mat3 &Mat3::operator-=(Mat3 b) noexcept { return *this = *this - b; }
+inline Mat3 &Mat3::operator*=(Mat3 b) noexcept { return *this = *this * b; }
+inline Mat3 &Mat3::operator/=(Mat3 b) noexcept { return *this = *this / b; }
+inline Mat3 &Mat3::operator+=(float b) noexcept { return *this = *this + b; }
+inline Mat3 &Mat3::operator-=(float b) noexcept { return *this = *this - b; }
+inline Mat3 &Mat3::operator*=(float b) noexcept { return *this = *this * b; }
+inline Mat3 &Mat3::operator/=(float b) noexcept { return *this = *this / b; }
 
 struct Mat4 {
     using M = std::array<float, 16>;
@@ -1476,54 +1484,54 @@ struct Mat4 {
 
     MEM_PROP_EXP(Mat4, diag, Vec4, Vec4(self.m[0], self.m[5], self.m[10], self.m[15]), (self.m = {value.x, self.m[1], self.m[2], self.m[3], self.m[4], value.y, self.m[6], self.m[7], self.m[8], self.m[9], value.z, self.m[11], self.m[12], self.m[13], self.m[14], value.w}));
 
-    Mat4() = default;
-    Mat4(M m) : m({m[0], m[1], m[2], m[3], m[4], m[5], m[6], m[7], m[8]}) {}
-    Mat4(float m0, float m1, float m2, float m3, float m4, float m5, float m6, float m7, float m8, float m9, float m10, float m11, float m12, float m13, float m14, float m15) : m({m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15}) {}
+    Mat4() noexcept = default;
+    Mat4(M m) noexcept : m({m[0], m[1], m[2], m[3], m[4], m[5], m[6], m[7], m[8]}) {}
+    Mat4(float m0, float m1, float m2, float m3, float m4, float m5, float m6, float m7, float m8, float m9, float m10, float m11, float m12, float m13, float m14, float m15) noexcept : m({m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15}) {}
 
-    inline explicit Mat4(Mat2 m);
-    inline explicit Mat4(Mat3 m);
+    inline explicit Mat4(Mat2 m) noexcept;
+    inline explicit Mat4(Mat3 m) noexcept;
 
-    inline Mat4 &operator+=(Mat4 b);
-    inline Mat4 &operator-=(Mat4 b);
-    inline Mat4 &operator*=(Mat4 b);
-    inline Mat4 &operator/=(Mat4 b);
-    inline Mat4 &operator+=(float b);
-    inline Mat4 &operator-=(float b);
-    inline Mat4 &operator*=(float b);
-    inline Mat4 &operator/=(float b);
+    inline Mat4 &operator+=(Mat4 b) noexcept;
+    inline Mat4 &operator-=(Mat4 b) noexcept;
+    inline Mat4 &operator*=(Mat4 b) noexcept;
+    inline Mat4 &operator/=(Mat4 b) noexcept;
+    inline Mat4 &operator+=(float b) noexcept;
+    inline Mat4 &operator-=(float b) noexcept;
+    inline Mat4 &operator*=(float b) noexcept;
+    inline Mat4 &operator/=(float b) noexcept;
 };
 
-inline Mat4 operator+(Mat4 a) { return Mat4(+a.m[0], +a.m[1], +a.m[2], +a.m[3], +a.m[4], +a.m[5], +a.m[6], +a.m[7], +a.m[8], +a.m[9], +a.m[10], +a.m[11], +a.m[12], +a.m[13], +a.m[14], +a.m[15]); }
-inline Mat4 operator-(Mat4 a) { return Mat4(-a.m[0], -a.m[1], -a.m[2], -a.m[3], -a.m[4], -a.m[5], -a.m[6], -a.m[7], -a.m[8], -a.m[9], -a.m[10], -a.m[11], -a.m[12], -a.m[13], -a.m[14], -a.m[15]); }
+[[nodiscard]] inline Mat4 operator+(Mat4 a) noexcept { return Mat4(+a.m[0], +a.m[1], +a.m[2], +a.m[3], +a.m[4], +a.m[5], +a.m[6], +a.m[7], +a.m[8], +a.m[9], +a.m[10], +a.m[11], +a.m[12], +a.m[13], +a.m[14], +a.m[15]); }
+[[nodiscard]] inline Mat4 operator-(Mat4 a) noexcept { return Mat4(-a.m[0], -a.m[1], -a.m[2], -a.m[3], -a.m[4], -a.m[5], -a.m[6], -a.m[7], -a.m[8], -a.m[9], -a.m[10], -a.m[11], -a.m[12], -a.m[13], -a.m[14], -a.m[15]); }
 
-inline Mat4 operator+(Mat4 a, Mat4 b) { return Mat4(a.m[0] + b.m[0], a.m[1] + b.m[1], a.m[2] + b.m[2], a.m[3] + b.m[3], a.m[4] + b.m[4], a.m[5] + b.m[5], a.m[6] + b.m[6], a.m[7] + b.m[7], a.m[8] + b.m[8], a.m[9] + b.m[9], a.m[10] + b.m[10], a.m[11] + b.m[11], a.m[12] + b.m[12], a.m[13] + b.m[13], a.m[14] + b.m[14], a.m[15] + b.m[15]); }
-inline Mat4 operator-(Mat4 a, Mat4 b) { return Mat4(a.m[0] - b.m[0], a.m[1] - b.m[1], a.m[2] - b.m[2], a.m[3] - b.m[3], a.m[4] - b.m[4], a.m[5] - b.m[5], a.m[6] - b.m[6], a.m[7] - b.m[7], a.m[8] - b.m[8], a.m[9] - b.m[9], a.m[10] - b.m[10], a.m[11] - b.m[11], a.m[12] - b.m[12], a.m[13] - b.m[13], a.m[14] - b.m[14], a.m[15] - b.m[15]); }
-inline Mat4 operator*(Mat4 a, Mat4 b) { return Mat4(a.m[0] * b.m[0], a.m[1] * b.m[1], a.m[2] * b.m[2], a.m[3] * b.m[3], a.m[4] * b.m[4], a.m[5] * b.m[5], a.m[6] * b.m[6], a.m[7] * b.m[7], a.m[8] * b.m[8], a.m[9] * b.m[9], a.m[10] * b.m[10], a.m[11] * b.m[11], a.m[12] * b.m[12], a.m[13] * b.m[13], a.m[14] * b.m[14], a.m[15] * b.m[15]); }
-inline Mat4 operator/(Mat4 a, Mat4 b) { return Mat4(a.m[0] / b.m[0], a.m[1] / b.m[1], a.m[2] / b.m[2], a.m[3] / b.m[3], a.m[4] / b.m[4], a.m[5] / b.m[5], a.m[6] / b.m[6], a.m[7] / b.m[7], a.m[8] / b.m[8], a.m[9] / b.m[9], a.m[10] / b.m[10], a.m[11] / b.m[11], a.m[12] / b.m[12], a.m[13] / b.m[13], a.m[14] / b.m[14], a.m[15] / b.m[15]); }
-inline Mat4 operator+(Mat4 a, float b) { return Mat4(a.m[0] + b, a.m[1] + b, a.m[2] + b, a.m[3] + b, a.m[4] + b, a.m[5] + b, a.m[6] + b, a.m[7] + b, a.m[8] + b, a.m[9] + b, a.m[10] + b, a.m[11] + b, a.m[12] + b, a.m[13] + b, a.m[14] + b, a.m[15] + b); }
-inline Mat4 operator-(Mat4 a, float b) { return Mat4(a.m[0] - b, a.m[1] - b, a.m[2] - b, a.m[3] - b, a.m[4] - b, a.m[5] - b, a.m[6] - b, a.m[7] - b, a.m[8] - b, a.m[9] - b, a.m[10] - b, a.m[11] - b, a.m[12] - b, a.m[13] - b, a.m[14] - b, a.m[15] - b); }
-inline Mat4 operator*(Mat4 a, float b) { return Mat4(a.m[0] * b, a.m[1] * b, a.m[2] * b, a.m[3] * b, a.m[4] * b, a.m[5] * b, a.m[6] * b, a.m[7] * b, a.m[8] * b, a.m[9] * b, a.m[10] * b, a.m[11] * b, a.m[12] * b, a.m[13] * b, a.m[14] * b, a.m[15] * b); }
-inline Mat4 operator/(Mat4 a, float b) { return Mat4(a.m[0] / b, a.m[1] / b, a.m[2] / b, a.m[3] / b, a.m[4] / b, a.m[5] / b, a.m[6] / b, a.m[7] / b, a.m[8] / b, a.m[9] / b, a.m[10] / b, a.m[11] / b, a.m[12] / b, a.m[13] / b, a.m[14] / b, a.m[15] / b); }
-inline Mat4 operator+(float a, Mat4 b) { return Mat4(a + b.m[0], a + b.m[1], a + b.m[2], a + b.m[3], a + b.m[4], a + b.m[5], a + b.m[6], a + b.m[7], a + b.m[8], a + b.m[9], a + b.m[10], a + b.m[11], a + b.m[12], a + b.m[13], a + b.m[14], a + b.m[15]); }
-inline Mat4 operator-(float a, Mat4 b) { return Mat4(a - b.m[0], a - b.m[1], a - b.m[2], a - b.m[3], a - b.m[4], a - b.m[5], a - b.m[6], a - b.m[7], a - b.m[8], a - b.m[9], a - b.m[10], a - b.m[11], a - b.m[12], a - b.m[13], a - b.m[14], a - b.m[15]); }
-inline Mat4 operator*(float a, Mat4 b) { return Mat4(a * b.m[0], a * b.m[1], a * b.m[2], a * b.m[3], a * b.m[4], a * b.m[5], a * b.m[6], a * b.m[7], a * b.m[8], a * b.m[9], a * b.m[10], a * b.m[11], a * b.m[12], a * b.m[13], a * b.m[14], a * b.m[15]); }
-inline Mat4 operator/(float a, Mat4 b) { return Mat4(a / b.m[0], a / b.m[1], a / b.m[2], a / b.m[3], a / b.m[4], a / b.m[5], a / b.m[6], a / b.m[7], a / b.m[8], a / b.m[9], a / b.m[10], a / b.m[11], a / b.m[12], a / b.m[13], a / b.m[14], a / b.m[15]); }
+[[nodiscard]] inline Mat4 operator+(Mat4 a, Mat4 b) noexcept { return Mat4(a.m[0] + b.m[0], a.m[1] + b.m[1], a.m[2] + b.m[2], a.m[3] + b.m[3], a.m[4] + b.m[4], a.m[5] + b.m[5], a.m[6] + b.m[6], a.m[7] + b.m[7], a.m[8] + b.m[8], a.m[9] + b.m[9], a.m[10] + b.m[10], a.m[11] + b.m[11], a.m[12] + b.m[12], a.m[13] + b.m[13], a.m[14] + b.m[14], a.m[15] + b.m[15]); }
+[[nodiscard]] inline Mat4 operator-(Mat4 a, Mat4 b) noexcept { return Mat4(a.m[0] - b.m[0], a.m[1] - b.m[1], a.m[2] - b.m[2], a.m[3] - b.m[3], a.m[4] - b.m[4], a.m[5] - b.m[5], a.m[6] - b.m[6], a.m[7] - b.m[7], a.m[8] - b.m[8], a.m[9] - b.m[9], a.m[10] - b.m[10], a.m[11] - b.m[11], a.m[12] - b.m[12], a.m[13] - b.m[13], a.m[14] - b.m[14], a.m[15] - b.m[15]); }
+[[nodiscard]] inline Mat4 operator*(Mat4 a, Mat4 b) noexcept { return Mat4(a.m[0] * b.m[0], a.m[1] * b.m[1], a.m[2] * b.m[2], a.m[3] * b.m[3], a.m[4] * b.m[4], a.m[5] * b.m[5], a.m[6] * b.m[6], a.m[7] * b.m[7], a.m[8] * b.m[8], a.m[9] * b.m[9], a.m[10] * b.m[10], a.m[11] * b.m[11], a.m[12] * b.m[12], a.m[13] * b.m[13], a.m[14] * b.m[14], a.m[15] * b.m[15]); }
+[[nodiscard]] inline Mat4 operator/(Mat4 a, Mat4 b) noexcept { return Mat4(a.m[0] / b.m[0], a.m[1] / b.m[1], a.m[2] / b.m[2], a.m[3] / b.m[3], a.m[4] / b.m[4], a.m[5] / b.m[5], a.m[6] / b.m[6], a.m[7] / b.m[7], a.m[8] / b.m[8], a.m[9] / b.m[9], a.m[10] / b.m[10], a.m[11] / b.m[11], a.m[12] / b.m[12], a.m[13] / b.m[13], a.m[14] / b.m[14], a.m[15] / b.m[15]); }
+[[nodiscard]] inline Mat4 operator+(Mat4 a, float b) noexcept { return Mat4(a.m[0] + b, a.m[1] + b, a.m[2] + b, a.m[3] + b, a.m[4] + b, a.m[5] + b, a.m[6] + b, a.m[7] + b, a.m[8] + b, a.m[9] + b, a.m[10] + b, a.m[11] + b, a.m[12] + b, a.m[13] + b, a.m[14] + b, a.m[15] + b); }
+[[nodiscard]] inline Mat4 operator-(Mat4 a, float b) noexcept { return Mat4(a.m[0] - b, a.m[1] - b, a.m[2] - b, a.m[3] - b, a.m[4] - b, a.m[5] - b, a.m[6] - b, a.m[7] - b, a.m[8] - b, a.m[9] - b, a.m[10] - b, a.m[11] - b, a.m[12] - b, a.m[13] - b, a.m[14] - b, a.m[15] - b); }
+[[nodiscard]] inline Mat4 operator*(Mat4 a, float b) noexcept { return Mat4(a.m[0] * b, a.m[1] * b, a.m[2] * b, a.m[3] * b, a.m[4] * b, a.m[5] * b, a.m[6] * b, a.m[7] * b, a.m[8] * b, a.m[9] * b, a.m[10] * b, a.m[11] * b, a.m[12] * b, a.m[13] * b, a.m[14] * b, a.m[15] * b); }
+[[nodiscard]] inline Mat4 operator/(Mat4 a, float b) noexcept { return Mat4(a.m[0] / b, a.m[1] / b, a.m[2] / b, a.m[3] / b, a.m[4] / b, a.m[5] / b, a.m[6] / b, a.m[7] / b, a.m[8] / b, a.m[9] / b, a.m[10] / b, a.m[11] / b, a.m[12] / b, a.m[13] / b, a.m[14] / b, a.m[15] / b); }
+[[nodiscard]] inline Mat4 operator+(float a, Mat4 b) noexcept { return Mat4(a + b.m[0], a + b.m[1], a + b.m[2], a + b.m[3], a + b.m[4], a + b.m[5], a + b.m[6], a + b.m[7], a + b.m[8], a + b.m[9], a + b.m[10], a + b.m[11], a + b.m[12], a + b.m[13], a + b.m[14], a + b.m[15]); }
+[[nodiscard]] inline Mat4 operator-(float a, Mat4 b) noexcept { return Mat4(a - b.m[0], a - b.m[1], a - b.m[2], a - b.m[3], a - b.m[4], a - b.m[5], a - b.m[6], a - b.m[7], a - b.m[8], a - b.m[9], a - b.m[10], a - b.m[11], a - b.m[12], a - b.m[13], a - b.m[14], a - b.m[15]); }
+[[nodiscard]] inline Mat4 operator*(float a, Mat4 b) noexcept { return Mat4(a * b.m[0], a * b.m[1], a * b.m[2], a * b.m[3], a * b.m[4], a * b.m[5], a * b.m[6], a * b.m[7], a * b.m[8], a * b.m[9], a * b.m[10], a * b.m[11], a * b.m[12], a * b.m[13], a * b.m[14], a * b.m[15]); }
+[[nodiscard]] inline Mat4 operator/(float a, Mat4 b) noexcept { return Mat4(a / b.m[0], a / b.m[1], a / b.m[2], a / b.m[3], a / b.m[4], a / b.m[5], a / b.m[6], a / b.m[7], a / b.m[8], a / b.m[9], a / b.m[10], a / b.m[11], a / b.m[12], a / b.m[13], a / b.m[14], a / b.m[15]); }
 
-inline Mat4 &Mat4::operator+=(Mat4 b) { return *this = *this + b; }
-inline Mat4 &Mat4::operator-=(Mat4 b) { return *this = *this - b; }
-inline Mat4 &Mat4::operator*=(Mat4 b) { return *this = *this * b; }
-inline Mat4 &Mat4::operator/=(Mat4 b) { return *this = *this / b; }
-inline Mat4 &Mat4::operator+=(float b) { return *this = *this + b; }
-inline Mat4 &Mat4::operator-=(float b) { return *this = *this - b; }
-inline Mat4 &Mat4::operator*=(float b) { return *this = *this * b; }
-inline Mat4 &Mat4::operator/=(float b) { return *this = *this / b; }
+inline Mat4 &Mat4::operator+=(Mat4 b) noexcept { return *this = *this + b; }
+inline Mat4 &Mat4::operator-=(Mat4 b) noexcept { return *this = *this - b; }
+inline Mat4 &Mat4::operator*=(Mat4 b) noexcept { return *this = *this * b; }
+inline Mat4 &Mat4::operator/=(Mat4 b) noexcept { return *this = *this / b; }
+inline Mat4 &Mat4::operator+=(float b) noexcept { return *this = *this + b; }
+inline Mat4 &Mat4::operator-=(float b) noexcept { return *this = *this - b; }
+inline Mat4 &Mat4::operator*=(float b) noexcept { return *this = *this * b; }
+inline Mat4 &Mat4::operator/=(float b) noexcept { return *this = *this / b; }
 
-inline Mat2::Mat2(Mat3 m) : m({m.m[0], m.m[1], m.m[3], m.m[4]}) {}
-inline Mat2::Mat2(Mat4 m) : m({m.m[0], m.m[1], m.m[4], m.m[5]}) {}
-inline Mat3::Mat3(Mat2 m) : m({m.m[0], m.m[1], 0.0f, m.m[2], m.m[3], 0.0f, 0.0f, 0.0f, 0.0f}) {}
-inline Mat3::Mat3(Mat4 m) : m({m.m[0], m.m[1], m.m[2], m.m[4], m.m[5], m.m[6], m.m[8], m.m[9], m.m[10]}) {}
-inline Mat4::Mat4(Mat2 m) : m({m.m[0], m.m[1], 0.0f, 0.0f, m.m[2], m.m[3], 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}) {}
-inline Mat4::Mat4(Mat3 m) : m({m.m[0], m.m[1], m.m[2], 0.0f, m.m[3], m.m[4], m.m[5], 0.0f, m.m[6], m.m[7], m.m[8], 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}) {}
+inline Mat2::Mat2(Mat3 m) noexcept : m({m.m[0], m.m[1], m.m[3], m.m[4]}) {}
+inline Mat2::Mat2(Mat4 m) noexcept : m({m.m[0], m.m[1], m.m[4], m.m[5]}) {}
+inline Mat3::Mat3(Mat2 m) noexcept : m({m.m[0], m.m[1], 0.0f, m.m[2], m.m[3], 0.0f, 0.0f, 0.0f, 0.0f}) {}
+inline Mat3::Mat3(Mat4 m) noexcept : m({m.m[0], m.m[1], m.m[2], m.m[4], m.m[5], m.m[6], m.m[8], m.m[9], m.m[10]}) {}
+inline Mat4::Mat4(Mat2 m) noexcept : m({m.m[0], m.m[1], 0.0f, 0.0f, m.m[2], m.m[3], 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}) {}
+inline Mat4::Mat4(Mat3 m) noexcept : m({m.m[0], m.m[1], m.m[2], 0.0f, m.m[3], m.m[4], m.m[5], 0.0f, m.m[6], m.m[7], m.m[8], 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}) {}
 
 template <typename Fn> Mat2 fore(Mat2 m, Fn fn) { return Mat2(fn(m.m[0]), fn(m.m[1]), fn(m.m[2]), fn(m.m[3])); }
 template <typename Fn> Mat3 fore(Mat3 m, Fn fn) { return Mat3(fn(m.m[0]), fn(m.m[1]), fn(m.m[2]), fn(m.m[3]), fn(m.m[4]), fn(m.m[5]), fn(m.m[6]), fn(m.m[7]), fn(m.m[8])); }
@@ -1929,9 +1937,9 @@ struct Rect {
 
     Vec4 to_xywh() const { return Vec4(center.x - extent.x / 2.0f, center.y - extent.y / 2.0f, extent.x, extent.y); }
 
-    operator Vec4() const { return Vec4(center.x, center.y, extent.x, extent.y); }
+    [[nodiscard]] operator Vec4() const noexcept { return Vec4(center.x, center.y, extent.x, extent.y); }
 
-    operator SDL_FRect() const { return SDL_FRect{center.x - extent.x / 2.0f, center.y - extent.y / 2.0f, extent.x, extent.y}; }
+    [[nodiscard]] operator SDL_FRect() const noexcept { return SDL_FRect{center.x - extent.x / 2.0f, center.y - extent.y / 2.0f, extent.x, extent.y}; }
 };
 
 inline bool contains(Rect r, Vec2 p) {
@@ -2030,40 +2038,40 @@ struct Color {
 
     Vec4 to_oklch() const;
 
-    operator std::uint32_t() const { return (r << 24) + (g << 16) + (b << 8) + a; }
+    [[nodiscard]] operator std::uint32_t() const noexcept { return (r << 24) + (g << 16) + (b << 8) + a; }
 };
 
-inline Color operator+(Color a) { return Color::from_linear(Vec4(+a.to_linear().xyz, a.to_linear().w)); }
-inline Color operator-(Color a) { return Color::from_linear(Vec4(-a.to_linear().xyz, a.to_linear().w)); }
+[[nodiscard]] inline Color operator+(Color a) noexcept { return Color::from_linear(Vec4(+a.to_linear().xyz, a.to_linear().w)); }
+[[nodiscard]] inline Color operator-(Color a) noexcept { return Color::from_linear(Vec4(-a.to_linear().xyz, a.to_linear().w)); }
 
-inline Color operator+(Color a, Color b) { return Color::from_linear(a.to_linear() + b.to_linear()); }
-inline Color operator-(Color a, Color b) { return Color::from_linear(a.to_linear() - b.to_linear()); }
-inline Color operator*(Color a, Color b) { return Color::from_linear(a.to_linear() * b.to_linear()); }
-inline Color operator/(Color a, Color b) { return Color::from_linear(a.to_linear() / b.to_linear()); }
-inline Color operator+(Color a, Vec4 b) { return Color::from_linear(a.to_linear() + b); }
-inline Color operator-(Color a, Vec4 b) { return Color::from_linear(a.to_linear() - b); }
-inline Color operator*(Color a, Vec4 b) { return Color::from_linear(a.to_linear() * b); }
-inline Color operator/(Color a, Vec4 b) { return Color::from_linear(a.to_linear() / b); }
-inline Color operator+(Vec4 a, Color b) { return Color::from_linear(a + b.to_linear()); }
-inline Color operator-(Vec4 a, Color b) { return Color::from_linear(a - b.to_linear()); }
-inline Color operator*(Vec4 a, Color b) { return Color::from_linear(a * b.to_linear()); }
-inline Color operator/(Vec4 a, Color b) { return Color::from_linear(a / b.to_linear()); }
-inline Color operator+(Color a, Vec3 b) { return Color::from_linear(a.to_linear() + Vec4(b, 0.0f)); }
-inline Color operator-(Color a, Vec3 b) { return Color::from_linear(a.to_linear() - Vec4(b, 0.0f)); }
-inline Color operator*(Color a, Vec3 b) { return Color::from_linear(a.to_linear() * Vec4(b, 1.0f)); }
-inline Color operator/(Color a, Vec3 b) { return Color::from_linear(a.to_linear() / Vec4(b, 1.0f)); }
-inline Color operator+(Vec3 a, Color b) { return Color::from_linear(Vec4(a, 0.0f) + b.to_linear()); }
-inline Color operator-(Vec3 a, Color b) { return Color::from_linear(Vec4(a, 0.0f) - b.to_linear()); }
-inline Color operator*(Vec3 a, Color b) { return Color::from_linear(Vec4(a, 1.0f) * b.to_linear()); }
-inline Color operator/(Vec3 a, Color b) { return Color::from_linear(Vec4(a, 1.0f) / b.to_linear()); }
-inline Color operator+(Color a, float b) { return Color::from_linear(a.to_linear() + Vec4(b, b, b, 0.0f)); }
-inline Color operator-(Color a, float b) { return Color::from_linear(a.to_linear() - Vec4(b, b, b, 0.0f)); }
-inline Color operator*(Color a, float b) { return Color::from_linear(a.to_linear() * Vec4(b, b, b, 1.0f)); }
-inline Color operator/(Color a, float b) { return Color::from_linear(a.to_linear() / Vec4(b, b, b, 1.0f)); }
-inline Color operator+(float a, Color b) { return Color::from_linear(Vec4(a, a, a, 0.0f) + b.to_linear()); }
-inline Color operator-(float a, Color b) { return Color::from_linear(Vec4(a, a, a, 0.0f) - b.to_linear()); }
-inline Color operator*(float a, Color b) { return Color::from_linear(Vec4(a, a, a, 1.0f) * b.to_linear()); }
-inline Color operator/(float a, Color b) { return Color::from_linear(Vec4(a, a, a, 1.0f) / b.to_linear()); }
+[[nodiscard]] inline Color operator+(Color a, Color b) noexcept { return Color::from_linear(a.to_linear() + b.to_linear()); }
+[[nodiscard]] inline Color operator-(Color a, Color b) noexcept { return Color::from_linear(a.to_linear() - b.to_linear()); }
+[[nodiscard]] inline Color operator*(Color a, Color b) noexcept { return Color::from_linear(a.to_linear() * b.to_linear()); }
+[[nodiscard]] inline Color operator/(Color a, Color b) noexcept { return Color::from_linear(a.to_linear() / b.to_linear()); }
+[[nodiscard]] inline Color operator+(Color a, Vec4 b) noexcept { return Color::from_linear(a.to_linear() + b); }
+[[nodiscard]] inline Color operator-(Color a, Vec4 b) noexcept { return Color::from_linear(a.to_linear() - b); }
+[[nodiscard]] inline Color operator*(Color a, Vec4 b) noexcept { return Color::from_linear(a.to_linear() * b); }
+[[nodiscard]] inline Color operator/(Color a, Vec4 b) noexcept { return Color::from_linear(a.to_linear() / b); }
+[[nodiscard]] inline Color operator+(Vec4 a, Color b) noexcept { return Color::from_linear(a + b.to_linear()); }
+[[nodiscard]] inline Color operator-(Vec4 a, Color b) noexcept { return Color::from_linear(a - b.to_linear()); }
+[[nodiscard]] inline Color operator*(Vec4 a, Color b) noexcept { return Color::from_linear(a * b.to_linear()); }
+[[nodiscard]] inline Color operator/(Vec4 a, Color b) noexcept { return Color::from_linear(a / b.to_linear()); }
+[[nodiscard]] inline Color operator+(Color a, Vec3 b) noexcept { return Color::from_linear(a.to_linear() + Vec4(b, 0.0f)); }
+[[nodiscard]] inline Color operator-(Color a, Vec3 b) noexcept { return Color::from_linear(a.to_linear() - Vec4(b, 0.0f)); }
+[[nodiscard]] inline Color operator*(Color a, Vec3 b) noexcept { return Color::from_linear(a.to_linear() * Vec4(b, 1.0f)); }
+[[nodiscard]] inline Color operator/(Color a, Vec3 b) noexcept { return Color::from_linear(a.to_linear() / Vec4(b, 1.0f)); }
+[[nodiscard]] inline Color operator+(Vec3 a, Color b) noexcept { return Color::from_linear(Vec4(a, 0.0f) + b.to_linear()); }
+[[nodiscard]] inline Color operator-(Vec3 a, Color b) noexcept { return Color::from_linear(Vec4(a, 0.0f) - b.to_linear()); }
+[[nodiscard]] inline Color operator*(Vec3 a, Color b) noexcept { return Color::from_linear(Vec4(a, 1.0f) * b.to_linear()); }
+[[nodiscard]] inline Color operator/(Vec3 a, Color b) noexcept { return Color::from_linear(Vec4(a, 1.0f) / b.to_linear()); }
+[[nodiscard]] inline Color operator+(Color a, float b) noexcept { return Color::from_linear(a.to_linear() + Vec4(b, b, b, 0.0f)); }
+[[nodiscard]] inline Color operator-(Color a, float b) noexcept { return Color::from_linear(a.to_linear() - Vec4(b, b, b, 0.0f)); }
+[[nodiscard]] inline Color operator*(Color a, float b) noexcept { return Color::from_linear(a.to_linear() * Vec4(b, b, b, 1.0f)); }
+[[nodiscard]] inline Color operator/(Color a, float b) noexcept { return Color::from_linear(a.to_linear() / Vec4(b, b, b, 1.0f)); }
+[[nodiscard]] inline Color operator+(float a, Color b) noexcept { return Color::from_linear(Vec4(a, a, a, 0.0f) + b.to_linear()); }
+[[nodiscard]] inline Color operator-(float a, Color b) noexcept { return Color::from_linear(Vec4(a, a, a, 0.0f) - b.to_linear()); }
+[[nodiscard]] inline Color operator*(float a, Color b) noexcept { return Color::from_linear(Vec4(a, a, a, 1.0f) * b.to_linear()); }
+[[nodiscard]] inline Color operator/(float a, Color b) noexcept { return Color::from_linear(Vec4(a, a, a, 1.0f) / b.to_linear()); }
 
 template <typename Fn> Color fore(Color c, Fn fn) { return Color(Color::encode(fn(Color::decode(c.r))), Color::encode(fn(Color::decode(c.g))), Color::encode(fn(Color::decode(c.b))), Color::encode(fn(Color::decode(c.a)))); }
 

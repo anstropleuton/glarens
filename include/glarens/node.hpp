@@ -19,8 +19,8 @@
 #include <vector>
 
 enum ReferenceMode {
-    Relative, /// Uses parent metric for modeling reference (parent node, screen otherwise).
-    Absolute  /// Uses screen metric for modeling reference (0, 0, GetScreenWidth(), GetScreenHeight()).
+    REF_MODE_RELATIVE, /// Uses parent metric for modeling reference (parent node, screen otherwise).
+    REF_MODE_ABSOLUTE  /// Uses screen metric for modeling reference (0, 0, GetScreenWidth(), GetScreenHeight()).
 };
 
 struct BoxDim {
@@ -30,8 +30,8 @@ struct BoxDim {
     Vec2 size;     /// Absolute extent.
     Vec2 scale;    /// Additional extent from reference size.
 
-    ReferenceMode positioningRefMode = Relative;
-    ReferenceMode sizingRefMode      = Relative;
+    ReferenceMode positioningRefMode = REF_MODE_RELATIVE;
+    ReferenceMode sizingRefMode      = REF_MODE_RELATIVE;
 };
 
 struct BoxModel : BoxDim {
@@ -41,18 +41,20 @@ struct BoxModel : BoxDim {
     bool   useMax = false; /// Clamp at max
     BoxDim max;            /// Maximum dimension (not just size)
 
-    BoxModel() = default;
-    BoxModel(Vec2 position, Vec2 anchor, Vec2 floating, Vec2 size, Vec2 scale) : BoxDim(position, anchor, floating, size, scale) {}
-    BoxModel(Vec2 position, Vec2 anchor, Vec2 floating, Vec2 size, Vec2 scale, ReferenceMode positioningRefMode, ReferenceMode sizingRefMode) : BoxDim(position, anchor, floating, size, scale, positioningRefMode, sizingRefMode) {}
+    BoxModel() noexcept = default;
+    BoxModel(Vec2 position, Vec2 anchor, Vec2 floating, Vec2 size, Vec2 scale) noexcept : BoxDim(position, anchor, floating, size, scale) {}
+    BoxModel(Vec2 position, Vec2 anchor, Vec2 floating, Vec2 size, Vec2 scale, ReferenceMode positioningRefMode, ReferenceMode sizingRefMode) noexcept : BoxDim(position, anchor, floating, size, scale, positioningRefMode, sizingRefMode) {}
 };
 
 struct BoxMetric {
     Rect  bounds;          /// Bounding box
     float rotation = 0.0f; /// Rotation from center
+
+    static BoxMetric screen_metric();
 };
 
 struct Transformation {
-    ReferenceMode originRefMode = Relative; /// Reference mode for positioning the origin point of transformation
+    ReferenceMode originRefMode = REF_MODE_RELATIVE; /// Reference mode for positioning the origin point of transformation
 
     Vec2 originPos;      /// Offset from reference origin position
     Vec2 originAnchor;   /// Additional offset from reference origin size
@@ -65,54 +67,73 @@ struct Transformation {
 
 using TStack = std::vector<Transformation>;
 
-BoxMetric model_dim(BoxDim dim, BoxMetric parentMetric);
-BoxMetric model_box(BoxModel model, BoxMetric parentMetric);
-BoxMetric tramsform_box(BoxMetric metric, Transformation t, BoxMetric parentMetric);
-BoxMetric transform_box(BoxMetric metric, const TStack &tStack, BoxMetric parentMetric);
+// Provide screen metric in case of no parent
+
+[[nodiscard]] BoxMetric model_dim(BoxDim dim, BoxMetric parentMetric) noexcept;
+[[nodiscard]] BoxMetric model_box(BoxModel model, BoxMetric parentMetric) noexcept;
+[[nodiscard]] BoxMetric transform_box(BoxMetric metric, Transformation t, BoxMetric parentMetric) noexcept;
+[[nodiscard]] BoxMetric transform_box(BoxMetric metric, const TStack &tStack, BoxMetric parentMetric) noexcept;
 
 template <typename T>
 class Param {
-    T                base = T();
-    std::optional<T> override;
+    T                proto = T(); /// Prototype value
+    std::optional<T> local;       /// Local override
 
   public:
-    const T &get() const {
-        if (override.has_value()) return *override;
-        return base;
+    Param()                              = default;
+    Param(const Param &param)            = default;
+    Param(Param &&param)                 = default;
+    Param &operator=(const Param &param) = default;
+    Param &operator=(Param &&param)      = default;
+
+    Param(const T &value) { set(value); }
+    Param(T &&value) { set(std::move(value)); }
+
+    Param &operator=(const T &value) { set(value); }
+    Param &operator=(T &&value) { set(std::move(value)); }
+
+    [[nodiscard]] const T &get() const {
+        if (local.has_value()) return *local;
+        return proto;
     }
 
-    void set(T value) {
-        override = std::move(value);
-    }
+    void set(const T &value) { local = value; }
+    void set(T &&value) { local = std::move(value); }
 
-    void clear() {
-        override.reset();
-    }
+    void set_proto(const T &value) { proto = value; }
+    void set_proto(T &&value) { proto = std::move(value); }
 
-    void set_base(T value) {
-        base = std::move(value);
-    }
+    void clear() noexcept { local.reset(); }
 
-    bool has_override() const {
-        return override.has_value();
+    [[nodiscard]] bool has_override() const noexcept {
+        return local.has_value();
     }
 };
 
 class Context : public std::enable_shared_from_this<Context> {
-    int id = 0; // Unique identifier
+  protected:
+    Context();
 
   public:
-    Context();
+    virtual ~Context();
+
+    virtual std::shared_ptr<Context> clone()                                     = 0;
+    virtual void                     sync(const std::shared_ptr<Context> &proto) = 0;
 };
 
 class Node : public std::enable_shared_from_this<Node> {
-    int id = 0; // Unique identifier
+    int id_ = 0; /// Unique identifier
 
     Param<BoxModel> model_;
     Param<TStack>   tStack_;
 
-    BoxMetric modeledMetric_;
-    BoxMetric tMetric_;
+    mutable BoxMetric mMetric_;
+    mutable BoxMetric tMetric_;
+
+    // Note: propagates updates down to children
+
+    void update_m_metric_();
+    void update_t_metric_();
 
     std::weak_ptr<Node>                parent_;
     std::vector<std::shared_ptr<Node>> children_;
@@ -122,79 +143,120 @@ class Node : public std::enable_shared_from_this<Node> {
 
     std::unordered_map<std::type_index, std::shared_ptr<Context>> contexts_;
 
-    static void dupe_values(const std::shared_ptr<Node> &proto, const std::shared_ptr<Node> &clone) {
-        clone->model_.set_base(proto->model_.get());
-        clone->tStack_.set_base(proto->tStack_.get());
-    }
+    void gen_id_();
 
-    void gen_id();
+  protected:
+    Node();
 
   public:
-    Node();
+    bool enableUpdate         = true; /// Enable updates
+    bool enableChildrenUpdate = true; /// Enable updates for children
+    bool enableRender         = true; /// Enable renders
+    bool enableChildrenRender = true; /// Enable renders for children
+
     virtual ~Node() = default;
 
-    MEM_PROP_EXP(Node, model, BoxModel, self.model_.get(), self.model_.set(value));
-    MEM_PROP_EXP(Node, tStack, TStack, self.tStack_.get(), self.tStack_.set(value));
+    MEM_PROP_EXP(Node, model, BoxModel, self.model_.get(), self.model_.set(value); self.update_m_metric_());
+    MEM_PROP_EXP(Node, tStack, TStack, self.tStack_.get(), self.tStack_.set(value); self.update_t_metric_());
 
-    MEM_PROP_RO_EXP(Node, modeledMetric, BoxMetric, self.modeledMetric_);
-    MEM_PROP_RO_EXP(Node, tMetric, BoxMetric, self.tMetric_);
+    MEM_PROP_RO_EXP(Node, mMetric, BoxMetric, self.mMetric_); /// Modeled metric from box model
+    MEM_PROP_RO_EXP(Node, tMetric, BoxMetric, self.tMetric_); /// Transformed modeled metric from tStack
 
     MEM_PROP_RO_EXP(Node, parent, const std::weak_ptr<Node> &, self.parent_);
     MEM_PROP_RO_EXP(Node, children, const std::vector<std::shared_ptr<Node>> &, self.children_);
 
-    // Derived must provide their own factory
-    static std::shared_ptr<Node> create_node() {
-        return std::make_shared<Node>();
+    /// Derived must provide their own independent factory
+    [[nodiscard]] static std::shared_ptr<Node> create() {
+        return std::shared_ptr<Node>(new Node());
     }
 
-    // Derived must provide their own clone function
-    virtual std::shared_ptr<Node> clone_node() {
-        auto clone = std::make_shared<Node>();
+    /// Derived must provide their own polymorphic factory
+    [[nodiscard]] virtual std::shared_ptr<Node> recreate() const {
+        return std::shared_ptr<Node>(new Node());
+    }
 
-        dupe_values(shared_from_this(), clone);
+    /// Derived must provide their own sync function
+    virtual void sync(const std::shared_ptr<Node> &proto) {
+        model_.set_proto(proto->model_.get());
+        tStack_.set_proto(proto->tStack_.get());
+    }
+
+    [[nodiscard]] std::shared_ptr<Node> clone() {
+        auto clone = recreate();
+
+        clone->sync(shared_from_this());
 
         clones_.push_back(clone);
         clone->proto_ = shared_from_this();
 
+        for (const auto &[type, context] : contexts_) {
+            clone->contexts_[type] = context->clone();
+        }
+
         for (const auto &child : children_) {
-            clone->add_child(child->clone_node());
+            clone->add_child(child->clone());
         }
 
         return clone;
     }
 
-    // Derived must provide their own sync function
-    virtual void sync_clones() {
+    [[nodiscard]] std::shared_ptr<Node> clone_single() {
+        auto clone = recreate();
+
+        clone->sync(shared_from_this());
+
+        clones_.push_back(clone);
+        clone->proto_ = shared_from_this();
+
+        for (const auto &[type, context] : contexts_) {
+            clone->contexts_[type] = context->clone();
+        }
+
+        return clone;
+    }
+
+    void sync_clones() {
         clones_.erase(std::remove_if(clones_.begin(), clones_.end(), [](const std::weak_ptr<Node> &clone) { return clone.expired(); }), clones_.end());
         for (const auto &clone_ : clones_) {
             if (auto clone = clone_.lock()) {
-                dupe_values(shared_from_this(), clone);
+                clone->sync(shared_from_this());
+
+                for (const auto &[type, context] : contexts_) {
+                    if (auto it = clone->contexts_.find(type); it != clone->contexts_.end()) {
+                        it->second->sync(context);
+                    }
+                }
             }
+        }
+
+        for (auto child : children_) {
+            child->sync_clones();
         }
     }
 
     // Note: node tree graph management does not enforce anything
 
     void add_child(std::shared_ptr<Node> child) {
-        children_.push_back(child);
         child->parent_ = shared_from_this();
+        children_.push_back(std::move(child));
     }
 
-    void remove_child(int id) {
-        auto it = std::find_if(children_.begin(), children_.end(), [id](const std::shared_ptr<Node> &child) { return child->id == id; });
+    bool remove_child(int id) {
+        auto it = std::find_if(children_.begin(), children_.end(), [id](const std::shared_ptr<Node> &child) { return child->id_ == id; });
         if (it == children_.end()) {
-            return;
+            return false;
         }
         (*it)->parent_.reset();
         children_.erase(it);
+        return true;
     }
 
-    bool has_child(int id) const {
-        return std::find_if(children_.begin(), children_.end(), [id](const std::shared_ptr<Node> &child) { return child->id == id; }) != children_.end();
+    [[nodiscard]] bool has_child(int id) const noexcept {
+        return std::find_if(children_.begin(), children_.end(), [id](const std::shared_ptr<Node> &child) { return child->id_ == id; }) != children_.end();
     }
 
-    std::shared_ptr<Node> get_child(int id) const {
-        auto it = std::find_if(children_.begin(), children_.end(), [id](const std::shared_ptr<Node> &child) { return child->id == id; });
+    [[nodiscard]] std::shared_ptr<Node> get_child(int id) const {
+        auto it = std::find_if(children_.begin(), children_.end(), [id](const std::shared_ptr<Node> &child) { return child->id_ == id; });
         if (it == children_.end()) {
             return nullptr;
         }
@@ -217,19 +279,135 @@ class Node : public std::enable_shared_from_this<Node> {
 
     template <typename T>
         requires std::is_base_of_v<Context, T>
-    bool has_context() const {
+    [[nodiscard]] bool has_context() const noexcept {
         std::type_index type = typeid(T);
         return contexts_.contains(type);
     }
 
     template <typename T>
         requires std::is_base_of_v<Context, T>
-    std::shared_ptr<T> get_context() const {
+    [[nodiscard]] std::shared_ptr<T> get_context() const {
         if (!has_context<T>()) {
             return nullptr;
         }
 
         std::type_index type = typeid(T);
         return std::static_pointer_cast<T>(contexts_.at(type));
+    }
+
+    /// Checks for context in parent recursively (excluding itself)
+    template <typename T>
+        requires std::is_base_of_v<Context, T>
+    [[nodiscard]] bool has_context_in_ancestor() const noexcept {
+        if (auto parent = parent_.lock()) {
+            if (parent->has_context<T>()) {
+                return true;
+            }
+
+            return parent->has_context_in_ancestor<T>();
+        }
+
+        return false;
+    }
+
+    /// Checks for context in children recursively (excluding itself)
+    template <typename T>
+        requires std::is_base_of_v<Context, T>
+    [[nodiscard]] bool has_context_in_descendant() const noexcept {
+        for (auto child : children_) {
+            if (child->has_context<T>()) {
+                return true;
+            }
+
+            if (child->has_context_in_descendant<T>()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /// Obtains context in parent recursively (excluding itself)
+    template <typename T>
+        requires std::is_base_of_v<Context, T>
+    [[nodiscard]] std::shared_ptr<T> get_context_in_ancestor() const {
+        if (auto parent = parent_.lock()) {
+            if (auto context = parent->get_context<T>()) {
+                return context;
+            }
+
+            return parent->get_context_in_ancestor<T>();
+        }
+
+        return nullptr;
+    }
+
+    /// Obtains context in children recursively (excluding itself)
+    template <typename T>
+        requires std::is_base_of_v<Context, T>
+    [[nodiscard]] std::shared_ptr<T> get_context_in_descendant() const {
+        for (auto child : children_) {
+            if (auto context = child->get_context<T>()) {
+                return context;
+            }
+
+            if (auto context = child->get_context_in_descendant<T>()) {
+                return context;
+            }
+        }
+
+        return nullptr;
+    }
+
+    /// Override this for custom hit testing
+    virtual bool hit_test(Vec2 position) const {
+        return contains(tMetric_.bounds, rotate_around(position, tMetric_.bounds.center, -tMetric_.rotation));
+    }
+
+    /// Override this for custom modeling after this class has been modeled
+    virtual void on_model() {}
+
+    /// Override this for updating before children
+    virtual void pre_update() {}
+
+    /// Override this for updating after children
+    virtual void post_update() {}
+
+    void update() {
+        if (!enableUpdate) {
+            return;
+        }
+
+        pre_update();
+
+        if (enableChildrenUpdate) {
+            for (auto child : children_) {
+                child->update();
+            }
+        }
+
+        post_update();
+    }
+
+    /// Override this for rendering before children
+    virtual void pre_render() const {}
+
+    /// Override this for rendering after children
+    virtual void post_render() const {}
+
+    void render() {
+        if (!enableRender) {
+            return;
+        }
+
+        pre_render();
+
+        if (enableChildrenRender) {
+            for (auto child : children_) {
+                child->render();
+            }
+        }
+
+        post_render();
     }
 };
