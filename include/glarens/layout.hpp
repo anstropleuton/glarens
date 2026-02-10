@@ -9,7 +9,6 @@
 #pragma once
 
 #include "glarens/node.hpp"
-#include "glarens/property.hpp"
 #include <memory>
 #include <stdexcept>
 
@@ -51,15 +50,6 @@ class FlexLayout : public Node {
     FlexLayout() = default;
 
   public:
-    MEM_PROP_EXP(FlexLayout, dir, Direction, self.dir_.get(), self.dir_.set(value); self.update_layout_());             /// Direction to flow
-    MEM_PROP_EXP(FlexLayout, wrapDir, Direction, self.wrapDir_.get(), self.wrapDir_.set(value); self.update_layout_()); /// Direction to wrap
-
-    MEM_PROP_EXP(FlexLayout, align, Align, self.align_.get(), self.align_.set(value); self.update_layout_());             /// Align in the flow
-    MEM_PROP_EXP(FlexLayout, wrapAlign, Align, self.wrapAlign_.get(), self.wrapAlign_.set(value); self.update_layout_()); /// Align in the wrap
-
-    MEM_PROP_EXP(FlexLayout, doWrapping, bool, self.doWrapping_.get(), self.doWrapping_.set(value); self.update_layout_());    /// Enable wrapping
-    MEM_PROP_EXP(FlexLayout, altWrapping, bool, self.altWrapping_.get(), self.altWrapping_.set(value); self.update_layout_()); /// Wrap in alternative direction
-
     static std::shared_ptr<FlexLayout> create() {
         return std::shared_ptr<FlexLayout>(new FlexLayout);
     }
@@ -97,9 +87,6 @@ class FlexItem : public Context {
     FlexItem() = default;
 
   public:
-    MEM_PROP_EXP(FlexItem, weight, float, self.weight_.get(), self.weight_.set(value); self.update_layout_());             /// Weighted alignment in flow axis
-    MEM_PROP_EXP(FlexItem, wrapWeight, float, self.wrapWeight_.get(), self.wrapWeight_.set(value); self.update_layout_()); /// Weighted alignment in wrap axis (averaged for all items in main axis)
-
     static std::shared_ptr<FlexItem> create() {
         return std::shared_ptr<FlexItem>(new FlexItem);
     }
@@ -138,15 +125,6 @@ class GridLayout : public Node {
     GridLayout() = default;
 
   public:
-    MEM_PROP_EXP(GridLayout, dir, Direction, self.dir_.get(), self.dir_.set(value); self.update_layout_());             /// Direction to flow in slots
-    MEM_PROP_EXP(GridLayout, wrapDir, Direction, self.wrapDir_.get(), self.wrapDir_.set(value); self.update_layout_()); /// Direction to wrap in slots
-
-    MEM_PROP_EXP(GridLayout, align, Align, self.align_.get(), self.align_.set(value); self.update_layout_());             /// Align in the flow
-    MEM_PROP_EXP(GridLayout, wrapAlign, Align, self.wrapAlign_.get(), self.wrapAlign_.set(value); self.update_layout_()); /// Align in the wrap
-
-    MEM_PROP_EXP(GridLayout, slots, int, self.slots_.get(), self.slots_.set(value); self.update_layout_());        /// Number of slots in flow axis
-    MEM_PROP_EXP(GridLayout, masonry, bool, self.masonry_.get(), self.masonry_.set(value); self.update_layout_()); /// Whether to arrange next items in main slot in masonry style
-
     static std::shared_ptr<GridLayout> create() {
         return std::shared_ptr<GridLayout>(new GridLayout);
     }
@@ -186,11 +164,6 @@ class GridItem : public Context {
     GridItem() = default;
 
   public:
-    MEM_PROP_EXP(GridItem, xSpan, int, self.xSpan_.get(), self.xSpan_.set(value); self.update_layout_());         /// Number of slots to occupy in x-axis
-    MEM_PROP_EXP(GridItem, ySpan, int, self.ySpan_.get(), self.ySpan_.set(value); self.update_layout_());         /// Number of slots to occupy in y-axis
-    MEM_PROP_EXP(GridItem, xWeight, float, self.xWeight_.get(), self.xWeight_.set(value); self.update_layout_()); /// Weighted alignment in x-axis (averaged for all items in the slot)
-    MEM_PROP_EXP(GridItem, yWeight, float, self.yWeight_.get(), self.yWeight_.set(value); self.update_layout_()); /// Weighted alignment in y-axis (averaged for all items in the slot)
-
     static std::shared_ptr<GridItem> create() {
         return std::shared_ptr<GridItem>(new GridItem);
     }
@@ -231,15 +204,6 @@ class MatrixLayout : public Node {
     MatrixLayout() = default;
 
   public:
-    MEM_PROP_EXP(MatrixLayout, xSlots, int, self.xSlots_.get(), self.xSlots_.set(value); self.update_layout_()); /// Number of slots in x-axis
-    MEM_PROP_EXP(MatrixLayout, ySlots, int, self.ySlots_.get(), self.ySlots_.set(value); self.update_layout_()); /// Number of slots in y-axis
-
-    MEM_PROP_EXP(MatrixLayout, dir, Direction, self.dir_.get(), self.dir_.set(value); self.update_layout_());             /// Direction to flow in slots
-    MEM_PROP_EXP(MatrixLayout, wrapDir, Direction, self.wrapDir_.get(), self.wrapDir_.set(value); self.update_layout_()); /// Direction to wrap in slots
-
-    MEM_PROP_EXP(MatrixLayout, align, Align, self.align_.get(), self.align_.set(value); self.update_layout_());             /// Align in the flow
-    MEM_PROP_EXP(MatrixLayout, wrapAlign, Align, self.wrapAlign_.get(), self.wrapAlign_.set(value); self.update_layout_()); /// Align in the wrap
-
     static std::shared_ptr<MatrixLayout> create() {
         return std::shared_ptr<MatrixLayout>(new MatrixLayout);
     }
@@ -279,11 +243,6 @@ class MatrixItem : public Context {
     MatrixItem() = default;
 
   public:
-    MEM_PROP_EXP(MatrixItem, xSpan, int, self.xSpan_.get(), self.xSpan_.set(value); self.update_layout_());         /// Number of slots to occupy in x-axis
-    MEM_PROP_EXP(MatrixItem, ySpan, int, self.ySpan_.get(), self.ySpan_.set(value); self.update_layout_());         /// Number of slots to occupy in y-axis
-    MEM_PROP_EXP(MatrixItem, xWeight, float, self.xWeight_.get(), self.xWeight_.set(value); self.update_layout_()); /// Weighted alignment in x-axis (averaged for all items in the slot)
-    MEM_PROP_EXP(MatrixItem, yWeight, float, self.yWeight_.get(), self.yWeight_.set(value); self.update_layout_()); /// Weighted alignment in y-axis (averaged for all items in the slot)
-
     static std::shared_ptr<MatrixItem> create() {
         return std::shared_ptr<MatrixItem>(new MatrixItem);
     }
@@ -321,11 +280,6 @@ class SplitLayout : public Node {
     SplitLayout() = default;
 
   public:
-    MEM_PROP_EXP(SplitLayout, splitWeights, std::vector<float>, self.splitWeights_.get(), self.splitWeights_.set(value); self.update_layout_()); /// Number of splits and weight of each split
-    MEM_PROP_EXP(SplitLayout, splitDir, Direction, self.splitDir_.get(), self.splitDir_.set(value); self.update_layout_());                      /// Direction to split primarily
-    MEM_PROP_EXP(SplitLayout, wrapDir, Direction, self.wrapDir_.get(), self.wrapDir_.set(value); self.update_layout_());                         /// Direction to split alternatively
-    MEM_PROP_EXP(SplitLayout, minDepth, int, self.minDepth_.get(), self.minDepth_.set(value); self.update_layout_());                            /// Minimum split depth initially
-
     static std::shared_ptr<SplitLayout> create() {
         return std::shared_ptr<SplitLayout>(new SplitLayout);
     }

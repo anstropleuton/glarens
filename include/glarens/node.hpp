@@ -9,7 +9,6 @@
 #pragma once
 
 #include "glarens/math.hpp"
-#include "glarens/property.hpp"
 #include <algorithm>
 #include <memory>
 #include <optional>
@@ -35,11 +34,8 @@ struct BoxDim {
 };
 
 struct BoxModel : BoxDim {
-    bool   useMin = false; /// Clamp at min
-    BoxDim min;            /// Minimum dimension (not just size)
-
-    bool   useMax = false; /// Clamp at max
-    BoxDim max;            /// Maximum dimension (not just size)
+    std::optional<BoxDim> min; /// Minimum dimension (union with base)
+    std::optional<BoxDim> max; /// Maximum dimension (intersect with base)
 
     BoxModel() noexcept = default;
     BoxModel(Vec2 position, Vec2 anchor, Vec2 floating, Vec2 size, Vec2 scale) noexcept : BoxDim(position, anchor, floating, size, scale) {}
@@ -89,8 +85,15 @@ class Param {
     Param(const T &value) { set(value); }
     Param(T &&value) { set(std::move(value)); }
 
-    Param &operator=(const T &value) { set(value); }
-    Param &operator=(T &&value) { set(std::move(value)); }
+    Param &operator=(const T &value) {
+        set(value);
+        return *this;
+    }
+
+    Param &operator=(T &&value) {
+        set(std::move(value));
+        return *this;
+    }
 
     [[nodiscard]] const T &get() const {
         if (local.has_value()) return *local;
@@ -115,25 +118,21 @@ class Context : public std::enable_shared_from_this<Context> {
     Context();
 
   public:
-    virtual ~Context();
+    virtual ~Context() = default;
 
     virtual std::shared_ptr<Context> clone()                                     = 0;
     virtual void                     sync(const std::shared_ptr<Context> &proto) = 0;
 };
 
 class Node : public std::enable_shared_from_this<Node> {
-    int id_ = 0; /// Unique identifier
-
     Param<BoxModel> model_;
     Param<TStack>   tStack_;
 
     mutable BoxMetric mMetric_;
     mutable BoxMetric tMetric_;
 
-    // Note: propagates updates down to children
-
-    void update_m_metric_();
-    void update_t_metric_();
+    void update_m_metric_() const;
+    void update_t_metric_() const;
 
     std::weak_ptr<Node>                parent_;
     std::vector<std::shared_ptr<Node>> children_;
@@ -143,27 +142,39 @@ class Node : public std::enable_shared_from_this<Node> {
 
     std::unordered_map<std::type_index, std::shared_ptr<Context>> contexts_;
 
-    void gen_id_();
-
   protected:
     Node();
 
   public:
+    virtual ~Node() = default;
+
     bool enableUpdate         = true; /// Enable updates
     bool enableChildrenUpdate = true; /// Enable updates for children
     bool enableRender         = true; /// Enable renders
     bool enableChildrenRender = true; /// Enable renders for children
 
-    virtual ~Node() = default;
+    BoxModel get_model() const {
+        return model_.get();
+    }
 
-    MEM_PROP_EXP(Node, model, BoxModel, self.model_.get(), self.model_.set(value); self.update_m_metric_());
-    MEM_PROP_EXP(Node, tStack, TStack, self.tStack_.get(), self.tStack_.set(value); self.update_t_metric_());
+    void set_model(const BoxModel &value) {
+        model_.set(value);
+        update_m_metric_();
+    }
 
-    MEM_PROP_RO_EXP(Node, mMetric, BoxMetric, self.mMetric_); /// Modeled metric from box model
-    MEM_PROP_RO_EXP(Node, tMetric, BoxMetric, self.tMetric_); /// Transformed modeled metric from tStack
+    TStack get_t_stack() const {
+        return tStack_.get();
+    }
 
-    MEM_PROP_RO_EXP(Node, parent, const std::weak_ptr<Node> &, self.parent_);
-    MEM_PROP_RO_EXP(Node, children, const std::vector<std::shared_ptr<Node>> &, self.children_);
+    void set_t_stack(const TStack &value) {
+        tStack_.set(value);
+        update_t_metric_();
+    }
+
+    /// Note: propagates updates down to children
+    void refresh_metric() const {
+        update_m_metric_();
+    }
 
     /// Derived must provide their own independent factory
     [[nodiscard]] static std::shared_ptr<Node> create() {
@@ -194,7 +205,7 @@ class Node : public std::enable_shared_from_this<Node> {
         }
 
         for (const auto &child : children_) {
-            clone->add_child(child->clone());
+            clone->insert_child(child->clone());
         }
 
         return clone;
@@ -236,27 +247,37 @@ class Node : public std::enable_shared_from_this<Node> {
 
     // Note: node tree graph management does not enforce anything
 
-    void add_child(std::shared_ptr<Node> child) {
+    void insert_child(std::shared_ptr<Node> child) {
         child->parent_ = shared_from_this();
+        child->refresh_metric();
         children_.push_back(std::move(child));
     }
 
-    bool remove_child(int id) {
-        auto it = std::find_if(children_.begin(), children_.end(), [id](const std::shared_ptr<Node> &child) { return child->id_ == id; });
+    template <typename T = Node, typename... Args>
+        requires std::is_base_of_v<Node, T> || std::is_same_v<Node, T>
+    std::shared_ptr<T> create_child(Args &&...args) {
+        auto node = T::create(std::forward<Args>(args)...);
+        insert_child(node);
+        return node;
+    }
+
+    bool remove_child(const std::shared_ptr<Node> &child) {
+        auto it = std::find_if(children_.begin(), children_.end(), [&child](const std::shared_ptr<Node> &element) { return child.get() == element.get(); });
         if (it == children_.end()) {
             return false;
         }
         (*it)->parent_.reset();
+        (*it)->refresh_metric();
         children_.erase(it);
         return true;
     }
 
-    [[nodiscard]] bool has_child(int id) const noexcept {
-        return std::find_if(children_.begin(), children_.end(), [id](const std::shared_ptr<Node> &child) { return child->id_ == id; }) != children_.end();
+    [[nodiscard]] bool has_child(const std::shared_ptr<Node> &child) const noexcept {
+        return std::find_if(children_.begin(), children_.end(), [&child](const std::shared_ptr<Node> &element) { return child.get() == element.get(); }) != children_.end();
     }
 
-    [[nodiscard]] std::shared_ptr<Node> get_child(int id) const {
-        auto it = std::find_if(children_.begin(), children_.end(), [id](const std::shared_ptr<Node> &child) { return child->id_ == id; });
+    [[nodiscard]] std::shared_ptr<Node> get_child(const std::shared_ptr<Node> &child) const {
+        auto it = std::find_if(children_.begin(), children_.end(), [&child](const std::shared_ptr<Node> &element) { return child.get() == element.get(); });
         if (it == children_.end()) {
             return nullptr;
         }
@@ -381,7 +402,7 @@ class Node : public std::enable_shared_from_this<Node> {
         pre_update();
 
         if (enableChildrenUpdate) {
-            for (auto child : children_) {
+            for (const auto &child : children_) {
                 child->update();
             }
         }
@@ -395,7 +416,7 @@ class Node : public std::enable_shared_from_this<Node> {
     /// Override this for rendering after children
     virtual void post_render() const {}
 
-    void render() {
+    void render() const {
         if (!enableRender) {
             return;
         }
@@ -403,11 +424,14 @@ class Node : public std::enable_shared_from_this<Node> {
         pre_render();
 
         if (enableChildrenRender) {
-            for (auto child : children_) {
+            for (const auto &child : children_) {
                 child->render();
             }
         }
 
         post_render();
     }
+
+    /// Debug rendering
+    virtual void debug() const;
 };

@@ -8,9 +8,8 @@
 
 #pragma once
 
-#include "glarens/math.hpp"     // IWYU pragma: keep
-#include "glarens/node.hpp"     // IWYU pragma: keep
-#include "glarens/property.hpp" // IWYU pragma: keep
+#include "glarens/math.hpp" // IWYU pragma: keep
+#include "glarens/node.hpp" // IWYU pragma: keep
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
 

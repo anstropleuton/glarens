@@ -4,8 +4,7 @@
   - [x] CMake setup
   - [x] Clang LSP setup
   - [x] Dummy files
-  - [x] Property system (yoinked from my other project)
-  - [x] Math framework (also yoinked from my other project)
+  - [x] Math framework (yoinked from my other project)
     - [x] Vector classes
     - [x] Basic vector operators
     - [x] Element-wise vector functions
@@ -32,13 +31,14 @@
   - [ ] Generate image
 - [ ] Get node graph working
   - [x] Layout system
-  - [ ] Visualization (just color-coded lines)
+  - [x] Visualization (just color-coded lines)
+  - [x] Test core nodes
+  - [ ] Test layout nodes
   - [x] Min/max clamping
   - [ ] Dynamic editing for testing purposes
   - [x] Prototyping and syncing
   - [x] Prototype parameter
   - [x] Context system for unrelated data storage
-  - [ ] Garbage collection to delete soft-deleted nodes
 - [ ] Create shape shader (CPU-shader)
   - [ ] Point-based
   - [ ] Rounded corner
